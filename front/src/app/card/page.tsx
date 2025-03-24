@@ -43,9 +43,9 @@ const MainPage = () => {
     },
   ]);
   return (
-    <div className="overflow-hidden h-[100vh] w-[100vw]">
+    <div className="overflow-hidden h-screen w-full relative">
       <Image
-        className="h-[300px] w-[220px] z-[150] -translate-x-[50%] -translate-y-[55%] absolute top-1/4 left-1/2"
+        className="h-[31vh] w-[50vw] z-[150] -translate-x-[50%] -translate-y-[55%] absolute top-1/4 left-1/2"
         src={logo}
         alt="logo"
         width={100}
@@ -53,13 +53,13 @@ const MainPage = () => {
       />
       <TimeBackground />
       <GrassBackground />
-      <div className="cursor-pointer z-[200] m-4 absolute w-[100vw] h-[50vh] bottom-1/5 left-0 flex justify-center items-center focus: size-110 ">
+      <div className="z-[200] m-1 absolute w-full h-[50vh] bottom-1/6 flex justify-end items-center translate-x-[50%]">
         <Carousel>
           <CarouselContent>
             {cardList.map((card, index) => (
               <CarouselItem
                 key={index}
-                className="flex justify-center basis-[250px]"
+                className="flex justify-center basis-[70vw]"
               >
                 <CardImage
                   companyName={card.cardIssuerName}
@@ -68,11 +68,9 @@ const MainPage = () => {
                 />
               </CarouselItem>
             ))}
-            <CarouselItem className="flex justify-center basis-[250px]">
-              <div className="w-full max-w-[250px] h-[150px] flex flex-col justify-center items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
-                <button className="cursor-pointer">
-                  <CirclePlus className="w-12 h-12 transition-all" />
-                </button>
+            <CarouselItem className="flex justify-center basis-[80vw]">
+              <div className="w-full pl-4 max-w-[250px] h-[150px] flex justify-start items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
+                <CirclePlus className="text-gray-500 w-12 h-12 transition-all" />
               </div>
             </CarouselItem>
           </CarouselContent>

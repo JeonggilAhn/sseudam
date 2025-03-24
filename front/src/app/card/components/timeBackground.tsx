@@ -2,29 +2,30 @@
 import { useEffect, useState } from "react";
 
 const TimeBackground = () => {
-  const [timeBg, setTimeBg] = useState("");
+  const [timeBg, setTimeBg] = useState("#C1E6FA");
   const updateBackgroundRotation = () => {
     const date = new Date();
     const currentTime = date.getHours();
     if (currentTime < 18 && currentTime >= 9) {
-      setTimeBg(bgColors[0]);
+      setTimeBg("#C1E6FA");
     } else {
-      setTimeBg(bgColors[1]);
+      setTimeBg("#172554");
     }
   };
-  const bgColors = ["#C1E6FA", "#172554"]; // 낮&밤
 
   useEffect(() => {
     updateBackgroundRotation();
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full overflow-hidden">
-      <div
-        id="time-bg"
-        style={{ backgroundColor: timeBg }}
-        className={`fixed top-[-100vmax] left-[-100vmax] w-[200vmax] h-[200vmax]`}
-      ></div>
+    <div className="max-w-[1280px] w-full mx-auto px-4">
+      <div className="absolute top-0 left-0 overflow-hidden">
+        <div
+          id="time-bg"
+          style={{ backgroundColor: timeBg }}
+          className={`fixed top-[-100vmax] left-[-100vmax] w-[200vmax] h-[200vmax] transition-all`}
+        ></div>
+      </div>
     </div>
   );
 };
