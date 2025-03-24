@@ -1,22 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import SavingCard from "./components/savingCard";
-import SavingButton from "./components/savingButton";
 
-const SavingPage: React.FC = () => {
-  const [selected, setSelected] = useState<"interest" | "views" | "likes" | null>(null);
-
-  const handleSelect = (value: "interest" | "views" | "likes") => {
-    setSelected((prev) => (prev === value ? null : value));
-  };
-
+const App: React.FC = () => {
   return (
-    <main className="p-4">
-      <SavingButton selected={selected} onSelect={handleSelect} />
+    <main>
       <SavingCard />
     </main>
   );
 };
 
-export default SavingPage;
+export default App;
