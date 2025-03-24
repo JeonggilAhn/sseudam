@@ -28,19 +28,6 @@ if ! $is_valid; then
   exit 1
 fi
 
-# 현재 브랜치 이름 가져오기
-branch_name=$(git symbolic-ref --short HEAD)
-
-# 브랜치 이름에서 이슈 번호 추출
-issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
-
-# 커밋 메시지에 이미 이슈 번호가 있는지 확인
-if [[ "$commit_msg" =~ \#S12P21A106-[0-9]+ ]]; then
-  has_issue=true
-else
-  has_issue=false
-fi
-
 # 이모지가 이미 있는지 확인
 if [[ "$commit_msg" =~ ^[[:space:]]*[[:punct:]].*$ ]]; then
   has_emoji=true
@@ -68,9 +55,25 @@ if ! $has_emoji; then
   new_commit_msg="$emoji $new_commit_msg"
 fi
 
-# 이슈 번호 없으면 추가
-if [ -n "$issue_number" ] && ! $has_issue; then
-  new_commit_msg="$new_commit_msg #$issue_number"
+if [[ "$prefix_found" != "hotfix" ]]; then
+
+  # 커밋 메시지에 이슈 번호가 이미 있는지 확인
+  if [[ "$commit_msg" =~ \#S12P21A106-[0-9]+ ]]; then
+    has_issue=true
+  else
+    has_issue=false
+  fi
+
+  # 현재 브랜치 이름 가져오기
+  branch_name=$(git symbolic-ref --short HEAD)
+
+  # 브랜치 이름에서 이슈 번호 추출
+  issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
+
+  # 메시지에 이슈 번호가 없다면 추가
+  if ! $has_issue; then
+    new_commit_msg="$new_commit_msg #$issue_number"
+  fi
 fi
 
 # 커밋 메시지 덮어쓰기
