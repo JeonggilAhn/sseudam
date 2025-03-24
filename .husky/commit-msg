@@ -70,7 +70,7 @@ fi
 
 # 이슈 번호 없으면 추가
 if [ -n "$issue_number" ] && ! $has_issue; then
-  new_commit_msg="$new_commit_msg \#$issue_number"
+  new_commit_msg="$new_commit_msg #$issue_number"
 fi
 
 # 커밋 메시지 덮어쓰기
