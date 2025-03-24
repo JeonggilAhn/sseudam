@@ -2,49 +2,29 @@
 
 # rebase 작업인지 확인
 if [ "$1" = "rebase" ]; then
-
     # 최신 커밋 메시지 가져오기
     commit_msg=$(git log -1 --pretty=%B)
-    new_commit_msg=$commit_msg
-
-    # 현재 브랜치 이름
-    branch_name=$(git rev-parse --abbrev-ref HEAD)
-
-    # 브랜치에서 Jira 이슈 번호 추출
-    issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
-
-    # prefix 찾기
-    prefix=$(echo "$commit_msg" | grep -oE "^(feat|fix|docs|style|refactor|test|chore|hotfix)")
     
-    # 메시지 앞에 이모지가 있는지 확인
-    if echo "$commit_msg" | grep -qE "^[[:space:]]*[[:punct:]]"; then
-        has_emoji=true
-    else
-        has_emoji=false
-    fi
-
-    # 이모지 매핑
-    case "$prefix" in
-        "feat") emoji="✨";;
-        "fix") emoji="🐛";;
-        "docs") emoji="📝";;
-        "style") emoji="🎨";;
-        "refactor") emoji="♻️";;
-        "test") emoji="☑️";;
-        "chore") emoji="⚙️";;
-        "hotfix") emoji="👺";;
-    esac
+    # 이미 이모지가 있는지 확인
+    if [[ ! "$commit_msg" =~ ^[[:space:]]*[[:punct:]].*$ ]]; then
+        # prefix 찾기
+        prefix=$(echo "$commit_msg" | grep -oE "^(feat|fix|docs|style|refactor|test|chore|hotfix)")
         
-   # 이모지가 없고, prefix가 유효한 경우 이모지 추가
-    if ! $has_emoji && [ -n "$emoji" ]; then
-        new_commit_msg="$emoji $new_commit_msg"
+        if [ ! -z "$prefix" ]; then
+            # 이모지 매핑
+            case "$prefix" in
+                "feat") emoji="✨";;
+                "fix") emoji="🐛";;
+                "docs") emoji="📝";;
+                "style") emoji="🎨";;
+                "refactor") emoji="♻️";;
+                "test") emoji="☑️";;
+                "chore") emoji="⚙️";;
+                "hotfix") emoji="👺";;
+            esac
+            
+            # 새 커밋 메시지로 amend
+            git commit --amend -m "$emoji $commit_msg"
+        fi
     fi
-
-    # 커밋 메시지에 이슈 번호가 없고, 브랜치에서 이슈 번호가 추출된 경우 추가
-    if [ -n "$issue_number" ] && ! echo "$original_commit_msg" | grep -q "#$issue_number"; then
-        new_commit_msg="$new_commit_msg #$issue_number"
-    fi
-
-    # 변경된 메시지로 커밋 수정
-    git commit --amend -m "$new_commit_msg"
 fi 
