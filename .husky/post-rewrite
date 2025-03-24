@@ -5,7 +5,7 @@ if [ "$1" = "rebase" ]; then
 
     # 최신 커밋 메시지 가져오기
     commit_msg=$(git log -1 --pretty=%B)
-    new_commit_msg = $commit_msg
+    new_commit_msg=$commit_msg
 
     # 현재 브랜치 이름
     branch_name=$(git rev-parse --abbrev-ref HEAD)
