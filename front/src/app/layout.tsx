@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden w-[100vw] h-[100vh]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden md:w-[60vw] max-w-[100vw] h-[100vh]`}
       >
         <ToastModal />
         <UnderBar />

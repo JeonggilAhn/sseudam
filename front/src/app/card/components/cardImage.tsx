@@ -12,7 +12,7 @@ const CardImage = ({
   expirationDate,
 }: CardImageProps) => {
   return (
-    <div className="w-[75vw] h-[20vh] flex flex-col justify-center items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
+    <div className="w-full max-w-[250px] h-[150px] flex flex-col justify-center items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
       <div>{companyName}</div>
       <div>{cardNumber}</div>
       <div>{expirationDate}</div>
