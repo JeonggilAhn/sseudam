@@ -53,13 +53,13 @@ const MainPage = () => {
       />
       <TimeBackground />
       <GrassBackground />
-      <div className="z-[200] m-1 absolute w-full h-[50vh] bottom-1/6 flex justify-end items-center translate-x-[50%]">
+      <div className="z-[200] m-1 absolute w-full h-[50vh] bottom-1/6 flex justify-end items-center">
         <Carousel>
           <CarouselContent>
             {cardList.map((card, index) => (
               <CarouselItem
                 key={index}
-                className="flex justify-center basis-[70vw]"
+                className="flex justify-center basis-64"
               >
                 <CardImage
                   companyName={card.cardIssuerName}
