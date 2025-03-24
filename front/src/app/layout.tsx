@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./provider";
 import UnderBar from "@/components/underBar";
+import ToastModal from "../components/alertModal/toastModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
