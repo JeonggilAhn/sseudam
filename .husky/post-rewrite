@@ -35,14 +35,26 @@ if [ "$1" = "rebase" ]; then
         "hotfix") emoji="👺";;
     esac
         
-   # 이모지가 없고, prefix가 유효한 경우 이모지 추가
+    # 이모지가 없고, prefix가 유효한 경우 이모지 추가
     if ! $has_emoji && [ -n "$emoji" ]; then
         new_commit_msg="$emoji $new_commit_msg"
     fi
 
-    # 커밋 메시지에 이슈 번호가 없고, 브랜치에서 이슈 번호가 추출된 경우 추가
-    if [ -n "$issue_number" ] && ! echo "$original_commit_msg" | grep -q "#$issue_number"; then
-        new_commit_msg="$new_commit_msg #$issue_number"
+    # hotfix가 아닌 경우에만 이슈 번호 검사 및 추가
+    if [ "$prefix" != "hotfix" ]; then
+        issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
+
+        # 브랜치에서 이슈 번호를 찾지 못한 경우 종료
+        if [ -z "$issue_number" ]; then
+            echo "❌ Error: 브랜치 이름에 이슈 번호(S12P21A106-숫자)가 없습니다."
+            echo "브랜치 이름 형식 예: feature-fe/S12P21A106-123-some-task"
+            exit 1
+        fi
+
+        # 커밋 메시지에 이슈 번호가 없는 경우 추가
+        if ! echo "$commit_msg" | grep -q "#$issue_number"; then
+            new_commit_msg="$new_commit_msg #$issue_number"
+        fi
     fi
 
     # 변경된 메시지로 커밋 수정
