@@ -7,7 +7,7 @@ commit_msg_file=$1
 commit_msg=$(cat "$commit_msg_file")
 
 # 허용되는 prefix 목록
-allowed_prefixes="feat fix docs style refactor test chore hotfix"
+allowed_prefixes="feat fix docs style refactor test chore hotfix wip"
 
 # prefix 검사
 is_valid=false
@@ -45,6 +45,7 @@ case $prefix_found in
   "test") emoji="☑️";;
   "chore") emoji="⚙️";;
   "hotfix") emoji="👺";;
+  "wip") emoji="🚧";;
 esac
 
 # 최종 메시지

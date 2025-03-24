@@ -14,7 +14,7 @@ if [ "$1" = "rebase" ]; then
     issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
 
     # prefix 찾기
-    prefix=$(echo "$commit_msg" | grep -oE "^(feat|fix|docs|style|refactor|test|chore|hotfix)")
+    prefix=$(echo "$commit_msg" | grep -oE "^(feat|fix|docs|style|refactor|test|chore|hotfix|wip)")
     
     # 메시지 앞에 이모지가 있는지 확인
     if echo "$commit_msg" | grep -qE "^[[:space:]]*[[:punct:]]"; then
@@ -33,6 +33,7 @@ if [ "$1" = "rebase" ]; then
         "test") emoji="☑️";;
         "chore") emoji="⚙️";;
         "hotfix") emoji="👺";;
+        "wip") emoji="🚧";;
     esac
         
     # 이모지가 없고, prefix가 유효한 경우 이모지 추가
