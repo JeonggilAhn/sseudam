@@ -8,7 +8,7 @@ type IconProps = {
   color?: string; //svg 파일에 따라 적용이 안 될 수 있음
 };
 
-const Icon = ({ name, width = 45, height = 15, alt = "", isActive = true, color }: IconProps) => {
+const Icon = ({ name, width = 60, height = 20, alt = "", isActive = true, color }: IconProps) => {
   const src = `/icons/${name}.svg`;
 
   return (
