@@ -9,6 +9,7 @@
     "post-rewrite": "sh .husky/post-rewrite"
   },
   "dependencies": {
+    "axios": "^1.8.4",
     "react-toastify": "^11.0.5"
   }
 }
