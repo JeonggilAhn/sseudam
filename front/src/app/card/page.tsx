@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import CardImage from "./components/cardImage";
 import CloudInfo from "./components/cloudInfo";
 
 import Image from "next/image";
@@ -18,7 +17,7 @@ import { CirclePlus } from "lucide-react";
 import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
-// import CouponImage from "../coupon/components/couponImage";
+import Cards from "react-credit-cards-2";
 
 export interface Card {
   cardIssuerName: string;
@@ -90,17 +89,17 @@ const MainPage = () => {
     {
       cardIssuerName: "삼성카드",
       cardNo: "1234567890123456",
-      expirationDate: "2025-12",
+      expirationDate: "12/25",
     },
     {
       cardIssuerName: "신한카드",
       cardNo: "1234567890123456",
-      expirationDate: "2025-12",
+      expirationDate: "12/25",
     },
     {
       cardIssuerName: "하나카드",
       cardNo: "1234567890123456",
-      expirationDate: "2025-12",
+      expirationDate: "12/25",
     },
   ]);
 
@@ -116,18 +115,18 @@ const MainPage = () => {
       `}</style>
       <div className="flex-1 ">
         {/* 소비/저축 정보 구름 */}
-        <div className="flex justify-around items-center mt-[30vh] px-4 z-[150] relative">
+        <div className="flex justify-around items-center mt-[5vh] px-4 z-[150] relative">
           <CloudInfo
             type="소비"
             amount={25000}
-            color="#7A7267"
-            textColor="red-400"
+            color="#3C3D37"
+            textColor="#E52020"
           />
           <CloudInfo
             type="저축"
             amount={3000}
             color="#FFFFFF"
-            textColor="blue-400"
+            textColor="#6439FF"
           />
         </div>
         <TimeBackground />
@@ -135,7 +134,7 @@ const MainPage = () => {
         <CardRegist />
 
         <Image
-          className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[30vw] 2xl:w-[30vw] h-auto z-[150] -translate-x-[50%] -translate-y-[55%] fixed top-1/4 left-1/2"
+          className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[55%] fixed top-1/4 left-1/2"
           src={logo}
           alt="logo"
           width={300}
@@ -146,20 +145,23 @@ const MainPage = () => {
           {/* 상단 여백 */}
           <div className="flex-1 flex flex-col justify-end h-2/3">
             {/* 카드 섹션 */}
-            <div className="mb-8 flex overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide">
+            <div className="mb-8 flex overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
               {cardList.map((card, index) => (
-                <CardImage
-                  key={index}
-                  companyName={card.cardIssuerName}
-                  cardNumber={card.cardNo}
-                  expirationDate={card.expirationDate}
+                <Cards
+                key={index}
+                number={card.cardNo}
+                expiry={card.expirationDate}
+                cvc={""}
+                name={"유저명"}
+                focused={""}
                 />
+
               ))}
               <div
                 onClick={() => dispatch(toggleIsRegistModalOpen())}
-                className="min-w-[125px] h-[150px] flex justify-center items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl"
+                className="cursor-pointer min-w-[84px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
               >
-                <CirclePlus className="text-gray-500 w-12 h-12 transition-all" />
+                <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
               </div>
             </div>
 
@@ -168,9 +170,14 @@ const MainPage = () => {
               {userCouponList.map((coupon, index) => (
                 <div
                   key={index}
-                  className="w-[80vw] h-[10vh] flex justify-center items-center rounded-lg bg-linear-to-l bg-[#FF9800] shadow-2xl shrink-0"
+                  className="w-[60vw] max-w-[768px]  h-[15vh] flex items-center rounded-lg bg-linear-to-l bg-[#FF9800] shadow-2xl shrink-0 text-black"
                 >
-                  {coupon.couponName}
+                  <div className="w-fit px-8">
+                    <img src="/icons/logoIconHana.svg" className="w-[15vw] max-w-[100px] h-auto" alt="하나은행" />
+                  </div>
+                  <div className="h-full border-black border-[1px]"></div>
+                  <div className="w-full flex justify-center items-center text-xl"> {coupon.couponName}</div>
+                 
                 </div>
               ))}
             </div>
