@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./provider";
+import ToastModal from "../components/alertModal/toastModal";
 import UnderBar from "@/components/underBar";
 
 const geistSans = Geist({
@@ -33,11 +34,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReduxProvider>
-          <div className="pb-16">{children}</div>
-          <UnderBar />
-        </ReduxProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ToastModal />
+        <UnderBar />
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );
