@@ -53,9 +53,16 @@ public class Saving extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer maxLimit;
 
+    @Column(nullable = false)
+    private Integer maxIntRate;
+
+    @Column(nullable = false)
+    private Integer minIntRate;
+
     @Builder
     public Saving(String finCoNo, String finCoNm, String hompUrl, String finPrdtCd, String finPrdtNm,
-                  String mtrtInt, String spclCnd, Integer joinDeny, String joinMember, String etcNote, Integer maxLimit) {
+                  String mtrtInt, String spclCnd, Integer joinDeny, String joinMember, String etcNote, Integer maxLimit,
+                  Integer maxIntRate, Integer minIntRate) {
         this.finCoNo = finCoNo;
         this.finCoNm = finCoNm;
         this.hompUrl = hompUrl;
@@ -67,6 +74,8 @@ public class Saving extends BaseTimeEntity {
         this.joinMember = joinMember;
         this.etcNote = etcNote;
         this.maxLimit = maxLimit;
+        this.maxIntRate = maxIntRate;
+        this.minIntRate = minIntRate;
     }
 
 }
