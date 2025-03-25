@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { DatePickerDemo } from "@/components/ui/datePicker";
 
 type SignupForm1Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
@@ -18,6 +19,7 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
   handleInputChange,
 }) => {
   const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   const validate = () => {
     const errors: { [key: string]: string } = {};
@@ -41,8 +43,10 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
 
   return (
     <>
-      <div>
-        <label htmlFor="name">이름</label>
+      <div className="flex flex-col mb-[48px]">
+        <label htmlFor="name" className="text-[#7b7b7b] font-bold mb-2">
+          이름
+        </label>
         <input
           type="text"
           name="name"
@@ -50,14 +54,18 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
           value={userInfo1.name}
           onChange={handleInputChange}
           onBlur={validate}
+          className="w-80% h-[40px] focus: outline-none text-2xl"
+          placeholder="이름을 입력해주세요"
         />
         {!userInfo1.name && localErrors.name && (
           <p className="text-red-500 text-xs">{localErrors.name}</p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="birth">생년월일</label>
+      <div className="flex flex-col">
+        <label htmlFor="birth" className="text-[#7b7b7b] font-bold">
+          생년월일
+        </label>
         <input
           type="date"
           name="birth"
@@ -65,11 +73,13 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
           value={userInfo1.birth}
           onChange={handleInputChange}
           onBlur={validate}
+          className="w-80% h-[40px] outline-none"
         />
         {!userInfo1.birth && localErrors.birth && (
           <p className="text-red-500 text-xs">{localErrors.birth}</p>
         )}
       </div>
+      <DatePickerDemo />
     </>
   );
 };
