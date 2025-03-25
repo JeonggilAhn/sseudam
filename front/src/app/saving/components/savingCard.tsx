@@ -2,31 +2,33 @@
 
 import React from "react";
 import { Eye, Heart } from "lucide-react";
-import Icon from "@/components/Icon"; // 은행 로고
+import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
 
 const SavingCard: React.FC = () => {
   return (
-    <div className="bg-white rounded-xl border-2 border-[#0074D9] p-4 w-full max-w-md mx-auto shadow-md relative">
-      <h2 className="text-center font-semibold text-lg mb-3">SSAFY취업적금</h2>
-
-      <div className="text-sm text-black leading-6 mb-4">
-        <p>금리 : 4 % ~ 6 %</p>
+    <div className="bg-white rounded-xl border border-[#0074D9] px-4 py-3 w-full max-w-3xl mx-auto shadow flex items-center justify-between mb-4">
+      <div className="flex items-center gap-2 min-w-[100px]">
+        <Icon name={getBankIconName("싸피은행")} width={120} height={40} />
       </div>
 
-      <div className="flex justify-between items-end mt-6">
-        <div className="flex items-center gap-2">
-          <Icon name={getBankIconName("싸피은행")} width={80} height={40} />
-        </div>
+      <div className="flex flex-col items-center text-center flex-1">
+        <div className="font-bold text-lg">WON적금</div>
+        <div className="text-sm">4 % ~ 6 %</div>
+      </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-sm">
+      <div className="flex flex-col items-end gap-2">
+        <button className="bg-[#60B94D] hover:bg-green-600 font-bold text-sm px-3 py-1 border border-black shadow-sm cursor-pointer">
+          가입하기
+        </button>
+        <div className="flex items-center gap-3 text-sm">
+          <div className="flex items-center gap-1">
             <Eye size={16} />
-            <span>4,167</span>
+            <span>2,457</span>
           </div>
-          <div className="flex items-center gap-1 text-sm text-red-500">
+          <div className="flex items-center gap-1">
             <Heart size={16} fill="red" color="black" />
-            <span>3,424</span>
+            <span>784</span>
           </div>
         </div>
       </div>
