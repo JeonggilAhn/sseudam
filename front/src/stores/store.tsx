@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./slices/counterSlice";
 import couponReducer from "./slices/couponSlice";
+import cardReducer from "./slices/cardSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     coupon: couponReducer,
+    card: cardReducer,
   },
 });
 

@@ -4,6 +4,7 @@ import "./globals.css";
 import ReduxProvider from "./provider";
 import ToastModal from "../components/alertModal/toastModal";
 import UnderBar from "@/components/underBar";
+import TransitionWrapper from "./transitionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +39,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ToastModal />
-        <UnderBar />
-        <ReduxProvider>{children}</ReduxProvider>
+        <UnderBar />{" "}
+        <TransitionWrapper>
+          <ReduxProvider>{children}</ReduxProvider>
+        </TransitionWrapper>
       </body>
     </html>
   );
