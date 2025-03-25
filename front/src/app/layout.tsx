@@ -40,10 +40,11 @@ export default function RootLayout({
       >
         <ToastModal />
         <TransitionWrapper>
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            <main className="min-h-screen flex flex-col">{children}</main>
+          </ReduxProvider>
         </TransitionWrapper>
         <UnderBar />
-        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );
