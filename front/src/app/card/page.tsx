@@ -1,30 +1,88 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardImage from "./components/cardImage";
-import TimeBackground from "./components/timeBackground";
-import GrassBackground from "./components/grassBackground";
-import { CirclePlus } from "lucide-react";
+
 import Image from "next/image";
+
+//상태 관리
+import { useAppSelector, useAppDispatch } from "@/stores/hooks";
+import { setUserCouponList } from "@/stores/slices/couponSlice";
 
 //이미지
 import logo from "../../../public/icons/logo.png";
+import { CirclePlus } from "lucide-react";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import style from "styled-jsx/style";
+//컴포넌트
+import TimeBackground from "./components/timeBackground";
+import GrassBackground from "./components/grassBackground";
+import CouponImage from "../coupon/components/couponImage";
 
-interface Card {
+export interface Card {
   cardIssuerName: string;
   cardNo: string;
   expirationDate: string;
 }
 
+export interface Coupon {
+  couponId: number;
+  couponName: string;
+  couponDeadline: string;
+  savingId: number;
+}
+
 const MainPage = () => {
+  const dispatch = useAppDispatch();
+  const userCouponList = useAppSelector((state) => state.coupon.userCouponList);
+
+  useEffect(() => {
+    dispatch(
+      setUserCouponList([
+        {
+          couponId: 1,
+          couponName: "웰컴 쿠폰",
+          couponDeadline: "2025-04-30",
+          savingId: 101,
+        },
+        {
+          couponId: 2,
+          couponName: "생일 축하 쿠폰",
+          couponDeadline: "2025-07-15",
+          savingId: 102,
+        },
+        {
+          couponId: 3,
+          couponName: "재구매 감사 쿠폰",
+          couponDeadline: "2025-12-31",
+          savingId: 103,
+        },
+        {
+          couponId: 3,
+          couponName: "최종 감사 쿠폰",
+          couponDeadline: "2025-12-31",
+          savingId: 103,
+        },
+        {
+          couponId: 3,
+          couponName: "최종 감사 쿠폰",
+          couponDeadline: "2025-12-31",
+          savingId: 103,
+        },
+        {
+          couponId: 3,
+          couponName: "최종 감사 쿠폰",
+          couponDeadline: "2025-12-31",
+          savingId: 103,
+        },
+        {
+          couponId: 3,
+          couponName: "최종 감사 쿠폰",
+          couponDeadline: "2025-12-31",
+          savingId: 103,
+        },
+      ])
+    );
+  }, []);
+
   const [cardList, setCardList] = useState<Card[]>([
     {
       cardIssuerName: "삼성카드",
@@ -42,39 +100,58 @@ const MainPage = () => {
       expirationDate: "2025-12",
     },
   ]);
+
   return (
-    <div className="overflow-hidden h-screen w-full relative">
-      <Image
-        className="h-[31vh] w-[50vw] z-[150] -translate-x-[50%] -translate-y-[55%] absolute top-1/4 left-1/2"
-        src={logo}
-        alt="logo"
-        width={100}
-        height={100}
-      />
+    <div
+      className="h-screen relative max-w-[1280px] mx-auto overflow-hidden"
+      style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+    >
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       <TimeBackground />
       <GrassBackground />
-      <div className="z-[200] m-1 absolute w-full h-[50vh] bottom-1/6 flex justify-end items-center">
-        <Carousel>
-          <CarouselContent>
-            {cardList.map((card, index) => (
-              <CarouselItem
-                key={index}
-                className="flex justify-center basis-64"
-              >
+      <Image
+        className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[30vw] 2xl:w-[30vw] h-auto z-[150] -translate-x-[50%] -translate-y-[55%] fixed top-1/4 left-1/2"
+        src={logo}
+        alt="logo"
+        width={300}
+        height={300}
+      />
+      <div className="h-full flex flex-col absolute bottom-0 left-0 right-0">
+        <div className="flex flex-col justify-between h-full">
+          <div className="flex-1"></div> {/* 상단 여백 */}
+          <div className="flex-1 flex flex-col justify-end h-2/3">
+            {/* 카드 섹션 */}
+            <div className="mb-8 flex overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide">
+              {cardList.map((card, index) => (
                 <CardImage
+                  key={index}
                   companyName={card.cardIssuerName}
                   cardNumber={card.cardNo}
                   expirationDate={card.expirationDate}
                 />
-              </CarouselItem>
-            ))}
-            <CarouselItem className="flex justify-center basis-[80vw]">
-              <div className="w-full pl-4 max-w-[250px] h-[150px] flex justify-start items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
+              ))}
+              <div className="min-w-[125px] h-[150px] flex justify-center items-center rounded-lg bg-linear-to-l from-gray-500 to-gray-100 shadow-xl">
                 <CirclePlus className="text-gray-500 w-12 h-12 transition-all" />
               </div>
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel>
+            </div>
+
+            {/* 쿠폰 섹션 */}
+            <div className="mb-8 flex flex-col overflow-y-scroll gap-4 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
+              {userCouponList.map((coupon, index) => (
+                <div
+                  key={index}
+                  className="w-[80vw] h-[10vh] flex justify-center items-center rounded-lg bg-linear-to-l from-blue-500 to-blue-100 shadow-xl shrink-0"
+                >
+                  {coupon.couponName}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

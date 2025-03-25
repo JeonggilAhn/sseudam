@@ -18,7 +18,7 @@ const TimeBackground = () => {
   }, []);
 
   return (
-    <div className="max-w-[1280px] w-full mx-auto px-4">
+    <div className="max-w-[1280px] w-full mx-auto px-4 z-[120]">
       <div className="absolute top-0 left-0 overflow-hidden">
         <div
           id="time-bg"
