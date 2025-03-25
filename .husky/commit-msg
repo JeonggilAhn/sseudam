@@ -7,7 +7,7 @@ commit_msg_file=$1
 commit_msg=$(cat "$commit_msg_file")
 
 # 허용되는 prefix 목록
-allowed_prefixes="feat fix docs style refactor test chore hotfix"
+allowed_prefixes="feat fix docs style refactor test chore hotfix wip"
 
 # prefix 검사
 is_valid=false
@@ -30,7 +30,9 @@ fi
 
 # 이모지가 이미 있는지 확인
 if [[ "$commit_msg" =~ ^[[:space:]]*[[:punct:]].*$ ]]; then
-  exit 0
+  has_emoji=true
+else
+  has_emoji=false
 fi
 
 # 이모지 매핑
@@ -43,8 +45,37 @@ case $prefix_found in
   "test") emoji="☑️";;
   "chore") emoji="⚙️";;
   "hotfix") emoji="👺";;
+  "wip") emoji="🚧";;
 esac
 
-# 이모지 추가
-new_commit_msg="$emoji $commit_msg"
+# 최종 메시지
+new_commit_msg="$commit_msg"
+
+# 이모지가 없으면 앞에 추가
+if ! $has_emoji; then
+  new_commit_msg="$emoji $new_commit_msg"
+fi
+
+if [[ "$prefix_found" != "hotfix" ]]; then
+
+  # 커밋 메시지에 이슈 번호가 이미 있는지 확인
+  if [[ "$commit_msg" =~ \#S12P21A106-[0-9]+ ]]; then
+    has_issue=true
+  else
+    has_issue=false
+  fi
+
+  # 현재 브랜치 이름 가져오기
+  branch_name=$(git symbolic-ref --short HEAD)
+
+  # 브랜치 이름에서 이슈 번호 추출
+  issue_number=$(echo "$branch_name" | grep -oE 'S12P21A106-[0-9]+')
+
+  # 메시지에 이슈 번호가 없다면 추가
+  if ! $has_issue; then
+    new_commit_msg="$new_commit_msg #$issue_number"
+  fi
+fi
+
+# 커밋 메시지 덮어쓰기
 echo "$new_commit_msg" > "$commit_msg_file"

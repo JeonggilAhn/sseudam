@@ -1,45 +1,59 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 type SignupForm1Props = {
-  name: string;
-  birth: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  errors: { [key: string]: string };
+  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
 };
 
-const SignupForm1: React.FC<SignupForm1Props> = ({
-  name,
-  birth,
-  onChange,
-  errors = {},
-}) => {
+const SignupForm1: React.FC<SignupForm1Props> = ({ setErrors }) => {
+  const [name, setName] = useState("");
+  const [birth, setBirth] = useState("");
+  const errors: { [key: string]: string } = {};
+
+  const validate = () => {
+    if (name.trim() === "") {
+      errors.name = "이름을 입력해주세요.";
+    }
+
+    if (birth.trim() === "") {
+      errors.name = "생년월일을 입력해주세요.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   return (
     <>
       <div>
-        <div>
-          <label htmlFor="name">이름</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={onChange}
-          />
-          {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
-        </div>
-        <div>
-          <label htmlFor="birth">생년월일</label>
-          <input
-            type="date"
-            name="birth"
-            id="birth"
-            value={birth}
-            onChange={onChange}
-          />
-          {errors.birth && (
-            <p className="text-red-500 text-xs">{errors.birth}</p>
-          )}
-        </div>
+        <label htmlFor="name">이름</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onBlur={validate}
+        />
+        {!name && errors.name && (
+          <p className="text-red-500 text-xs">{errors.name}</p>
+        )}
+      </div>
+
+      <div>
+        <label htmlFor="birth">생년월일</label>
+        <input
+          type="date"
+          name="birth"
+          id="birth"
+          value={birth}
+          onChange={(e) => setBirth(e.target.value)}
+          onBlur={validate}
+        />
+        {!birth && errors.birth && (
+          <p className="text-red-500 text-xs">{errors.birth}</p>
+        )}
       </div>
     </>
   );
