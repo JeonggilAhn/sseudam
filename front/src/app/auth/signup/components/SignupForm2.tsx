@@ -1,202 +1,124 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 
 type SignupForm2Props = {
-  mobileCarrier: string;
-  phoneNumber: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  errors: { [key: string]: string };
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  userInfo2: { mobileCarrier: string; phoneNumber: string };
+  setUserInfo2: React.Dispatch<
+    React.SetStateAction<{ mobileCarrier: string; phoneNumber: string }>
+  >;
+  handleInputChange: (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => void;
 };
 
-const SignupFormInfo2: React.FC<SignupForm2Props> = ({
-  mobileCarrier,
-  phoneNumber,
-  onChange,
-  errors = {},
-  onBlur,
+const SignupForm2: React.FC<SignupForm2Props> = ({
+  setErrors,
+  userInfo2,
+  setUserInfo2,
+  handleInputChange,
 }) => {
+  const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
+
+  const validate = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (userInfo2.mobileCarrier.trim() === "") {
+      errors.mobileCarrier = "통신사를 선택해주세요.";
+    }
+    if (
+      userInfo2.phoneNumber.trim() === "" ||
+      userInfo2.phoneNumber.length < 10
+    ) {
+      errors.phoneNumber = "전화번호를 입력해주세요.";
+    } else if (!/^\d+$/.test(userInfo2.phoneNumber.replace(/-/g, ""))) {
+      errors.phoneNumber = "전화번호는 숫자로 입력해주세요";
+    }
+
+    setLocalErrors(errors);
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    const rawValue = value.replace(/[^\d]/g, "");
+    if (rawValue.length > 11) {
+      return rawValue.slice(0, 11);
+    }
+
+    if (rawValue.length > 3 && rawValue.length < 6) {
+      return `${rawValue.slice(0, 3)}-${rawValue.slice(3)}`;
+    } else if (rawValue.length > 6 && rawValue.length < 11) {
+      return `${rawValue.slice(0, 3)}-${rawValue.slice(3, 6)}-${rawValue.slice(6, 11)}`;
+    } else if (rawValue.length == 11) {
+      return `${rawValue.slice(0, 3)}-${rawValue.slice(3, 7)}-${rawValue.slice(7, 12)}`;
+    }
+  };
+
+  const handlePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/-/g, "");
+    if (value.length > 11) {
+      e.preventDefault();
+      return;
+    }
+    const formattedPhoneNumber = formatPhoneNumber(value) || "";
+    setUserInfo2((prev) => ({
+      ...prev,
+      phoneNumber: formattedPhoneNumber.replace(/-/g, ""),
+    }));
+  };
+
+  useEffect(() => {
+    validate();
+  }, [userInfo2.mobileCarrier, userInfo2.phoneNumber]);
+
   return (
     <>
       <div>
         <div>
           <label htmlFor="mobileCarrier">통신사</label>
-          <input
-            type="text"
+          <select
             name="mobileCarrier"
             id="mobileCarrier"
-            value={mobileCarrier}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
-          {errors.mobileCarrier && (
-            <p className="text-red-500 text-xs">{errors.name}</p>
+            value={userInfo2.mobileCarrier}
+            onChange={handleInputChange}
+            onBlur={validate}
+          >
+            <option value="">-- 선택해주세요 --</option>
+            <option value="SKT">SKT</option>
+            <option value="KT">KT</option>
+            <option value="LG U+">LG U+</option>
+            <option value="SKT 알뜰폰">SKT 알뜰폰</option>
+            <option value="KT 알뜰폰">KT 알뜰폰</option>
+            <option value="LG U+ 알뜰폰">LG U+ 알뜰폰</option>
+          </select>
+
+          {!userInfo2.mobileCarrier && localErrors.mobileCarrier && (
+            <p className="text-red-500 text-xs">{localErrors.mobileCarrier}</p>
           )}
         </div>
 
         <div>
           <label htmlFor="phoneNumber">휴대폰 번호</label>
           <input
-            type="tel"
+            type="text"
             name="phoneNumber"
             id="phoneNumber"
-            value={phoneNumber}
-            onChange={onChange}
-            onBlur={onBlur}
+            value={formatPhoneNumber(userInfo2.phoneNumber)}
+            // onChange={handleInputChange}
+            onChange={handlePhoneNumber}
+            onBlur={validate}
           />
-          {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+          {localErrors.phoneNumber && (
+            <p className="text-red-500 text-xs">{localErrors.phoneNumber}</p>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-const SignupForm2 = () => {
-  const [Signup2Data, setSignup2Data] = useState({
-    mobileCarrier: "",
-    phoneNumber: "",
-  });
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const handleForm2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSignup2Data((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    let errorMessage = "";
-
-    if (name === "mobileCarrier" && value.trim() === "") {
-      errorMessage = "통신사를 선택해주세요.";
-    }
-
-    if (name === "phoneNumber" && value.trim() === "") {
-      errorMessage = "전화번호를 입력해주세요.";
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: errorMessage,
-    }));
-  };
-  return (
-    <div>
-      <SignupFormInfo2
-        mobileCarrier={Signup2Data.mobileCarrier}
-        phoneNumber={Signup2Data.phoneNumber}
-        onChange={handleForm2Change}
-        errors={errors}
-        onBlur={handleBlur}
-      />
-    </div>
-  );
-};
-
 export default SignupForm2;
-
-// ---------------
-// "use client";
-// import React, { useState } from "react";
-
-// type SignupForm1Props = {
-//   name: string;
-//   birth: string;
-//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   errors: { [key: string]: string };
-//   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-// };
-
-// const SignupFormInfo1: React.FC<SignupForm1Props> = ({
-//   name,
-//   birth,
-//   onChange,
-//   errors = {},
-//   onBlur,
-// }) => {
-//   return (
-//     <>
-//       <div>
-//         <div>
-//           <label htmlFor="name">이름</label>
-//           <input
-//             type="text"
-//             name="name"
-//             id="name"
-//             value={name}
-//             onChange={onChange}
-//             onBlur={onBlur}
-//           />
-//           {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
-//         </div>
-//         <div>
-//           <label htmlFor="birth">생년월일</label>
-//           <input
-//             type="date"
-//             name="birth"
-//             id="birth"
-//             value={birth}
-//             onChange={onChange}
-//             onBlur={onBlur}
-//           />
-//           {errors.birth && (
-//             <p className="text-red-500 text-xs">{errors.birth}</p>
-//           )}
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// const SignupForm1 = () => {
-//   const [Signup1Data, setSignup1Data] = useState({
-//     name: "",
-//     birth: "",
-//   });
-
-//   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-//   const handleForm1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setSignup1Data((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     let errorMessage = "";
-
-//     if (name === "name" && value.trim() === "") {
-//       errorMessage = "이름을 입력해주세요.";
-//     }
-
-//     if (name === "birth" && value.trim() === "") {
-//       errorMessage = "생년월일을 입력해주세요.";
-//     }
-
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       [name]: errorMessage,
-//     }));
-//   };
-
-//   return (
-//     <div>
-//       <SignupFormInfo1
-//         name={Signup1Data.name}
-//         birth={Signup1Data.birth}
-//         onChange={handleForm1Change}
-//         errors={errors}
-//         onBlur={handleBlur}
-//       />
-//     </div>
-//   );
-// };
-
-// export default SignupForm1;

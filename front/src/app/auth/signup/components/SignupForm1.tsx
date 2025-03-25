@@ -1,28 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 type SignupForm1Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  userInfo1: { name: string; birth: string };
+  setUserInfo1: React.Dispatch<
+    React.SetStateAction<{ name: string; birth: string }>
+  >;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const SignupForm1: React.FC<SignupForm1Props> = ({ setErrors }) => {
-  const [name, setName] = useState("");
-  const [birth, setBirth] = useState("");
-  const errors: { [key: string]: string } = {};
+const SignupForm1: React.FC<SignupForm1Props> = ({
+  setErrors,
+  userInfo1,
+  setUserInfo1,
+  handleInputChange,
+}) => {
+  const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
 
   const validate = () => {
-    if (name.trim() === "") {
+    const errors: { [key: string]: string } = {};
+
+    if (userInfo1.name.trim() === "") {
       errors.name = "이름을 입력해주세요.";
     }
 
-    if (birth.trim() === "") {
-      errors.name = "생년월일을 입력해주세요.";
+    if (userInfo1.birth.trim() === "") {
+      errors.birth = "생년월일을 입력해주세요.";
     }
 
+    setLocalErrors(errors);
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
+
+  useEffect(() => {
+    validate();
+  }, [userInfo1.name, userInfo1.birth]);
 
   return (
     <>
@@ -32,12 +47,12 @@ const SignupForm1: React.FC<SignupForm1Props> = ({ setErrors }) => {
           type="text"
           name="name"
           id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={userInfo1.name}
+          onChange={handleInputChange}
           onBlur={validate}
         />
-        {!name && errors.name && (
-          <p className="text-red-500 text-xs">{errors.name}</p>
+        {!userInfo1.name && localErrors.name && (
+          <p className="text-red-500 text-xs">{localErrors.name}</p>
         )}
       </div>
 
@@ -47,12 +62,12 @@ const SignupForm1: React.FC<SignupForm1Props> = ({ setErrors }) => {
           type="date"
           name="birth"
           id="birth"
-          value={birth}
-          onChange={(e) => setBirth(e.target.value)}
+          value={userInfo1.birth}
+          onChange={handleInputChange}
           onBlur={validate}
         />
-        {!birth && errors.birth && (
-          <p className="text-red-500 text-xs">{errors.birth}</p>
+        {!userInfo1.birth && localErrors.birth && (
+          <p className="text-red-500 text-xs">{localErrors.birth}</p>
         )}
       </div>
     </>
