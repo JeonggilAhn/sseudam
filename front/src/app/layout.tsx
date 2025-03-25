@@ -39,16 +39,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
         <ToastModal />
-<<<<<<< HEAD
         <UnderBar />{" "}
         <TransitionWrapper>
           <ReduxProvider>{children}</ReduxProvider>
         </TransitionWrapper>
-=======
-        <UnderBar />
-        <ReduxProvider>{children}</ReduxProvider>
-
->>>>>>> 1c97c639bf4f7ddcccaad1a825ae050f19436218
       </body>
     </html>
   );
