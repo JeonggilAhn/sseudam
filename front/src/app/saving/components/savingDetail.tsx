@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   onClose: () => void;
+  showJoinButton?: boolean;
 };
 
-const SavingDetail: React.FC<Props> = ({ onClose }) => {
+const SavingDetail: React.FC<Props> = ({ onClose, showJoinButton = true }) => {
   const [liked, setLiked] = useState(false); // 좋아요 상태 관리, API 연결 후 각 상태로 연결
 
   const toggleLike = () => {
@@ -58,12 +59,14 @@ const SavingDetail: React.FC<Props> = ({ onClose }) => {
             </button>
 
             {/* 가입하기 버튼 */}
-            <button
-              onClick={handleJoin}
-              className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer"
-            >
-              가입하기
-            </button>
+            {showJoinButton && (
+              <button
+                onClick={handleJoin}
+                className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer"
+              >
+                가입하기
+              </button>
+            )}
           </div>
         </div>
       </div>
