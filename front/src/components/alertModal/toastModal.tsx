@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
 import { ToastContainer } from "react-toastify";
 import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 const ToastModal = () => {
-  const { notifications, clear } = useNotificationCenter();
+  // const { notifications, clear } = useNotificationCenter();
 
   return (
     <ToastContainer
