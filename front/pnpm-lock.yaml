@@ -92,6 +92,9 @@ importers:
       tailwind-merge:
         specifier: ^3.0.2
         version: 3.0.2
+      tailwind-scrollbar-hide:
+        specifier: ^2.0.0
+        version: 2.0.0(tailwindcss@4.0.15)
       tw-animate-css:
         specifier: ^1.2.4
         version: 1.2.4
@@ -3221,6 +3224,12 @@ packages:
 
   tailwindcss@4.0.17:
     resolution: {integrity: sha512-OErSiGzRa6rLiOvaipsDZvLMSpsBZ4ysB4f0VKGXUrjw2jfkJRd6kjRKV2+ZmTCNvwtvgdDam5D7w6WXsdLJZw==}
+
+  tailwind-scrollbar-hide@2.0.0:
+    resolution: {integrity: sha512-lqiIutHliEiODwBRHy4G2+Tcayo2U7+3+4frBmoMETD72qtah+XhOk5XcPzC1nJvXhXUdfl2ajlMhUc2qC6CIg==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 4.0.0 || >= 4.0.0-beta.8 || >= 4.0.0-alpha.20'
+
 
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
@@ -6907,6 +6916,10 @@ snapshots:
   tailwind-merge@3.0.2: {}
 
   tailwindcss@4.0.17: {}
+  
+  tailwind-scrollbar-hide@2.0.0(tailwindcss@4.0.15):
+    dependencies:
+      tailwindcss: 4.0.15
 
   tapable@2.2.1: {}
 
