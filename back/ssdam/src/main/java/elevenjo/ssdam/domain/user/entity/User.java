@@ -27,7 +27,7 @@ public class User extends BaseTimeEntity {
 
     // 유저 닉네임 (userEmail@gamil.com -> userEmail)
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column(unique = true)
     private String userEmail;
@@ -42,17 +42,26 @@ public class User extends BaseTimeEntity {
 
     private Integer savingRate;
 
+    private String oauthProvider;
+
     private Boolean resigned;
 
     private LocalDateTime resignedAt;
 
     @Builder
-    public User(String userName, String userEmail, String nickName, LocalDateTime birthday) {
+    public User(
+        String userName,
+        String userEmail,
+        String nickname,
+        LocalDateTime birthday,
+        String oauthProvider
+    ) {
         this.userName = userName;
         this.userEmail = userEmail;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.birthday = birthday;
         this.savingRate = 0;
+        this.oauthProvider = oauthProvider;
         this.resigned = false;
     }
 
@@ -66,6 +75,11 @@ public class User extends BaseTimeEntity {
 
     public void changeSavingRate(int savingRate) {
         this.savingRate = savingRate;
+    }
+
+    public void resign() {
+        this.resigned = true;
+        this.resignedAt = LocalDateTime.now();
     }
 
 }
