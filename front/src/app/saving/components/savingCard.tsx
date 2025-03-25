@@ -7,9 +7,10 @@ import { getBankIconName } from "@/components/bankList";
 
 type Props = {
   onClickJoin: () => void;
+  joinButtonText?: string;
 };
 
-const SavingCard: React.FC<Props> = ({ onClickJoin }) => {
+const SavingCard: React.FC<Props> = ({ onClickJoin, joinButtonText = "가입하기" }) => {
   return (
     <div className="bg-white rounded-xl border border-[#0074D9] px-4 py-3 w-full max-w-3xl mx-auto shadow flex items-center justify-between mb-4">
       <div className="flex items-center gap-2 min-w-[100px]">
@@ -26,7 +27,7 @@ const SavingCard: React.FC<Props> = ({ onClickJoin }) => {
           className="bg-[#60B94D] hover:bg-green-600 text-white font-bold text-sm px-3 py-1 rounded border   cursor-pointer"
           onClick={onClickJoin}
         >
-          가입하기
+          {joinButtonText}
         </button>
         <div className="flex items-center gap-3 text-sm">
           <div className="flex items-center gap-1">
