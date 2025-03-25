@@ -15,7 +15,7 @@ import { CirclePlus } from "lucide-react";
 //컴포넌트
 import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
-import CouponImage from "../coupon/components/couponImage";
+// import CouponImage from "../coupon/components/couponImage";
 
 export interface Card {
   cardIssuerName: string;
@@ -83,7 +83,7 @@ const MainPage = () => {
     );
   }, []);
 
-  const [cardList, setCardList] = useState<Card[]>([
+  const [cardList] = useState<Card[]>([
     {
       cardIssuerName: "삼성카드",
       cardNo: "1234567890123456",
