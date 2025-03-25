@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import Cards from "react-credit-cards-2";
+import Cards, { Focused } from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import {
   CircleX,
@@ -82,7 +82,7 @@ const CardRegist = () => {
                 expiry={expiry}
                 cvc={cvc}
                 name={name}
-                focused={focus}
+                focused={focus as Focused}
               />
             </div>
 
