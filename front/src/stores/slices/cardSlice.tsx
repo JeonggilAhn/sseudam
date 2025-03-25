@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Card } from "../../app/card/page";
+// import { Card } from "../../app/card/page";
 
 interface CardState {
   isRegistModalOpen: boolean;

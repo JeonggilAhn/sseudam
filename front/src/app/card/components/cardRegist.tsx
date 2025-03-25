@@ -28,19 +28,19 @@ const CardRegist = () => {
   const { isRegistModalOpen, number, expiry, cvc, name, focus } =
     useAppSelector((state) => state.card);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name == "cardNumber") {
-      dispatch(setNumber(e.target.value));
-    } else if (e.target.name == "expiry") {
-      dispatch(setExpiry(e.target.value));
-    } else if (e.target.name == "cvc") {
-      dispatch(setCvc(e.target.value));
-    } else if (e.target.name == "name") {
-      dispatch(setName(e.target.value));
-    } else if (e.target.name == "focus") {
-      dispatch(setFocus(e.target.value));
-    }
-  };
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (e.target.name == "cardNumber") {
+//       dispatch(setNumber(e.target.value));
+//     } else if (e.target.name == "expiry") {
+//       dispatch(setExpiry(e.target.value));
+//     } else if (e.target.name == "cvc") {
+//       dispatch(setCvc(e.target.value));
+//     } else if (e.target.name == "name") {
+//       dispatch(setName(e.target.value));
+//     } else if (e.target.name == "focus") {
+//       dispatch(setFocus(e.target.value));
+//     }
+//   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
