@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Heart, X } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onClose: () => void;
@@ -14,6 +15,12 @@ const SavingDetail: React.FC<Props> = ({ onClose }) => {
 
   const toggleLike = () => {
     setLiked((prev) => !prev);
+  };
+
+  const router = useRouter();
+
+  const handleJoin = () => {
+    router.push("/saving/create");
   };
 
   return (
@@ -51,7 +58,10 @@ const SavingDetail: React.FC<Props> = ({ onClose }) => {
             </button>
 
             {/* 가입하기 버튼 */}
-            <button className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer">
+            <button
+              onClick={handleJoin}
+              className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer"
+            >
               가입하기
             </button>
           </div>
