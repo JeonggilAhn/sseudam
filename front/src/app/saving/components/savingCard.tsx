@@ -11,8 +11,6 @@ const SavingCard: React.FC = () => {
       <h2 className="text-center font-semibold text-lg mb-3">SSAFY취업적금</h2>
 
       <div className="text-sm text-black leading-6 mb-4">
-        <p>가입기간 : 6개월 ~ 2년</p>
-        <p>가입금액 : 월 100만원 이내</p>
         <p>금리 : 4 % ~ 6 %</p>
       </div>
 
