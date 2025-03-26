@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { DatePickerDemo } from "@/components/ui/datePicker";
+import { SelectDate } from "@/components/ui/selectDate";
 
 type SignupForm1Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
@@ -19,7 +19,6 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
   handleInputChange,
 }) => {
   const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   const validate = () => {
     const errors: { [key: string]: string } = {};
@@ -44,7 +43,7 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
   return (
     <>
       <div className="flex flex-col mb-[48px]">
-        <label htmlFor="name" className="text-[#7b7b7b] font-bold mb-2">
+        <label htmlFor="name" className="text-[#7b7b7b]/80 font-bold mb-2">
           이름
         </label>
         <input
@@ -54,32 +53,31 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
           value={userInfo1.name}
           onChange={handleInputChange}
           onBlur={validate}
-          className="w-80% h-[40px] focus: outline-none text-2xl"
+          className="placeholder:text-xl placeholder:font-semibold text-2xl font-semibold w-80% h-[40px] focus: outline-none text-2xl"
           placeholder="이름을 입력해주세요"
         />
+        <hr />
         {!userInfo1.name && localErrors.name && (
-          <p className="text-red-500 text-xs">{localErrors.name}</p>
+          <p className="text-red-500 text-xs mt-1">{localErrors.name}</p>
         )}
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="birth" className="text-[#7b7b7b] font-bold">
+        <label htmlFor="birth" className="text-[#7b7b7b]/80 font-bold mb-3">
           생년월일
         </label>
-        <input
-          type="date"
-          name="birth"
-          id="birth"
+        <SelectDate
           value={userInfo1.birth}
-          onChange={handleInputChange}
+          setBirth={(birth: string) =>
+            setUserInfo1((prev) => ({ ...prev, birth }))
+          }
           onBlur={validate}
-          className="w-80% h-[40px] outline-none"
-        />
+        ></SelectDate>
+
         {!userInfo1.birth && localErrors.birth && (
-          <p className="text-red-500 text-xs">{localErrors.birth}</p>
+          <p className="text-red-500 text-xs mt-1.5">{localErrors.birth}</p>
         )}
       </div>
-      <DatePickerDemo />
     </>
   );
 };
