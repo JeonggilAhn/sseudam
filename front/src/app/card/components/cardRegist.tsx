@@ -28,20 +28,6 @@ const CardRegist = () => {
   const { isRegistModalOpen, number, expiry, cvc, name, focus } =
     useAppSelector((state) => state.card);
 
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.name == "cardNumber") {
-//       dispatch(setNumber(e.target.value));
-//     } else if (e.target.name == "expiry") {
-//       dispatch(setExpiry(e.target.value));
-//     } else if (e.target.name == "cvc") {
-//       dispatch(setCvc(e.target.value));
-//     } else if (e.target.name == "name") {
-//       dispatch(setName(e.target.value));
-//     } else if (e.target.name == "focus") {
-//       dispatch(setFocus(e.target.value));
-//     }
-//   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // 여기에 카드 등록 로직 추가
@@ -57,7 +43,7 @@ const CardRegist = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           style={{ backdropFilter: "blur(10px)" }}
-          className="relative h-screen flex items-center justify-center z-[1000] -translate-y-[40%]"
+          className="relative h-[95vh] flex items-center justify-center z-[1000] -translate-y-[10vh]"
         >
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
@@ -72,11 +58,11 @@ const CardRegist = () => {
               onClick={() => dispatch(toggleIsRegistModalOpen())}
               className="absolute top-1 right-1 text-gray-600 z-[1000]"
             >
-              <CircleX size={24} />
+              <CircleX className="text-gray-600 w-[6vw] h-auto" />
             </button>
 
             {/* 카드 미리보기 */}
-            <div className="mb-4 transition-transform overflow-hidden w-full h-fit">
+            <div className="mb-4 transition-transform overflow-hidden w-full h-fit p-4">
               <Cards
                 number={number}
                 expiry={expiry}
@@ -116,7 +102,7 @@ const CardRegist = () => {
                       dispatch(setNumber(cardNumber));
                     }}
                     onFocus={() => dispatch(setFocus("number"))}
-                    className="pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
+                    className="text-black pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
                     required
                     maxLength={19}
                   />
@@ -149,7 +135,7 @@ const CardRegist = () => {
                         dispatch(setExpiry(expiryDate));
                       }}
                       onFocus={() => dispatch(setFocus("expiry"))}
-                      className="pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
+                      className="text-black pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
                       required
                       maxLength={5}
                     />
@@ -177,7 +163,7 @@ const CardRegist = () => {
                         dispatch(setCvc(cvcNumber));
                       }}
                       onFocus={() => dispatch(setFocus("cvc"))}
-                      className="pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
+                      className="text-black pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
                       required
                       maxLength={3}
                     />
@@ -206,7 +192,7 @@ const CardRegist = () => {
                       dispatch(setName(masterName));
                     }}
                     onFocus={() => dispatch(setFocus("name"))}
-                    className="pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
+                    className="text-black pl-10 w-full py-3 border border-gray-300 bg-white rounded-xl focus:ring-2 focus:ring-[#F29F05] focus:border-[#F29F05] transition-all shadow-sm"
                     required
                     maxLength={20}
                   />

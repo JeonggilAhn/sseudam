@@ -27,7 +27,7 @@ const UnderBar = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-t-[#539DF3] shadow z-[5000]">
+    <nav className="fixed h-[5vh] min-h-15 bottom-0 left-0 right-0 bg-white border-t-2 border-t-[#539DF3] shadow z-[5000]">
       <ul className="flex justify-around">
         {menuList.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;

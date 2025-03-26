@@ -15,27 +15,40 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
 
   return (
     <div
-      className={`relative flex flex-col justify-center items-center p-4 rounded-full w-[130px] h-[100px] shadow-lg`}
-      style={{ backgroundColor: color }}
+      className="relative flex flex-col justify-center items-center p-4 w-[130px] h-[5vh] min-h-[50px] rounded-full shadow-xl transition-transform duration-300 hover:scale-105"
+      style={{
+        background: `radial-gradient(circle at 30% 30%, ${color}, #e0f7fa)`,
+      }}
     >
-      {/* 구름 모양 상단 돌출부 */}
+      {/* 상단 구름 돌출부 */}
       <div
-        className="absolute -top-3 left-1/4 w-[30px] h-[30px] rounded-full"
-        style={{ backgroundColor: color }}
+        className="absolute -top-5 left-1/5 w-[38px] h-[38px] rounded-full shadow-md"
+        style={{
+          background: `radial-gradient(circle at 30% 30%, ${color}, #ffffff)`,
+        }}
       ></div>
       <div
-        className="absolute -top-6 left-1/3 w-[40px] h-[40px] rounded-full"
-        style={{ backgroundColor: color }}
+        className="absolute -top-8 left-1/3 w-[50px] h-[50px] rounded-full shadow-md"
+        style={{
+          background: `radial-gradient(circle at 40% 40%, ${color}, #ffffff)`,
+        }}
       ></div>
       <div
-        className="absolute -top-2 right-1/4 w-[35px] h-[35px] rounded-full"
-        style={{ backgroundColor: color }}
+        className="absolute -top-4 right-1/5 w-[42px] h-[42px] rounded-full shadow-md"
+        style={{
+          background: `radial-gradient(circle at 30% 30%, ${color}, #ffffff)`,
+        }}
       ></div>
 
       {/* 텍스트 내용 */}
       <div className="z-10 text-center">
-        <p className={`text-${textColor} text-lg font-bold`}>{type}</p>
-        <p className={`text-${textColor} text-xl font-bold`}>
+        <p
+          className="text-sm font-semibold tracking-tight"
+          style={{ color: textColor }}
+        >
+          {type}
+        </p>
+        <p className="text-xl font-extrabold" style={{ color: textColor }}>
           ₩ {formattedAmount}
         </p>
       </div>
