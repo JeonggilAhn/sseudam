@@ -20,7 +20,7 @@ public class Card extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CardId;
+    private Long cardId;
 
     @Column(length = 16,unique = true, nullable = false)
     private String cardNo;
