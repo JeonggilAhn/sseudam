@@ -47,7 +47,7 @@ public class JwtUtil {
 
 	public String generateToken(User user, Long expireTime) {
 		return Jwts.builder()
-			.claim("id", user.getUserName())
+			.claim("id", user.getNickname())
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + expireTime))
 			.signWith(secretKey)
