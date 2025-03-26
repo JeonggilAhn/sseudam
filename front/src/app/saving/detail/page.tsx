@@ -16,19 +16,24 @@ const DetailPage: React.FC = () => {
 
       <SavingCard onClickJoin={() => setShowModal(true)} joinButtonText="상세보기" />
       {showModal && <SavingDetail onClose={() => setShowModal(false)} showJoinButton={false} />}
+      <div className="relative mt-10 flex flex-col items-center">
+        <div className="flex items-start justify-center gap-4">
+          {/* 돼지 캐릭터 */}
+          <Icon name="logoCharacterSmile" width={200} height={230} />
 
-      <div className="relative mt-6">
-        {/* 말풍선 */}
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white border border-gray-300 px-4 py-2 rounded-full shadow text-sm font-bold z-10 whitespace-nowrap">
-          누적 납입금 100,000원!!
+          {/* 말풍선 */}
+          <div className="relative bg-white rounded-4xl px-8 py-8 text-lg font-bold text-black">
+            누적 납입금
+            <br />
+            100,000 원!!
+            {/* 꼬리 */}
+            <div className="absolute left-[-12px] top-18 w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[12px] border-r-white"></div>
+          </div>
         </div>
-
-        {/* 돼지 이미지 */}
-        <Icon name="logoCharacterSmile" width={180} height={180} />
       </div>
 
       {/* 하단 정보 카드 */}
-      <div className="mt-8 bg-white rounded-xl shadow px-6 py-4 w-full max-w-md text-sm space-y-3">
+      <div className="mt-8 bg-white rounded-xl border px-6 py-4 w-full max-w-md text-md space-y-3">
         <div className="flex justify-between">
           <span className="font-semibold">다음 송금일</span>
           <span>2025년 04월 21일</span>
