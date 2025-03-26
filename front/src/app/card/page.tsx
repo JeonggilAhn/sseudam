@@ -10,7 +10,6 @@ import { setUserCouponList } from "@/stores/slices/couponSlice";
 import { toggleIsRegistModalOpen } from "@/stores/slices/cardSlice";
 
 //이미지
-import logo from "../../../public/icons/logo.png";
 import { CirclePlus } from "lucide-react";
 
 //컴포넌트
@@ -105,7 +104,7 @@ const MainPage = () => {
 
   return (
     <div
-      className="h-screen relative max-w-[1280px] mx-auto overflow-hidden"
+      className="h-[95vh] relative max-w-[1280px] mx-auto overflow-hidden"
       style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
     >
       <style jsx global>{`
@@ -135,7 +134,7 @@ const MainPage = () => {
 
         <Image
           className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[55%] fixed top-1/4 left-1/2"
-          src={logo}
+          src="/icons/logo.png"
           alt="logo"
           width={300}
           height={300}
@@ -148,14 +147,13 @@ const MainPage = () => {
             <div className="mb-8 flex overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
               {cardList.map((card, index) => (
                 <Cards
-                key={index}
-                number={card.cardNo}
-                expiry={card.expirationDate}
-                cvc={""}
-                name={"유저명"}
-                focused={""}
+                  key={index}
+                  number={card.cardNo}
+                  expiry={card.expirationDate}
+                  cvc={""}
+                  name={"유저명"}
+                  focused={""}
                 />
-
               ))}
               <div
                 onClick={() => dispatch(toggleIsRegistModalOpen())}
@@ -173,11 +171,17 @@ const MainPage = () => {
                   className="w-[60vw] max-w-[768px]  h-[15vh] flex items-center rounded-lg bg-linear-to-l bg-[#FF9800] shadow-2xl shrink-0 text-black"
                 >
                   <div className="w-fit px-8">
-                    <img src="/icons/logoIconHana.svg" className="w-[15vw] max-w-[100px] h-auto" alt="하나은행" />
+                    <img
+                      src="/icons/logoIconHana.svg"
+                      className="w-[15vw] max-w-[100px] h-auto"
+                      alt="하나은행"
+                    />
                   </div>
                   <div className="h-full border-black border-[1px]"></div>
-                  <div className="w-full flex justify-center items-center text-xl"> {coupon.couponName}</div>
-                 
+                  <div className="w-full flex justify-center items-center text-xl">
+                    {" "}
+                    {coupon.couponName}
+                  </div>
                 </div>
               ))}
             </div>

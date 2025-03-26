@@ -28,20 +28,6 @@ const CardRegist = () => {
   const { isRegistModalOpen, number, expiry, cvc, name, focus } =
     useAppSelector((state) => state.card);
 
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.name == "cardNumber") {
-//       dispatch(setNumber(e.target.value));
-//     } else if (e.target.name == "expiry") {
-//       dispatch(setExpiry(e.target.value));
-//     } else if (e.target.name == "cvc") {
-//       dispatch(setCvc(e.target.value));
-//     } else if (e.target.name == "name") {
-//       dispatch(setName(e.target.value));
-//     } else if (e.target.name == "focus") {
-//       dispatch(setFocus(e.target.value));
-//     }
-//   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // 여기에 카드 등록 로직 추가
@@ -57,7 +43,7 @@ const CardRegist = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           style={{ backdropFilter: "blur(10px)" }}
-          className="relative h-screen flex items-center justify-center z-[1000] -translate-y-[40%]"
+          className="relative h-[95vh] flex items-center justify-center z-[1000] -translate-y-[10vh]"
         >
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
@@ -72,7 +58,7 @@ const CardRegist = () => {
               onClick={() => dispatch(toggleIsRegistModalOpen())}
               className="absolute top-1 right-1 text-gray-600 z-[1000]"
             >
-              <CircleX className="text-gray-600 w-[6vw] h-auto"  />
+              <CircleX className="text-gray-600 w-[6vw] h-auto" />
             </button>
 
             {/* 카드 미리보기 */}
