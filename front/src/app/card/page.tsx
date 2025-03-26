@@ -1,12 +1,16 @@
 "use client";
 import { useState, useEffect } from "react";
 import CloudInfo from "./components/cloudInfo";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
 //상태 관리
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
-import { setUserCouponList } from "@/stores/slices/couponSlice";
+import {
+  setUserCouponList,
+  setCurrentCoupon,
+} from "@/stores/slices/couponSlice";
 import {
   resetIsModalOpen,
   toggleIsModalOpen,
@@ -37,6 +41,7 @@ export interface Coupon {
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const userCouponList = useAppSelector((state) => state.coupon.userCouponList);
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(resetIsModalOpen());
@@ -168,10 +173,13 @@ const MainPage = () => {
             </div>
 
             {/* 쿠폰 섹션 */}
-            <div className="mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
+            <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
               {userCouponList.map((coupon, index) => (
                 <div
                   key={index}
+                  onClick={() => {
+                    router.push(`/coupon/?couponId=${coupon.couponId}`);
+                  }}
                   className="w-[60vw] max-w-[768px]  h-[15vh] flex items-center rounded-lg bg-linear-to-l bg-[#FF9800] shadow-2xl shrink-0 text-black"
                 >
                   <div className="w-fit px-8">
