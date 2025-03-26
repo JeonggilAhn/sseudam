@@ -54,7 +54,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity(nickname, refreshToken);
 		refreshTokenRepository.save(refreshTokenEntity);
 
-		System.out.println(refreshToken);
 		ResponseWrapperFactory.setResponse(HttpStatus.OK, null, refreshToken);
 		Cookie cookie = new Cookie("refreshToken", refreshToken);
 		cookie.setPath("/");
