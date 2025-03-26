@@ -7,7 +7,10 @@ import Image from "next/image";
 //상태 관리
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import { setUserCouponList } from "@/stores/slices/couponSlice";
-import { toggleIsRegistModalOpen } from "@/stores/slices/cardSlice";
+import {
+  resetIsModalOpen,
+  toggleIsModalOpen,
+} from "@/stores/slices/aniModalSlice";
 
 //이미지
 import { CirclePlus } from "lucide-react";
@@ -36,6 +39,7 @@ const MainPage = () => {
   const userCouponList = useAppSelector((state) => state.coupon.userCouponList);
 
   useEffect(() => {
+    dispatch(resetIsModalOpen());
     dispatch(
       setUserCouponList([
         {
@@ -156,7 +160,7 @@ const MainPage = () => {
                 />
               ))}
               <div
-                onClick={() => dispatch(toggleIsRegistModalOpen())}
+                onClick={() => dispatch(toggleIsModalOpen())}
                 className="cursor-pointer min-w-[84px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
               >
                 <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
