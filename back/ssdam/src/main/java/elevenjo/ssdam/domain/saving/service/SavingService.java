@@ -10,9 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
+import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SavingService {
@@ -46,12 +45,6 @@ public class SavingService {
     @Transactional(readOnly = true)
     public Saving getSavingForOpen(Long savingId) {
         return getSavingById(savingId);
-    }
-
-    // 적금 단건 등록 (테스트/관리자용)
-    @Transactional
-    public Saving registerSaving(Saving saving) {
-        return savingRepository.save(saving);
     }
 
     // 적금 다건 등록 (크롤링 or 외부 API 전체 저장용)

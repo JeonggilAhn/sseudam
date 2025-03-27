@@ -43,4 +43,12 @@ public class LikeSavingService {
 
         return likeSavingRepository.countBySaving(saving);
     }
+
+    @Transactional(readOnly = true)
+    public boolean isLikedByUser(User user, Long savingId) {
+        Saving saving = savingRepository.findById(savingId)
+                .orElseThrow(SavingNotFoundException::new);
+        return likeSavingRepository.findByUserAndSaving(user, saving).isPresent();
+    }
+
 }

@@ -58,4 +58,10 @@ public record ProductDto(
             String etcNote,
             String maxLimit
     ) {}
+
+    public String getUniqueKey() {
+        return baseinfo.finCoNo() + "_" + baseinfo.finPrdtCd();
+    }
+
+
 }

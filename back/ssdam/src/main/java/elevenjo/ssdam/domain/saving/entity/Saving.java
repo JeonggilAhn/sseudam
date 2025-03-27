@@ -85,4 +85,9 @@ public class Saving extends BaseTimeEntity {
         this.views++;
     }
 
+    public String getUniqueKey() {
+        return this.finCoNo + "_" + this.finPrdtCd;
+    }
+
+
 }
