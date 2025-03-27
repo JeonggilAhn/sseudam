@@ -1,4 +1,4 @@
-package elevenjo.ssdam.domain.transaction;
+package elevenjo.ssdam.domain.cardTransaction.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -45,15 +45,17 @@ public class CardTransaction {
     private Card card;
 
     @Builder
-    public CardTransaction(Long transactionId,
-                           Integer categoryId,
-                           String categoryName,
-                           Integer merchantId,
-                           String merchantName,
-                           LocalDate transactionDate,
-                           LocalTime transactionTime,
-                           Long transactionBalance,
-                           Card card) {
+    public CardTransaction(
+        Long transactionId,
+       Integer categoryId,
+       String categoryName,
+       Integer merchantId,
+       String merchantName,
+       LocalDate transactionDate,
+       LocalTime transactionTime,
+       Long transactionBalance,
+       Card card
+    ) {
         this.transactionId = transactionId;
         this.categoryId = categoryId;
         this.categoryName = categoryName;

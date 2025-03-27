@@ -15,7 +15,11 @@ public enum ExceptionCode implements ResponseCode {
 	METHOD_UNAUTHORIZED("user-401-6", "API에 접근하기 위해서 인증이 필요합니다", HttpStatus.UNAUTHORIZED),
 	METHOD_FORBIDDEN("user-403-1", "API에 접근하기 위한 권한이 부족합니다", HttpStatus.FORBIDDEN),
 	USER_NOT_FOUND("user-404-2", "해당 사용자를 찾을 수 없습니다", HttpStatus.NOT_FOUND),
-	USER_ALREADY_EXISTS("user-400-1", "이미 존재하는 사용자입니다", HttpStatus.BAD_REQUEST);
+	USER_ALREADY_EXISTS("user-400-1", "이미 존재하는 사용자입니다", HttpStatus.BAD_REQUEST),
+
+	// Card
+	CARD_NOT_FOUND("card-401-1", "해당 카드를 찾을 수 없습니다.", HttpStatus.UNAUTHORIZED);
+
 
 	private String code;
 	private String message;
