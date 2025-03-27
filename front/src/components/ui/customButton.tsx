@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 type buttonProps = {
   name: string;
   color?: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
 };
 
