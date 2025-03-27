@@ -1,6 +1,5 @@
 package elevenjo.ssdam.domain.user.controller;
 
-import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import elevenjo.ssdam.domain.user.dto.RegisterUserInfoRequestDto;
 import elevenjo.ssdam.domain.user.dto.UpdateUserRequestDto;
 import jakarta.validation.Valid;
