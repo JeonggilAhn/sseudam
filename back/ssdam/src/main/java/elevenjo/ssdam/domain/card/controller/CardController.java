@@ -1,7 +1,16 @@
 package elevenjo.ssdam.domain.card.controller;
 
 
-import elevenjo.ssdam.global.ssafyApi.SsafyApiUtil;
+import elevenjo.ssdam.domain.card.entity.Card;
+import elevenjo.ssdam.domain.card.exception.CardDuplicateException;
+import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
+import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
+import elevenjo.ssdam.domain.user.entity.User;
+import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
+import elevenjo.ssdam.global.response.DefaultResponseCode;
+import elevenjo.ssdam.global.response.ResponseWrapper;
+import elevenjo.ssdam.global.response.ResponseWrapperFactory;
+import io.lettuce.core.dynamic.annotation.Param;
 import lombok.RequiredArgsConstructor;
 import elevenjo.ssdam.domain.card.dto.CardDto;
 import elevenjo.ssdam.domain.card.service.CardService;
@@ -9,32 +18,55 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("/card")
 public class CardController {
     private final CardService cardService;
-    private final SsafyApiUtil externalApiUtil;
+    private final ExternalApiUtil externalApiUtil;
 
-    @PostMapping("/card")
-    public ResponseEntity<Void> registerCard(@RequestBody CardDto card){
-       cardService.registUserCard(card);
-       return ResponseEntity.ok().build();
+    @PostMapping("/")
+    public ResponseEntity<ResponseWrapper<Void>> registerCard(@RequestBody CardDto card){
+        try {
+            cardService.registerUserCard(card);
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
+        }catch (CardDuplicateException e){
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
+        }catch (UserNotFoundException e){
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
+        }
     };
 
-    @PostMapping("/cards")
-    public <UserCardInfo> ResponseEntity<Void> createCard(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> userCardInfo){
+    @PostMapping("/create")
+    public <UserCardInfo> ResponseEntity<ResponseWrapper<Void>> createCard(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> userCardInfo){
 
-        externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/createCreditCard","createCreditCard", "",userCardInfo, String);
-        return ResponseEntity.ok().build();
+        try {
+            externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/createCreditCard",
+                    "createCreditCard", "",userCardInfo,Map.class);
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
+        }catch (RuntimeException e){
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
+        }
     }
 
-    @DeleteMapping("/cards")
-    public ResponseEntity<Void> deleteCard(@RequestBody long cardId){
-        cardService.deleteUserCard(cardId);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/")
+    public ResponseEntity<ResponseWrapper<Void>> deleteCard(@RequestBody long cardId){
+        try {
+            cardService.deleteUserCard(cardId);
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
+        } catch (CardNotFoundException e) {
+            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
+        }
+
+    };
+
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<List<CardDto>> getCardList(@PathVariable long userId){
+        List<CardDto> cardList = cardService.getUserCardList(userId);
+        return ResponseEntity.ok(cardList);
     };
 
 
