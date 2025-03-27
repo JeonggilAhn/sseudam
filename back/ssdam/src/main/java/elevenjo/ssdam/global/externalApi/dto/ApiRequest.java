@@ -1,4 +1,4 @@
-package elevenjo.ssdam.global.ssafyApi.dto;
+package elevenjo.ssdam.global.externalApi.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

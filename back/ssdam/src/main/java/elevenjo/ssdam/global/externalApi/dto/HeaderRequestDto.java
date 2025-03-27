@@ -1,4 +1,4 @@
-package elevenjo.ssdam.global.ssafyApi.dto;
+package elevenjo.ssdam.global.externalApi.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

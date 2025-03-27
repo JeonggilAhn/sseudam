@@ -1,31 +1,37 @@
-package elevenjo.ssdam.global.ssafyApi;
+package elevenjo.ssdam.global.externalApi;
 
-import elevenjo.ssdam.global.ssafyApi.dto.ApiRequest;
-import elevenjo.ssdam.global.ssafyApi.dto.HeaderRequestDto;
-import elevenjo.ssdam.global.ssafyApi.dto.HeaderRequestDtoFactory;
+import elevenjo.ssdam.global.externalApi.dto.ApiRequest;
+import elevenjo.ssdam.global.externalApi.dto.HeaderRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
 @Component
-public class SsafyApiUtil {
-    private final HeaderRequestDtoFactory headerRequestDtoFactory;
+public class ExternalApiUtil {
     private final RestTemplate restTemplate;
 
+    @Value("${ssafy-api-key}")
+    private String ssafyApiKey;
+
     @Autowired
-    public SsafyApiUtil(
-            HeaderRequestDtoFactory headerRequestDtoFactory,
+    public ExternalApiUtil(
             RestTemplate restTemplate
     ) {
-        this.headerRequestDtoFactory = headerRequestDtoFactory;
         this.restTemplate = restTemplate;
     }
 
     public <T> T post(String uri, Object body, Class<T> responseType) {
         return restTemplate.postForObject(uri, body, responseType);
     }
+
+    public <T> T postWithBodyApiKey(String uri, Map<String, Object> body, Class<T> responseType) {
+        body.put("apiKey", ssafyApiKey);
+        return restTemplate.postForObject(uri, body, responseType);
+    }
+
 
     public <R> R postWithHeader(
             String uri,
@@ -34,7 +40,7 @@ public class SsafyApiUtil {
             Map<String, Object> body,
             Class<R> responseType
     ) {
-        HeaderRequestDto header = headerRequestDtoFactory.create(apiName, userKey);
+        HeaderRequestDto header = HeaderRequestDto.from(apiName, userKey, ssafyApiKey);
         ApiRequest request = new ApiRequest(header);
 
         if(body != null) {
