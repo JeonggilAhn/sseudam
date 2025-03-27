@@ -17,9 +17,7 @@ public class LikeSavingService {
     private final LikeSavingRepository likeSavingRepository;
     private final SavingRepository savingRepository;
 
-    /**
-     * 좋아요 토글 기능 (있으면 삭제, 없으면 추가)
-     */
+    // 좋아요 토글 (이미 눌렀으면 해제, 아니면 추가)
     @Transactional
     public boolean toggleLike(User user, Long savingId) {
         Saving saving = savingRepository.findById(savingId)
@@ -28,18 +26,16 @@ public class LikeSavingService {
         return likeSavingRepository.findByUserAndSaving(user, saving)
                 .map(existingLike -> {
                     likeSavingRepository.delete(existingLike);
-                    return false; // 좋아요 해제됨
+                    return false;
                 })
                 .orElseGet(() -> {
                     LikeSaving newLike = new LikeSaving(user, saving);
                     likeSavingRepository.save(newLike);
-                    return true; // 좋아요 추가됨
+                    return true;
                 });
     }
 
-    /**
-     * 좋아요 수 조회
-     */
+    // 특정 적금의 좋아요 수 조회
     @Transactional(readOnly = true)
     public Long countLikes(Long savingId) {
         Saving saving = savingRepository.findById(savingId)
