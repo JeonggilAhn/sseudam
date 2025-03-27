@@ -1,9 +1,11 @@
 package elevenjo.ssdam.global.externalApi;
 
+import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.externalApi.dto.ApiRequest;
 import elevenjo.ssdam.global.externalApi.dto.HeaderRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,7 +33,6 @@ public class ExternalApiUtil {
         body.put("apiKey", ssafyApiKey);
         return restTemplate.postForObject(uri, body, responseType);
     }
-
 
     public <R> R postWithHeader(
             String uri,

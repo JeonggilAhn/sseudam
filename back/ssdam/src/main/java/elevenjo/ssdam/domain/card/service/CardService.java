@@ -2,7 +2,10 @@ package elevenjo.ssdam.domain.card.service;
 
 import elevenjo.ssdam.domain.card.dto.CardDto;
 
+import java.util.List;
+
 public interface CardService {
-    void registUserCard(CardDto userCard);
+    void registerUserCard(CardDto userCard);
     void deleteUserCard(Long cardId);
+    List<CardDto> getUserCardList(long userId);
 }
