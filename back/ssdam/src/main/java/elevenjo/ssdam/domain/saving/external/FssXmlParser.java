@@ -20,15 +20,25 @@ public class FssXmlParser {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(new InputSource(new StringReader(xml)));
 
-        NodeList nodeList = doc.getElementsByTagName("company");
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Element el = (Element) nodeList.item(i);
-            String finCoNo = getTag(el, "fin_co_no");
-            String hompUrl = getTag(el, "homp_url");
-            result.put(finCoNo, hompUrl);
+        NodeList productList = doc.getElementsByTagName("product");
+
+        for (int i = 0; i < productList.getLength(); i++) {
+            Element productEl = (Element) productList.item(i);
+            Element baseInfoEl = (Element) productEl.getElementsByTagName("baseinfo").item(0);
+
+            if (baseInfoEl == null) continue;
+
+            String finCoNo = getTag(baseInfoEl, "fin_co_no");
+            String hompUrl = getTag(baseInfoEl, "homp_url");
+
+            if (!finCoNo.isBlank() && !hompUrl.isBlank()) {
+                result.put(finCoNo, hompUrl);
+            }
         }
+
         return result;
     }
+
 
     @SneakyThrows
     public List<ProductDto> parseSavingProducts(String xml) {
