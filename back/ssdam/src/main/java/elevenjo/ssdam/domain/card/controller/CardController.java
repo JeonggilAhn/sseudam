@@ -1,7 +1,5 @@
 package elevenjo.ssdam.domain.card.controller;
 
-
-import elevenjo.ssdam.domain.card.entity.Card;
 import elevenjo.ssdam.domain.card.exception.CardDuplicateException;
 import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
 import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
@@ -10,15 +8,12 @@ import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import elevenjo.ssdam.global.response.DefaultResponseCode;
 import elevenjo.ssdam.global.response.ResponseWrapper;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
-import io.lettuce.core.dynamic.annotation.Param;
 import lombok.RequiredArgsConstructor;
 import elevenjo.ssdam.domain.card.dto.CardDto;
 import elevenjo.ssdam.domain.card.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -64,9 +59,9 @@ public class CardController {
     };
 
     @GetMapping("/list/{userId}")
-    public ResponseEntity<List<CardDto>> getCardList(@PathVariable long userId){
-        List<CardDto> cardList = cardService.getUserCardList(userId);
-        return ResponseEntity.ok(cardList);
+    public ResponseEntity<CardDto> getCardList(@PathVariable long userId){
+        CardDto userCard = cardService.getUserCard(userId);
+        return ResponseEntity.ok(userCard);
     };
 
 
