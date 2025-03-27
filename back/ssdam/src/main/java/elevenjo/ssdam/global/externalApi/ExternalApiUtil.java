@@ -37,7 +37,7 @@ public class ExternalApiUtil {
             String uri,
             String apiName,
             String userKey,
-            Map<String, Object> body,
+            Map<String, String> body,
             Class<R> responseType
     ) {
         HeaderRequestDto header = HeaderRequestDto.from(apiName, userKey, ssafyApiKey);
