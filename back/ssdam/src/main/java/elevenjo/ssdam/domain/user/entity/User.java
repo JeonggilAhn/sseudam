@@ -20,7 +20,7 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     // 유저 이름 : 실제 이름
     private String userName;
@@ -42,13 +42,15 @@ public class User extends BaseTimeEntity {
 
     private Integer savingRate;
 
+    @Column(length = 60)
+    private String userKey;
+
     private String oauthProvider;
 
     private Boolean resigned;
 
     private LocalDateTime resignedAt;
 
-    private String userKey;
 
     @Builder
     public User(
@@ -65,6 +67,28 @@ public class User extends BaseTimeEntity {
         this.savingRate = 0;
         this.oauthProvider = oauthProvider;
         this.resigned = false;
+    }
+
+    public void registerUserInfo(
+            String userName,
+            LocalDateTime birthday,
+            String withdrawAccountNo,
+            Integer savingRate,
+            String userKey
+    ) {
+        this.userName = userName;
+        this.birthday = birthday;
+        this.withdrawAccountNo = withdrawAccountNo;
+        this.savingRate = savingRate;
+        this.userKey = userKey;
+    }
+
+    public void updateUserInfo(
+            String withdrawAccountNo,
+            Integer savingRate
+    ) {
+        this.withdrawAccountNo = withdrawAccountNo;
+        this.savingRate = savingRate;
     }
 
     public void registerWithdrawAccountNo(String withdrawAccountNo) {

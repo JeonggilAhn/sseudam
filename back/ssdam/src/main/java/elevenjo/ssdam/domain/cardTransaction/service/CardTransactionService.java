@@ -1,7 +1,6 @@
 package elevenjo.ssdam.domain.cardTransaction.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,19 +8,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import elevenjo.ssdam.domain.card.entity.Card;
 import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
 import elevenjo.ssdam.domain.card.repository.CardRepository;
 import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionListResponseDto;
-import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionRequestDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.InquireCreditCardTransactionListRequestDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.InquireCreditCardTransactionListResponseDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.MonthlyPaymentResponseDto;
 import elevenjo.ssdam.domain.ssafyApi.dto.HeaderRequestDto;
-import elevenjo.ssdam.domain.user.dto.UserDto;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +39,7 @@ public class CardTransactionService {
         User user
     ) {
 
-        Card card = cardRepository.findByUserId(user.getId()).orElseThrow(CardNotFoundException::new);
+        Card card = cardRepository.findByUserId(user.getUserId()).orElseThrow(CardNotFoundException::new);
 
         HeaderRequestDto headerRequestDto = HeaderRequestDto.from(API_NAME, user.getUserKey());
 
