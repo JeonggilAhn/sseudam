@@ -48,6 +48,8 @@ public class User extends BaseTimeEntity {
 
     private LocalDateTime resignedAt;
 
+    private String userKey;
+
     @Builder
     public User(
         String userName,

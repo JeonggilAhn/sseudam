@@ -1,0 +1,35 @@
+package elevenjo.ssdam.domain.cardTransaction.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionListResponseDto;
+import elevenjo.ssdam.domain.cardTransaction.service.CardTransactionService;
+import elevenjo.ssdam.domain.user.entity.User;
+import elevenjo.ssdam.global.response.ResponseWrapper;
+import elevenjo.ssdam.global.response.ResponseWrapperFactory;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+public class CardTransactionController {
+
+    private final CardTransactionService cardTransactionService;
+
+    @GetMapping("/card-transactions")
+    public ResponseEntity<ResponseWrapper<CardTransactionListResponseDto>> getCardTransactions(
+        @RequestParam(value = "start_date") String startDate,
+        @RequestParam(value = "end_date") String endDate,
+        @AuthenticationPrincipal User user
+    ) {
+        CardTransactionListResponseDto responseDto =
+            cardTransactionService.inquireCardTransactions(startDate, endDate, user);
+
+        return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
+    }
+
+}
