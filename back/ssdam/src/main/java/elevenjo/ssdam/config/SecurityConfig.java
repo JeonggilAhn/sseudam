@@ -1,4 +1,4 @@
-package elevenjo.ssdam.domain.config;
+package elevenjo.ssdam.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +16,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import elevenjo.ssdam.domain.user.handler.CustomOAuth2SuccessHandler;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.domain.user.service.CustomOAuth2UserService;
-import elevenjo.ssdam.global.filter.ExceptionHandlingFilter;
 import elevenjo.ssdam.global.filter.JwtFilter;
 import elevenjo.ssdam.global.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;

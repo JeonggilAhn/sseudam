@@ -1,4 +1,4 @@
-package elevenjo.ssdam.domain.config;
+package elevenjo.ssdam.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
