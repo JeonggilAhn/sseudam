@@ -3,6 +3,7 @@ package elevenjo.ssdam.domain.saving.controller;
 import elevenjo.ssdam.domain.saving.dto.SavingCardResponseDto;
 import elevenjo.ssdam.domain.saving.dto.SavingDetailResponseDto;
 import elevenjo.ssdam.domain.saving.entity.Saving;
+import elevenjo.ssdam.domain.saving.service.FssSavingSyncService;
 import elevenjo.ssdam.domain.saving.service.LikeSavingService;
 import elevenjo.ssdam.domain.saving.service.SavingService;
 import elevenjo.ssdam.global.response.DefaultResponseCode;
@@ -11,6 +12,7 @@ import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ public class SavingController {
 
     private final SavingService savingService;
     private final LikeSavingService likeSavingService;
+    private final FssSavingSyncService syncService;
 
     // 1. 적금 목록 조회 (검색 + 정렬 + 페이징)
     @GetMapping
@@ -70,5 +73,12 @@ public class SavingController {
         );
 
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
+    }
+
+    // 3. 외부 API 기반 적금 데이터 동기화
+    @PostMapping("/sync")
+    public ResponseEntity<ResponseWrapper<Void>> syncSavings() {
+        syncService.syncSavingsFromOpenApi();
+        return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, new HttpHeaders(), null);
     }
 }
