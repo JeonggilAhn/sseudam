@@ -26,7 +26,7 @@ public class Saving extends BaseTimeEntity {
     @Column(nullable = false)
     private String finCoNm;
 
-    @Column(nullable = false)
+    @Column
     private String hompUrl;
 
     @Column(nullable = false)
@@ -59,10 +59,13 @@ public class Saving extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer minIntRate;
 
+    @Column(nullable = false)
+    private Integer views;
+
     @Builder
     public Saving(String finCoNo, String finCoNm, String hompUrl, String finPrdtCd, String finPrdtNm,
                   String mtrtInt, String spclCnd, Integer joinDeny, String joinMember, String etcNote, Integer maxLimit,
-                  Integer maxIntRate, Integer minIntRate) {
+                  Integer maxIntRate, Integer minIntRate, Integer views) {
         this.finCoNo = finCoNo;
         this.finCoNm = finCoNm;
         this.hompUrl = hompUrl;
@@ -76,6 +79,10 @@ public class Saving extends BaseTimeEntity {
         this.maxLimit = maxLimit;
         this.maxIntRate = maxIntRate;
         this.minIntRate = minIntRate;
+        this.views = views;
+    }
+    public void increaseViews() {
+        this.views++;
     }
 
 }

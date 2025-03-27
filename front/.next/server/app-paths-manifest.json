@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/card/page": "app/card/page.js",
+  "/page": "app/page.js",
+  "/quiz/check/page": "app/quiz/check/page.js",
+  "/quiz/page": "app/quiz/page.js",
+  "/quiz/withdraw/page": "app/quiz/withdraw/page.js",
+  "/saving/create/page": "app/saving/create/page.js",
+  "/saving/detail/page": "app/saving/detail/page.js",
+  "/saving/page": "app/saving/page.js"
+}

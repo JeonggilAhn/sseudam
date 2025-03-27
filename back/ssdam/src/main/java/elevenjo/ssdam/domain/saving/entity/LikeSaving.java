@@ -40,4 +40,9 @@ public class LikeSaving extends BaseTimeEntity {
     @JoinColumn(name = "saving_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Saving saving;
 
+    public LikeSaving(User user, Saving saving) {
+        this.user = user;
+        this.saving = saving;
+    }
+
 }
