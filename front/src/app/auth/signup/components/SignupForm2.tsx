@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { SelectCarrier } from "@/components/ui/selectCarrier";
 
 type SignupForm2Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
@@ -77,45 +78,73 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
 
   return (
     <>
-      <div>
-        <div>
-          <label htmlFor="mobileCarrier">통신사</label>
-          <select
-            name="mobileCarrier"
-            id="mobileCarrier"
-            value={userInfo2.mobileCarrier}
-            onChange={handleInputChange}
-            onBlur={validate}
-          >
-            <option value="">-- 선택해주세요 --</option>
-            <option value="SKT">SKT</option>
-            <option value="KT">KT</option>
-            <option value="LG U+">LG U+</option>
-            <option value="SKT 알뜰폰">SKT 알뜰폰</option>
-            <option value="KT 알뜰폰">KT 알뜰폰</option>
-            <option value="LG U+ 알뜰폰">LG U+ 알뜰폰</option>
-          </select>
+      <div className="flex flex-col mb-[48px]">
+        <label
+          htmlFor="mobileCarrier"
+          className="text-[#7b7b7b]/80 font-bold mb-2"
+        >
+          통신사
+        </label>
 
-          {!userInfo2.mobileCarrier && localErrors.mobileCarrier && (
-            <p className="text-red-500 text-xs">{localErrors.mobileCarrier}</p>
-          )}
-        </div>
+        {/* Select Shadcn으로 수정하기 (추후 작업 예정) */}
+        {/* <SelectCarrier
+          name="mobileCarrier"
+          id="mobileCarrier"
+          value={userInfo2.mobileCarrier}
+          // onChange={handleInputChange}
+          onChange={(value) => {
+            setUserInfo2((prev) => ({
+              ...prev,
+              mobileCarrier: value,
+            }));
+          }}
+          onBlur={validate}
+        /> */}
 
-        <div>
-          <label htmlFor="phoneNumber">휴대폰 번호</label>
-          <input
-            type="text"
-            name="phoneNumber"
-            id="phoneNumber"
-            value={formatPhoneNumber(userInfo2.phoneNumber)}
-            // onChange={handleInputChange}
-            onChange={handlePhoneNumber}
-            onBlur={validate}
-          />
-          {localErrors.phoneNumber && (
-            <p className="text-red-500 text-xs">{localErrors.phoneNumber}</p>
-          )}
-        </div>
+        <select
+          name="mobileCarrier"
+          id="mobileCarrier"
+          value={userInfo2.mobileCarrier}
+          onChange={handleInputChange}
+          onBlur={validate}
+        >
+          <option value="">-- 선택해주세요 --</option>
+          <option value="SKT">SKT</option>
+          <option value="KT">KT</option>
+          <option value="LG U+">LG U+</option>
+          <option value="SKT 알뜰폰">SKT 알뜰폰</option>
+          <option value="KT 알뜰폰">KT 알뜰폰</option>
+          <option value="LG U+ 알뜰폰">LG U+ 알뜰폰</option>
+        </select>
+
+        {!userInfo2.mobileCarrier && localErrors.mobileCarrier && (
+          <p className="text-red-500 text-xs mt-1">
+            {localErrors.mobileCarrier}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col mb-[48px]">
+        <label
+          htmlFor="phoneNumber"
+          className="text-[#7b7b7b]/80 font-bold mb-2"
+        >
+          휴대폰 번호
+        </label>
+        <input
+          type="text"
+          name="phoneNumber"
+          id="phoneNumber"
+          value={formatPhoneNumber(userInfo2.phoneNumber)}
+          onChange={handlePhoneNumber}
+          onBlur={validate}
+          className="placeholder:text-xl placeholder:font-semibold text-2xl font-semibold w-[80%] h-[40px] focus: outline-none text-2xl"
+          placeholder="010-0000-0000"
+        />
+        <hr />
+        {localErrors.phoneNumber && (
+          <p className="text-red-500 text-xs mt-1">{localErrors.phoneNumber}</p>
+        )}
       </div>
     </>
   );

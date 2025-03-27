@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import SignupForm1 from "./components/SignupForm1";
 import SignupForm2 from "./components/SignupForm2";
 
@@ -10,8 +11,11 @@ import {
   ShortButton,
   ShortOutlineButton,
 } from "@/components/ui/customButton";
+import next from "next";
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -23,6 +27,14 @@ const SignUpForm = () => {
     mobileCarrier: "",
     phoneNumber: "",
   });
+
+  // 개발용 (새로고침 시, 첫페이지로 넘어가지 않게 막아줌)
+  // useEffect(() => {
+  //   const step = searchParams.get("step");
+  //   if (step) {
+  //     setStep(Number(step));
+  //   }
+  // }, [searchParams]);
 
   const handleInputChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,14 +59,20 @@ const SignUpForm = () => {
 
   //pageNation
   const handlePrevSteps = () => {
+    // queryStep
     if (step > 1) {
-      setStep(step - 1);
+      const prevStep = step - 1;
+      setStep(prevStep);
+      router.push(`?step=${prevStep}`);
     }
   };
 
   const handleNextSteps = () => {
+    // queryStep
     if (Object.keys(errors).length > 0) return;
-    setStep(step + 1);
+    const nextStep = step + 1;
+    setStep(nextStep);
+    router.push(`?step=${nextStep}`);
   };
 
   const handleLastSteps = () => {
@@ -88,13 +106,12 @@ const SignUpForm = () => {
                 handleInputChange={handleInputChange1}
               />
               {/* <ButtonLoading /> */}
-              <button onClick={handleNextSteps}>
-                <LongButton
-                  name="다음"
-                  color="#2b88d9"
-                  disabled={Object.keys(errors).length > 0}
-                />
-              </button>
+              <LongButton
+                name="다음"
+                color="#2b88d9"
+                onClick={handleNextSteps}
+                disabled={Object.keys(errors).length > 0}
+              />
             </>
           )}
 
@@ -107,15 +124,17 @@ const SignUpForm = () => {
                 handleInputChange={handleInputChange2}
               />
               <div className="w-full flex gap-1 justify-center">
-                <button onClick={handlePrevSteps}>
-                  <ShortOutlineButton name="이전"></ShortOutlineButton>
-                </button>
-                <button
+                <ShortOutlineButton
+                  name="이전"
+                  onClick={handlePrevSteps}
+                ></ShortOutlineButton>
+
+                <ShortButton
                   onClick={handleLastSteps}
                   disabled={Object.keys(errors).length > 0}
-                >
-                  <ShortButton name="확인" color="#2b88d9"></ShortButton>
-                </button>
+                  name="확인"
+                  color="#2b88d9"
+                ></ShortButton>
               </div>
             </>
           )}

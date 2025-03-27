@@ -53,7 +53,7 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
           value={userInfo1.name}
           onChange={handleInputChange}
           onBlur={validate}
-          className="placeholder:text-xl placeholder:font-semibold text-2xl font-semibold w-80% h-[40px] focus: outline-none text-2xl"
+          className="placeholder:text-xl placeholder:font-semibold text-2xl font-semibold w-[80%] h-[40px] focus: outline-none text-2xl"
           placeholder="이름을 입력해주세요"
         />
         <hr />
