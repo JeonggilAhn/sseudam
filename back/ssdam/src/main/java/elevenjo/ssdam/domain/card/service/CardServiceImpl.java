@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,11 +51,15 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public List<CardDto> getUserCardList(long userId) {
-        List<CardDto> userCardList = cardRepository.findByUserId(userId);
-        if (userCardList.isEmpty()){
+    public CardDto getUserCard(long userId) {
+        Optional<Card> userCard = cardRepository.findByUserId(userId);
+        if (userCard.isEmpty()){
             throw new UserNotFoundException();
         }
-        return userCardList;
+        CardDto tmpUserCard = new CardDto();
+        tmpUserCard.setCardNo(userCard.get().getCardNo());
+        tmpUserCard.setCvc(userCard.get().getCvc());
+        tmpUserCard.setUserId(userId);
+        return tmpUserCard;
     }
 }
