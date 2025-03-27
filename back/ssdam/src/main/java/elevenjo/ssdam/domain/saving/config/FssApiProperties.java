@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Getter
-@Setter // ✅ 이거 꼭 필요함
+@Setter
 @Configuration
 @ConfigurationProperties(prefix = "fss-api-key")
 public class FssApiProperties {
