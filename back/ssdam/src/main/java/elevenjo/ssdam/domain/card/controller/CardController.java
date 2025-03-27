@@ -19,9 +19,17 @@ public class CardController {
        return ResponseEntity.ok().build();
     };
 
+    @PostMapping("/cards")
+    public ResponseEntity<Void> createCard(@RequestBody CardDto card){
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/cards")
     public ResponseEntity<Void> deleteCard(@RequestBody long cardId){
         cardService.deleteUserCard(cardId);
         return ResponseEntity.ok().build();
     };
+
+
 }
