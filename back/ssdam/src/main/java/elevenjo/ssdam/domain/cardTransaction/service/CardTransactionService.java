@@ -1,5 +1,6 @@
 package elevenjo.ssdam.domain.cardTransaction.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,6 +19,7 @@ import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionListResponseDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionRequestDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.InquireCreditCardTransactionListRequestDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.InquireCreditCardTransactionListResponseDto;
+import elevenjo.ssdam.domain.cardTransaction.dto.MonthlyPaymentResponseDto;
 import elevenjo.ssdam.domain.ssafyApi.dto.HeaderRequestDto;
 import elevenjo.ssdam.domain.user.dto.UserDto;
 import elevenjo.ssdam.domain.user.entity.User;
@@ -88,5 +90,24 @@ public class CardTransactionService {
                 ))
                 .collect(Collectors.toList())
         );
+    }
+
+    public MonthlyPaymentResponseDto getThisMonthPayment(User user) {
+        LocalDate now = LocalDate.now();
+        // 'yyyyMMdd' 포맷으로 변환
+        String startDate = now.withDayOfMonth(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String endDate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // 이번 달의 거래 내역 조회
+        CardTransactionListResponseDto transactionListResponseDto =
+            inquireCardTransactions(startDate, endDate, user);
+
+        // 결제 금액 합산
+        long totalPayment = transactionListResponseDto.transactionList().stream()
+            // transactionBalance가 String 형태이므로 long으로 변환
+            .mapToLong(t -> Long.parseLong(t.transactionBalance()))
+            .sum();
+
+        return new MonthlyPaymentResponseDto(totalPayment);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionListResponseDto;
+import elevenjo.ssdam.domain.cardTransaction.dto.MonthlyPaymentResponseDto;
 import elevenjo.ssdam.domain.cardTransaction.service.CardTransactionService;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
@@ -29,6 +30,14 @@ public class CardTransactionController {
         CardTransactionListResponseDto responseDto =
             cardTransactionService.inquireCardTransactions(startDate, endDate, user);
 
+        return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
+    }
+
+    @GetMapping("/card-transactions/this-month")
+    public ResponseEntity<ResponseWrapper<MonthlyPaymentResponseDto>> getThisMonthPayment(
+        @AuthenticationPrincipal User user
+    ) {
+        MonthlyPaymentResponseDto responseDto = cardTransactionService.getThisMonthPayment(user);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
     }
 
