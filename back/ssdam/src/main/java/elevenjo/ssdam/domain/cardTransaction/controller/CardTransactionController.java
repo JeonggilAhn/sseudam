@@ -18,9 +18,7 @@ import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class CardTransactionController {
@@ -31,7 +29,6 @@ public class CardTransactionController {
     public ResponseEntity<ResponseWrapper<DepositAccountTransferResponseDto>> postCardTransaction(
             @RequestBody OccurredCardTransactionRequestDto requestDto
     ) {
-        log.info("이체 정보 전달 "+requestDto.userKey()+" "+requestDto.merchantName()+" "+requestDto.paymentBalance());
         DepositAccountTransferResponseDto responseDto = cardTransactionService.occurredCardTransaction(requestDto);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
     }

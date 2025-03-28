@@ -2,7 +2,6 @@ package elevenjo.ssdam.domain.payment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PaymentService {
 
-    @Value("${ssafy-api-key}")
+    @Value("${SSAFY_API_KEY}")
     private String ssafyApiKey;
 
     private final WebClient ssafyWebClient;
@@ -38,7 +37,7 @@ public class PaymentService {
         try{
             currentStep = "SSAFY";
             String merchantId = Integer.toString((int) (Math.random() * 21 + 4218));
-            Integer paymentBalance = (int) (Math.random() * 1000001 + 1);
+            Integer paymentBalance = (int) (Math.random() * 100001 + 1);
 
             ApiRequest apiRequest = new ApiRequest(HeaderRequestDto.from(
                 "createCreditCardTransaction",
