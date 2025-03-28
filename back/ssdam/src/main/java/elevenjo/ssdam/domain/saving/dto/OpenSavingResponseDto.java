@@ -1,8 +1,10 @@
 package elevenjo.ssdam.domain.saving.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class OpenSavingResponseDto {
     private String accountTypeUniqueNo;
     private String bankCode;

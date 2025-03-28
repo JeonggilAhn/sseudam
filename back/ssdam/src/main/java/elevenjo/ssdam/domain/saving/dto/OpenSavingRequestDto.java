@@ -6,11 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class OpenSavingRequestDto {
-
-    @JsonProperty("depositBalance")
     private String depositBalance;
-
-    @JsonProperty("withdrawalAccountNo")
     private String withdrawalAccountNo;
 }
