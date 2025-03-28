@@ -20,7 +20,7 @@ export function ButtonLoading() {
 
 export const LongButton: React.FC<buttonProps> = ({
   name,
-  color,
+  color = "#2b88d9",
   disabled,
   onClick,
 }) => {

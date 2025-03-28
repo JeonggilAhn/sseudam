@@ -60,7 +60,7 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
   };
 
   const handlePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/-/g, "");
+    const value = e.target.value.replace(/-/g, "");
     if (value.length > 11) {
       e.preventDefault();
       return;
