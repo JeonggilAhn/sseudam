@@ -30,14 +30,18 @@ public class CardServiceImpl implements CardService {
     private final ExternalApiUtil externalApiUtil;
 
     @Override
-    public void registerUserCard(CardDto userCard) {
+    public void registerUserCard(CardDto userCard) throws Exception {
         boolean isCardExist = false;
         Map<String, String> map = new HashMap<>();
         String userKey = userRepository.findById(userCard.getUserId()).get().getUserKey();
+
+        HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.getKeyInfo());
+        String cardNo = hybridDecryptor.decryptWithAES(userCard.getCardNo(), keyInfo);
+
         CardResponseDto response = externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireSignUpCreditCardList","inquireSignUpCreditCardList",
                 userKey,map, CardResponseDto.class);
         for (int i = 0; i < response.rec().size(); i++) {
-            if(response.rec().get(i).cardNo().equals(userCard.getCardNo())) {
+            if(response.rec().get(i).cardNo().equals(cardNo)) {
                 isCardExist = true;
             }else{
                 throw new CardUserMismatchException();
