@@ -4,3 +4,4 @@ public record LikeSavingResponseDto(
         Long likeCount,
         Boolean liked
 ) {}
+

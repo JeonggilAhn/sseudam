@@ -32,4 +32,21 @@ public class LikeSavingController {
 
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
+    @GetMapping
+    public ResponseEntity<ResponseWrapper<LikeSavingResponseDto>> getLikeInfo(
+            @PathVariable Long savingId,
+            @RequestBody User user
+    ) {
+        Long likeCount = likeSavingService.countLikes(savingId);
+        boolean liked = likeSavingService.isLikedByUser(user, savingId);
+
+        LikeSavingResponseDto response = new LikeSavingResponseDto(
+                likeCount,
+                liked
+        );
+
+        return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
+    }
+
 }
