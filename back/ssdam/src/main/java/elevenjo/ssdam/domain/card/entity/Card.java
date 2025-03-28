@@ -35,10 +35,11 @@ public class Card extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Card(String cardNo, String cvc, User user) {
+    public Card(String cardNo, String cvc, User user, String keyInfo) {
         this.cardNo = cardNo;
         this.cvc = cvc;
         this.user = user;
+        this.keyInfo = keyInfo;
     }
 
 
