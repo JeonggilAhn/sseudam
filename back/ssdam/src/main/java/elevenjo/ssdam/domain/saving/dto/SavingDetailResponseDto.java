@@ -2,6 +2,7 @@ package elevenjo.ssdam.domain.saving.dto;
 
 public record SavingDetailResponseDto(
         Long savingId,
+        String finPrdtCd,
         String finCoNm,
         String finPrdtNm,
         String mtrtInt,

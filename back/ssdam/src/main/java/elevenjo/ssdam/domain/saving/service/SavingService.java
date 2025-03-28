@@ -1,9 +1,12 @@
 package elevenjo.ssdam.domain.saving.service;
 
+import elevenjo.ssdam.domain.saving.dto.OpenSavingRequestDto;
+import elevenjo.ssdam.domain.saving.dto.OpenSavingResponseDto;
 import elevenjo.ssdam.domain.saving.dto.ProductDto;
 import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.domain.saving.exception.SavingNotFoundException;
 import elevenjo.ssdam.domain.saving.repository.SavingRepository;
+import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +21,9 @@ import java.util.stream.Collectors;
 public class SavingService {
 
     private final SavingRepository savingRepository;
-    private final FssSavingSyncService syncService; // 추가
+    private final FssSavingSyncService syncService;
+    private final ExternalApiUtil externalApiUtil;
+
 
     public void syncSavingsFromOpenApi() {
         syncService.syncSavingsFromOpenApi();
@@ -64,4 +69,35 @@ public class SavingService {
         return savingRepository.findById(savingId)
                 .orElseThrow(SavingNotFoundException::new);
     }
+
+    @Transactional
+    public OpenSavingResponseDto openSaving(Long savingId, OpenSavingRequestDto requestDto, String userKey) {
+        Saving saving = getSavingById(savingId);
+        String accountTypeUniqueNo = saving.getFinPrdtCd();
+
+        // 요청 바디 구성
+        Map<String, Object> body = new HashMap<>();
+        body.put("accountTypeUniqueNo", accountTypeUniqueNo);
+        body.put("depositBalance", requestDto.getDepositBalance());
+        body.put("withdrawalAccountNo", requestDto.getWithdrawalAccountNo());
+
+        // 로그 찍기
+        System.out.println("====== [적금 개설 요청 바디] ======");
+        System.out.println("userKey: " + userKey);
+        System.out.println("accountTypeUniqueNo: " + accountTypeUniqueNo);
+        System.out.println("depositBalance: " + requestDto.getDepositBalance());
+        System.out.println("withdrawalAccountNo: " + requestDto.getWithdrawalAccountNo());
+        System.out.println("=================================");
+
+        // 요청 전송
+        return externalApiUtil.postWithHeader(
+                "https://finopenapi.ssafy.io/ssafy/api/v1/edu/savings/createAccount",
+                "createAccount",
+                userKey,
+                body,
+                OpenSavingResponseDto.class
+        );
+    }
+
+
 }

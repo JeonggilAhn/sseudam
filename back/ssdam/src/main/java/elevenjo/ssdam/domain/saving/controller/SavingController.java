@@ -1,5 +1,7 @@
 package elevenjo.ssdam.domain.saving.controller;
 
+import elevenjo.ssdam.domain.saving.dto.OpenSavingRequestDto;
+import elevenjo.ssdam.domain.saving.dto.OpenSavingResponseDto;
 import elevenjo.ssdam.domain.saving.dto.SavingCardResponseDto;
 import elevenjo.ssdam.domain.saving.dto.SavingDetailResponseDto;
 import elevenjo.ssdam.domain.saving.entity.Saving;
@@ -59,6 +61,7 @@ public class SavingController {
         SavingDetailResponseDto response = new SavingDetailResponseDto(
                 saving.getSavingId(),
                 saving.getFinCoNm(),
+                saving.getFinPrdtCd(),
                 saving.getFinPrdtNm(),
                 saving.getMtrtInt(),
                 saving.getSpclCnd(),
@@ -81,4 +84,18 @@ public class SavingController {
         syncService.syncSavingsFromOpenApi();
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, new HttpHeaders(), null);
     }
+
+    // 4. 적금 개설
+    @PostMapping("/{savingId}")
+    public ResponseEntity<ResponseWrapper<OpenSavingResponseDto>> openSaving(
+            @PathVariable Long savingId,
+            @RequestBody OpenSavingRequestDto requestDto
+    ) {
+        // TODO: 실제 로그인 붙으면 userKey는 SecurityContextHolder 등에서 꺼내기
+        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1"; // 또는 requestDto에 같이 받아도 됨 (임시)
+
+        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
+        return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
+    }
+
 }
