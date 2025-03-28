@@ -55,6 +55,7 @@ public class ExternalApiUtil {
         return restTemplate.postForObject(uri, request, responseType);
     }
 
+
     public <R, T> R postWithHeader(
             String uri,
             String apiName,
@@ -69,7 +70,13 @@ public class ExternalApiUtil {
     public Map<String, String> convertDtoToMap(Object dto) {
         return objectMapper
                 .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
-                .convertValue(dto, new TypeReference<Map<String, String>>() {});
+                .convertValue(dto, new TypeReference<Map<String, String>>() {
+                });
+    }
+
+    // 금융감독원 등 외부 XML API 요청용
+    public String getXml(String uri) {
+        return restTemplate.getForObject(uri, String.class);
     }
 
 }
