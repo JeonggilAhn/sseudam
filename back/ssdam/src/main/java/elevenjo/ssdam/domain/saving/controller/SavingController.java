@@ -8,6 +8,8 @@ import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.domain.saving.service.FssSavingSyncService;
 import elevenjo.ssdam.domain.saving.service.LikeSavingService;
 import elevenjo.ssdam.domain.saving.service.SavingService;
+import elevenjo.ssdam.domain.user.dto.CustomOAuth2User;
+import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.DefaultResponseCode;
 import elevenjo.ssdam.global.response.ResponseWrapper;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -93,11 +96,17 @@ public class SavingController {
             @PathVariable Long savingId,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        // TODO: 실제 로그인 붙으면 userKey는 SecurityContextHolder 등에서 꺼내기
-        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1"; // 또는 requestDto에 같이 받아도 됨 (임시)
+        // 로그인 안 된 상태니까 userKey 하드코딩
+        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1"; // <- 이 값 DB에 있는 실제 user_key
 
-        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
+        OpenSavingResponseDto response = savingService.openSaving(
+                savingId,
+                requestDto,
+                userKey
+        );
+
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
 
 }

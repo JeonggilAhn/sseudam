@@ -1,5 +1,6 @@
 package elevenjo.ssdam.domain.saving.service;
 
+import elevenjo.ssdam.domain.saving.dto.OpenSavingApiResponse;
 import elevenjo.ssdam.domain.saving.dto.OpenSavingRequestDto;
 import elevenjo.ssdam.domain.saving.dto.OpenSavingResponseDto;
 import elevenjo.ssdam.domain.saving.dto.ProductDto;
@@ -84,13 +85,11 @@ public class SavingService {
         Saving saving = getSavingById(savingId);
         String accountTypeUniqueNo = saving.getFinPrdtCd();
 
-        // 요청 바디 구성
         Map<String, Object> body = new HashMap<>();
         body.put("accountTypeUniqueNo", accountTypeUniqueNo);
         body.put("depositBalance", requestDto.getDepositBalance());
         body.put("withdrawalAccountNo", requestDto.getWithdrawalAccountNo());
 
-        // 로그 찍기
         System.out.println("====== [적금 개설 요청 바디] ======");
         System.out.println("userKey: " + userKey);
         System.out.println("accountTypeUniqueNo: " + accountTypeUniqueNo);
@@ -98,14 +97,16 @@ public class SavingService {
         System.out.println("withdrawalAccountNo: " + requestDto.getWithdrawalAccountNo());
         System.out.println("=================================");
 
-        // 요청 전송
+
+
         return externalApiUtil.postWithHeader(
                 "https://finopenapi.ssafy.io/ssafy/api/v1/edu/savings/createAccount",
                 "createAccount",
                 userKey,
                 body,
-                OpenSavingResponseDto.class
-        );
+                OpenSavingApiResponse.class // 전체 응답을 받아올 클래스
+        ).getRec(); //
+
     }
 
 
