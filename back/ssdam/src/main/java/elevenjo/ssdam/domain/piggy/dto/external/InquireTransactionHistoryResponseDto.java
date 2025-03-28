@@ -5,7 +5,7 @@ import elevenjo.ssdam.domain.piggy.dto.TransactionHistoryDto;
 import elevenjo.ssdam.global.externalApi.dto.HeaderResponseDto;
 
 
-public record InquireTransactionHistoryDto(
+public record InquireTransactionHistoryResponseDto(
         @JsonProperty("Header") HeaderResponseDto header,
         @JsonProperty("Rec") TransactionHistoryDto rec
 ) {}

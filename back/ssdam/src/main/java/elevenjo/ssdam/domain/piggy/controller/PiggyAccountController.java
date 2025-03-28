@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -51,13 +52,21 @@ public class PiggyAccountController {
     @GetMapping("/me/transaction")
     public ResponseEntity<ResponseWrapper<TransactionHistoryDto>> getAccountTransaction(
             @AuthenticationPrincipal User user,
-            AccountTransactionRequestDto requestDto
+            @RequestParam(name = "start_date") String startDate,
+            @RequestParam(name = "end_date") String endDate,
+            @RequestParam(name = "transaction_type") String transactionType,
+            @RequestParam(name = "order_by_type") String orderByType
     ) {
+        AccountTransactionRequestDto requestDto =
+                new AccountTransactionRequestDto(startDate, endDate, transactionType, orderByType);
+
         return ResponseWrapperFactory.setResponse(
                 HttpStatus.OK,
                 null,
-                piggyAccountService.getAccountTransactions(user.getUserId(),
-                        requestDto)
+                piggyAccountService.getAccountTransactions(
+                        user.getUserId(),
+                        requestDto
+                )
         );
     }
 

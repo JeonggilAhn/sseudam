@@ -4,13 +4,15 @@ import elevenjo.ssdam.domain.piggy.dto.AccountResponseDto;
 import elevenjo.ssdam.domain.piggy.dto.AccountTransactionRequestDto;
 import elevenjo.ssdam.domain.piggy.dto.TransactionHistoryDto;
 import elevenjo.ssdam.domain.piggy.dto.external.InquireAccountResponseDto;
-import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryDto;
+import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryRequestDto;
+import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryResponseDto;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -38,11 +40,13 @@ public class PiggyAccountService {
                 Map.of("accountTypeUniqueNo", "001-1-3d2440839e314f"),
                 InquireAccountResponseDto.class
                 );
-        piggyAccountNo = externalAccount.rec().accountBalance();
+        piggyAccountNo = externalAccount.rec().accountNo();
 
         user.registerPiggyAccountNo(piggyAccountNo);
 
-        return new AccountResponseDto(externalAccount.rec().accountBalance());
+        userRepository.save(user);
+
+        return new AccountResponseDto("0");
     }
 
     public AccountResponseDto getAccountBalance(Long userId) {
@@ -69,15 +73,30 @@ public class PiggyAccountService {
     ) {
         User user = userRepository.findById(userId).orElse(null);
         String piggyAccountNo = user.getPiggyAccountNo();
-        String apiName = "inquireDemandDepositAccountTransactions";
-        InquireTransactionHistoryDto historyDto = externalApiUtil.postWithHeader(
+        String apiName = "inquireTransactionHistoryList";
+
+        InquireTransactionHistoryRequestDto request =
+                new InquireTransactionHistoryRequestDto(
+                        requestDto.startDate(),
+                        requestDto.endDate(),
+                        requestDto.transactionType(),
+                        requestDto.orderByType(),
+                        user.getPiggyAccountNo()
+                );
+
+        InquireTransactionHistoryResponseDto historyDto = externalApiUtil.postWithHeader(
                 externalBaseUrl + apiName,
                 apiName,
                 user.getUserKey(),
-                requestDto,
-                InquireTransactionHistoryDto.class
+                request,
+                InquireTransactionHistoryResponseDto.class
         );
 
-        return historyDto.rec();
+        TransactionHistoryDto result = historyDto.rec();
+        if(result == null) {
+            result = new TransactionHistoryDto("0", List.of());
+        }
+
+        return result;
     }
 }
