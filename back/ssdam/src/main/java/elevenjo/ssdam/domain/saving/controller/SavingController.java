@@ -93,11 +93,15 @@ public class SavingController {
             @PathVariable Long savingId,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        // TODO: 실제 로그인 붙으면 userKey는 SecurityContextHolder 등에서 꺼내기
-        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1"; // 또는 requestDto에 같이 받아도 됨 (임시)
+        // DEBUG: DTO 값이 잘 들어오는지 로그 찍기
+        System.out.println("✅ Controller 받은 값:");
+        System.out.println("depositBalance: " + requestDto.getDepositBalance());
+        System.out.println("withdrawalAccountNo: " + requestDto.getWithdrawalAccountNo());
 
+        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1";
         OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
 
 }
