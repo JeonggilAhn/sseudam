@@ -14,4 +14,6 @@ import elevenjo.ssdam.domain.user.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	User getUserByNickname(String nickname);
+
+	User getUserByUserKey(String userKey);
 }

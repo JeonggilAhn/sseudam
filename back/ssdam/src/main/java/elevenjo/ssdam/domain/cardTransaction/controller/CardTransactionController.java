@@ -4,11 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import elevenjo.ssdam.domain.cardTransaction.dto.CardTransactionListResponseDto;
+import elevenjo.ssdam.domain.cardTransaction.dto.DepositAccountTransferResponseDto;
 import elevenjo.ssdam.domain.cardTransaction.dto.MonthlyPaymentResponseDto;
+import elevenjo.ssdam.domain.cardTransaction.dto.OccurredCardTransactionRequestDto;
 import elevenjo.ssdam.domain.cardTransaction.service.CardTransactionService;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
@@ -20,6 +24,14 @@ import lombok.RequiredArgsConstructor;
 public class CardTransactionController {
 
     private final CardTransactionService cardTransactionService;
+
+    @PostMapping("/card-transactions")
+    public ResponseEntity<ResponseWrapper<DepositAccountTransferResponseDto>> postCardTransaction(
+            @RequestBody OccurredCardTransactionRequestDto requestDto
+    ) {
+        DepositAccountTransferResponseDto responseDto = cardTransactionService.occurredCardTransaction(requestDto);
+        return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
+    }
 
     @GetMapping("/card-transactions")
     public ResponseEntity<ResponseWrapper<CardTransactionListResponseDto>> getCardTransactions(

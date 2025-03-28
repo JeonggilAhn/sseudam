@@ -2,6 +2,8 @@ package elevenjo.ssdam.global.externalApi.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.Map;
 
 @Getter
 public class ApiRequest {
-    private HeaderRequestDto header;
+    @JsonProperty("Header") private HeaderRequestDto header;
     private Map<String, Object> additionalFields = new HashMap<>();
 
     public ApiRequest() {
