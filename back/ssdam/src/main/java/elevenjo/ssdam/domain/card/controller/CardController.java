@@ -42,7 +42,7 @@ public class CardController {
     public <UserCardInfo> ResponseEntity<ResponseWrapper<Void>> createCard(@AuthenticationPrincipal User user,
                                                                            @RequestBody CardRequestDto createCardInfo){
 
-        Map<String,Object> cardInfoMap = new HashMap<>();
+        Map<String, String> cardInfoMap = new HashMap<>();
         cardInfoMap.put("cardUniqueNo",createCardInfo.getCardUniqueNo());
         cardInfoMap.put("withdrawalAccountNo",createCardInfo.getWithdrawalAccountNo());
         cardInfoMap.put("withdrawalDate",createCardInfo.getWithdrawalDate());

@@ -71,7 +71,7 @@ public class CardTransactionService {
             String startDate,
             String endDate,
             User user
-    ) {
+    ) throws Exception {
 
         Card card = cardRepository.findByUserId(user.getUserId()).orElseThrow(CardNotFoundException::new);
 
@@ -120,7 +120,7 @@ public class CardTransactionService {
         );
     }
 
-    public MonthlyPaymentResponseDto getThisMonthPayment(User user) {
+    public MonthlyPaymentResponseDto getThisMonthPayment(User user) throws Exception {
         LocalDate now = LocalDate.now();
         // 'yyyyMMdd' 포맷으로 변환
         String startDate = now.withDayOfMonth(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
