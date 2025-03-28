@@ -7,11 +7,14 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.OAEPParameterSpec;
+import javax.crypto.spec.PSource;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
@@ -31,7 +34,8 @@ public class HybridDecryptor {
         //헤더 푸터 및 줄바꿈 제거
         keyPem = keyPem.replace("-----BEGIN PRIVATE KEY-----","")
                 .replace("-----END PRIVATE KEY-----","")
-                .replaceAll("\\s","");
+                .replaceAll("\\s", "");
+        ;
 
         byte[] keyBytes = Base64.getDecoder().decode(keyPem);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
@@ -49,7 +53,13 @@ public class HybridDecryptor {
 
         // RSA 복호화 - OAEP with SHA-256 알고리즘 사용
         Cipher rsaCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-        rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
+        OAEPParameterSpec oaepParams = new OAEPParameterSpec(
+                "SHA-256",
+                "MGF1",
+                MGF1ParameterSpec.SHA256,
+                PSource.PSpecified.DEFAULT
+        );
+        rsaCipher.init(Cipher.DECRYPT_MODE, privateKey, oaepParams);
         byte[] decryptedKeyAndIV = rsaCipher.doFinal(encryptedKeyBytes);
 
         // 프론트에서 "aesKeyHex:ivHex" 형식으로 보냄

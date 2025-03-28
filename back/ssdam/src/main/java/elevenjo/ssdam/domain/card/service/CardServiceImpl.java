@@ -8,6 +8,7 @@ import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
 import elevenjo.ssdam.domain.card.repository.CardRepository;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
+import elevenjo.ssdam.global.decrypt.HybridDecryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
+    private final HybridDecryptor hybridDecryptor;
 
     @Override
     public void registerUserCard(CardDto userCard) {
@@ -51,14 +53,15 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public CardDto getUserCard(long userId) {
+    public CardDto getUserCard(long userId) throws Exception{
         Optional<Card> userCard = cardRepository.findByUserId(userId);
         if (userCard.isEmpty()){
             throw new UserNotFoundException();
         }
+        HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.get().getKeyInfo());
         CardDto tmpUserCard = new CardDto();
-        tmpUserCard.setCardNo(userCard.get().getCardNo());
-        tmpUserCard.setCvc(userCard.get().getCvc());
+        tmpUserCard.setCardNo(hybridDecryptor.decryptWithAES(userCard.get().getCardNo() ,keyInfo));
+        tmpUserCard.setCvc(hybridDecryptor.decryptWithAES(userCard.get().getCvc() ,keyInfo));
         tmpUserCard.setUserId(userId);
         return tmpUserCard;
     }

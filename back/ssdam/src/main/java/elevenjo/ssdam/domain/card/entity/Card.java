@@ -22,11 +22,14 @@ public class Card extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
 
-    @Column(length = 16,unique = true, nullable = false)
+    @Column(length = 128,unique = true, nullable = false)
     private String cardNo;
 
-    @Column(length = 3, nullable = false)
+    @Column(length = 128, nullable = false)
     private String cvc;
+
+    @Column(length = 2048, nullable = false)
+    private String keyInfo;
 
     @OneToOne
     private User user;

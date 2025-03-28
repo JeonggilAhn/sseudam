@@ -1,5 +1,6 @@
 package elevenjo.ssdam.domain.card.controller;
 
+import elevenjo.ssdam.domain.card.dto.CardRequestDto;
 import elevenjo.ssdam.domain.card.exception.CardDuplicateException;
 import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
 import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
@@ -14,6 +15,8 @@ import elevenjo.ssdam.domain.card.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -36,11 +39,17 @@ public class CardController {
     };
 
     @PostMapping("/create")
-    public <UserCardInfo> ResponseEntity<ResponseWrapper<Void>> createCard(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> userCardInfo){
+    public <UserCardInfo> ResponseEntity<ResponseWrapper<Void>> createCard(@AuthenticationPrincipal User user,
+                                                                           @RequestBody CardRequestDto createCardInfo){
+
+        Map<String,Object> cardInfoMap = new HashMap<>();
+        cardInfoMap.put("cardUniqueNo",createCardInfo.getCardUniqueNo());
+        cardInfoMap.put("withdrawalAccountNo",createCardInfo.getWithdrawalAccountNo());
+        cardInfoMap.put("withdrawalDate",createCardInfo.getWithdrawalDate());
 
         try {
             externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/createCreditCard",
-                    "createCreditCard", "",userCardInfo,Map.class);
+                    "createCreditCard", "",cardInfoMap,Map.class);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
         }catch (RuntimeException e){
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
@@ -57,12 +66,13 @@ public class CardController {
         }
 
     };
+    // 테스트용
+//    @GetMapping("/list/{userId}")
+//    public ResponseEntity<CardDto> getCardList(@PathVariable long userId) throws Exception{
+//        CardDto userCard = cardService.getUserCard(userId);
+//        return ResponseEntity.ok(userCard);
+//    };
 
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<CardDto> getCardList(@PathVariable long userId){
-        CardDto userCard = cardService.getUserCard(userId);
-        return ResponseEntity.ok(userCard);
-    };
 
 
 }
