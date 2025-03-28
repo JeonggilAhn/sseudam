@@ -1,6 +1,7 @@
 package elevenjo.ssdam.domain.coupon.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.global.jpa.base.BaseTimeEntity;
@@ -29,13 +30,13 @@ public class Coupon extends BaseTimeEntity {
 
     private Integer couponCnt;
 
-    private LocalDate couponDeadline;
+    private LocalDateTime couponDeadline;
 
     @ManyToOne
     private Saving saving;
 
     @Builder
-    public Coupon(String couponName, Integer couponCnt, LocalDate couponDeadline, Saving saving) {
+    public Coupon(String couponName, Integer couponCnt, LocalDateTime couponDeadline, Saving saving) {
         this.couponName = couponName;
         this.couponCnt = couponCnt;
         this.couponDeadline = couponDeadline;

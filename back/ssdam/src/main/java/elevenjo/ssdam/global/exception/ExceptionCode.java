@@ -18,8 +18,10 @@ public enum ExceptionCode implements ResponseCode {
 	USER_ALREADY_EXISTS("user-400-1", "이미 존재하는 사용자입니다", HttpStatus.BAD_REQUEST),
 
 	// Card
-	CARD_NOT_FOUND("card-401-1", "해당 카드를 찾을 수 없습니다.", HttpStatus.UNAUTHORIZED);
+	CARD_NOT_FOUND("card-401-1", "해당 카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
+	// Saving
+	SAVING_NOT_FOUND("saving-401-1", "해당 저축상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
 
 	private String code;
 	private String message;
