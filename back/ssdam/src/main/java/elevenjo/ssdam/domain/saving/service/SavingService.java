@@ -9,6 +9,7 @@ import elevenjo.ssdam.domain.saving.repository.SavingRepository;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,11 +39,19 @@ public class SavingService {
 
         return switch (sort) {
             case "views" -> savingRepository.findAllByOrderByViewsDesc(pageable);
-            case "interest" -> savingRepository.findAllByOrderByMaxIntRateDesc(pageable);
-            case "likes" -> savingRepository.findAllOrderByLikes(pageable);
+            case "maxIntRate" -> savingRepository.findAllByOrderByMaxIntRateDesc(pageable);
+            case "likes" -> {
+                // 정렬 정보 제거해서 넘겨야 에러 안 남
+                Pageable noSortPageable = PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize()
+                );
+                yield savingRepository.findAllOrderByLikes(noSortPageable);
+            }
             default -> savingRepository.findAll(pageable);
         };
     }
+
 
     @Transactional
     public Saving getSavingDetail(Long savingId) {

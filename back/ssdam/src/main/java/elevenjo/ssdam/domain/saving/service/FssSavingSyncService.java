@@ -64,9 +64,12 @@ public class FssSavingSyncService {
                 .toList();
 
         // 8. 삭제 대상
+        // 8. 삭제 대상 (싸피은행 제외)
         List<Saving> toDelete = existingList.stream()
                 .filter(s -> !newKeys.contains(s.getFinCoNo() + "_" + s.getFinPrdtCd()))
+                .filter(s -> !s.getFinCoNo().equals("999"))  // 싸피은행 제외
                 .toList();
+
 
         // 9. DB 반영
         savingRepository.saveAll(toAdd);

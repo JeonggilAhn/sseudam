@@ -35,6 +35,7 @@ public class SavingController {
             Pageable pageable
     ) {
         Page<Saving> page = savingService.getAllSavings(keyword, sort, pageable);
+
         Page<SavingCardResponseDto> response = page.map(saving -> {
             Long likeCount = likeSavingService.countLikes(saving.getSavingId());
             return new SavingCardResponseDto(
@@ -45,12 +46,13 @@ public class SavingController {
                     saving.getMaxIntRate(),
                     saving.getViews(),
                     likeCount,
-                    false // 로그인 기능 붙이면 수정 예정
+                    false // 로그인 붙이면 수정
             );
         });
 
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
 
     // 2. 적금 상세 조회
     @GetMapping("/{savingId}")
