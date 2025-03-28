@@ -1,11 +1,12 @@
 package elevenjo.ssdam.global.externalApi;
 
-import elevenjo.ssdam.domain.user.entity.User;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import elevenjo.ssdam.global.externalApi.dto.ApiRequest;
 import elevenjo.ssdam.global.externalApi.dto.HeaderRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,15 +15,18 @@ import java.util.Map;
 @Component
 public class ExternalApiUtil {
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     @Value("${ssafy-api-key}")
     private String ssafyApiKey;
 
     @Autowired
     public ExternalApiUtil(
-            RestTemplate restTemplate
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper
     ) {
         this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
     }
 
     public <T> T post(String uri, Object body, Class<T> responseType) {
@@ -50,4 +54,22 @@ public class ExternalApiUtil {
 
         return restTemplate.postForObject(uri, request, responseType);
     }
+
+    public <R, T> R postWithHeader(
+            String uri,
+            String apiName,
+            String userKey,
+            T dto,
+            Class<R> responseType
+    ) {
+        Map<String, String> body = convertDtoToMap(dto);
+        return postWithHeader(uri, apiName, userKey, body, responseType);
+    }
+
+    public Map<String, String> convertDtoToMap(Object dto) {
+        return objectMapper
+                .setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
+                .convertValue(dto, new TypeReference<Map<String, String>>() {});
+    }
+
 }
