@@ -14,4 +14,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
         SELECT c FROM Card c where c.user.userId = :userId
     """)
     Optional<Card> findByUserId(Long userId);
+    boolean existsByCardNo(String cardNo);
 }

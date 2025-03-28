@@ -38,7 +38,7 @@ public class CardTransactionController {
         @RequestParam(value = "start_date") String startDate,
         @RequestParam(value = "end_date") String endDate,
         @AuthenticationPrincipal User user
-    ) {
+    ) throws Exception {
         CardTransactionListResponseDto responseDto =
             cardTransactionService.inquireCardTransactions(startDate, endDate, user);
 
@@ -48,7 +48,7 @@ public class CardTransactionController {
     @GetMapping("/card-transactions/this-month")
     public ResponseEntity<ResponseWrapper<MonthlyPaymentResponseDto>> getThisMonthPayment(
         @AuthenticationPrincipal User user
-    ) {
+    ) throws Exception {
         MonthlyPaymentResponseDto responseDto = cardTransactionService.getThisMonthPayment(user);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
     }

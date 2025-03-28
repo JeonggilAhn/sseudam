@@ -20,13 +20,16 @@ public class Card extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CardId;
+    private Long cardId;
 
-    @Column(length = 16,unique = true, nullable = false)
+    @Column(length = 128,unique = true, nullable = false)
     private String cardNo;
 
-    @Column(length = 3, nullable = false)
+    @Column(length = 128, nullable = false)
     private String cvc;
+
+    @Column(length = 2048, nullable = false)
+    private String keyInfo;
 
     @OneToOne
     private User user;
