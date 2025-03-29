@@ -24,7 +24,7 @@ public class CouponController {
 
     private final CouponService couponService;
 
-    @PostMapping("/coupon/create")
+    @PostMapping("/coupons/create")
     public ResponseEntity<ResponseWrapper<CouponCreateResponseDto>> createCoupon(
         @RequestBody CouponCreateRequestDto requestDto
     ){
@@ -34,7 +34,7 @@ public class CouponController {
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
     }
 
-    @PostMapping("/coupon/issue")
+    @PostMapping("/coupons/issue")
     public ResponseEntity<ResponseWrapper<CouponIssueResponseDto>> issueCoupon(
             @RequestBody CouponIssueRequestDto requestDto,
             @AuthenticationPrincipal User user
