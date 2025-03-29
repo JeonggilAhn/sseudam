@@ -3,6 +3,7 @@ package elevenjo.ssdam.domain.coupon.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import elevenjo.ssdam.domain.coupon.exception.CouponOutOfStockException;
 import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.global.jpa.base.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -41,5 +42,18 @@ public class Coupon extends BaseTimeEntity {
         this.couponCnt = couponCnt;
         this.couponDeadline = couponDeadline;
         this.saving = saving;
+    }
+
+    public void decreaseCouponCnt() {
+        // 무제한 쿠폰
+        if (this.couponCnt == null) {
+            return;
+        }
+
+        if (this.couponCnt <= 0) {
+            throw new CouponOutOfStockException();
+        }
+
+        this.couponCnt--;
     }
 }

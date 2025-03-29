@@ -39,4 +39,12 @@ public class CouponIssued extends BaseTimeEntity {
         this.user = user;
         this.coupon = coupon;
     }
+
+    public static CouponIssued of(User user, Coupon coupon) {
+        return CouponIssued.builder()
+                .usedAt(null)
+                .user(user)
+                .coupon(coupon)
+                .build();
+    }
 }

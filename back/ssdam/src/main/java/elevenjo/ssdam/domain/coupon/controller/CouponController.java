@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import elevenjo.ssdam.domain.coupon.dto.request.CouponCreateRequestDto;
+import elevenjo.ssdam.domain.coupon.dto.request.CouponIssueRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponCreateResponseDto;
+import elevenjo.ssdam.domain.coupon.dto.response.CouponIssueResponseDto;
 import elevenjo.ssdam.domain.coupon.entity.Coupon;
 import elevenjo.ssdam.domain.coupon.service.CouponService;
 import elevenjo.ssdam.domain.user.entity.User;
@@ -31,4 +33,14 @@ public class CouponController {
 
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, responseDto);
     }
+
+    @PostMapping("/coupon/issue")
+    public ResponseEntity<ResponseWrapper<CouponIssueResponseDto>> issueCoupon(
+            @RequestBody CouponIssueRequestDto requestDto,
+            @AuthenticationPrincipal User user
+    ){
+        CouponIssueResponseDto response = couponService.issueCoupon(requestDto, user);
+        return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, response);
+    }
+
 }
