@@ -3,8 +3,8 @@ package elevenjo.ssdam.domain.coupon.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import elevenjo.ssdam.domain.coupon.entity.Coupon;
+import elevenjo.ssdam.domain.coupon.entity.CouponIssued;
 
 @Repository
-public interface CouponIssuedRepository extends JpaRepository<Coupon, Long> {
+public interface CouponIssuedRepository extends JpaRepository<CouponIssued, Long> {
 }
