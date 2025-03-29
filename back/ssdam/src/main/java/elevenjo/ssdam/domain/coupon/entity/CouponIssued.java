@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.jpa.base.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,9 @@ public class CouponIssued extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long couponIssuedId;
 
+    @Column(nullable = false)
+    private Boolean isUsed;
+
     private LocalDateTime usedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +39,7 @@ public class CouponIssued extends BaseTimeEntity {
 
     @Builder
     public CouponIssued(LocalDateTime usedAt, User user, Coupon coupon) {
+        this.isUsed = false;
         this.usedAt = usedAt;
         this.user = user;
         this.coupon = coupon;
