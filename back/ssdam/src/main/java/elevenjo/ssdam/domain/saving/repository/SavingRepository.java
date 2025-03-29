@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package elevenjo.ssdam.domain.saving.repository;
 
 import elevenjo.ssdam.domain.saving.entity.Saving;
@@ -37,13 +36,3 @@ public interface SavingRepository extends JpaRepository<Saving, Long> {
             nativeQuery = true)
     Page<Saving> findAllOrderByLikes(Pageable pageable);
 }
-=======
-package elevenjo.ssdam.domain.saving.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import elevenjo.ssdam.domain.saving.entity.Saving;
-
-public interface SavingRepository extends JpaRepository<Saving, Long> {
-}
->>>>>>> ed947f0 (✨ feat : 쿠폰 생성 api 구현 #S12P21A106-347)
