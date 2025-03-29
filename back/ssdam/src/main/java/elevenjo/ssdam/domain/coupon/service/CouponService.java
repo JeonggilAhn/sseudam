@@ -72,7 +72,7 @@ public class CouponService {
     }
 
     private void validateCouponNotAlreadyIssued(Coupon coupon, User user) {
-        if (couponIssuedRepository.existsByCouponId(coupon, user)) {
+        if (couponIssuedRepository.existsByCouponAndUser(coupon, user)) {
             throw new CouponAlreadyIssuedException();
         }
     }
