@@ -11,6 +11,7 @@ import elevenjo.ssdam.domain.coupon.dto.response.CouponCreateResponseDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponIssueResponseDto;
 import elevenjo.ssdam.domain.coupon.entity.Coupon;
 import elevenjo.ssdam.domain.coupon.entity.CouponIssued;
+import elevenjo.ssdam.domain.coupon.exception.CouponAlreadyIssuedException;
 import elevenjo.ssdam.domain.coupon.exception.CouponExpiredException;
 import elevenjo.ssdam.domain.coupon.exception.CouponNotFoundException;
 import elevenjo.ssdam.domain.coupon.exception.CouponOutOfStockException;
@@ -48,6 +49,7 @@ public class CouponService {
 
         validateCouponNotExpired(coupon);
         validateCouponStockAvailable(coupon);
+        validateCouponNotAlreadyIssued(coupon, user);
 
         coupon.decreaseCouponCnt();
 
@@ -66,6 +68,12 @@ public class CouponService {
     private void validateCouponStockAvailable(Coupon coupon) {
         if (coupon.getCouponCnt() == null || coupon.getCouponCnt() <= 0) {
             throw new CouponOutOfStockException();
+        }
+    }
+
+    private void validateCouponNotAlreadyIssued(Coupon coupon, User user) {
+        if (couponIssuedRepository.existsByCouponId(coupon, user)) {
+            throw new CouponAlreadyIssuedException();
         }
     }
 
