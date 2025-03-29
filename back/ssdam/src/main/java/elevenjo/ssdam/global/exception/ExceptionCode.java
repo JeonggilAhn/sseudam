@@ -26,8 +26,8 @@ public enum ExceptionCode implements ResponseCode {
 	// Coupon
 	COUPON_NOT_FOUND("coupon-401-1", "해당 쿠폰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 	COUPON_EXPIRED("coupon-401-2", "쿠폰의 유효기간이 만료되었습니다.", HttpStatus.BAD_REQUEST),
-	COUPON_OUT_OF_STOCK("coupon-401-3", "쿠폰 재고가 부족합니다.", HttpStatus.BAD_REQUEST);
-
+	COUPON_OUT_OF_STOCK("coupon-401-3", "쿠폰 재고가 부족합니다.", HttpStatus.BAD_REQUEST),
+	COUPON_ALREADY_ISSUED("coupon-401-4", "해당 쿠폰은 이미 발급받았습니다.", HttpStatus.BAD_REQUEST);
 
 
 
