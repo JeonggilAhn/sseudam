@@ -9,5 +9,6 @@ import elevenjo.ssdam.domain.user.entity.User;
 
 @Repository
 public interface CouponIssuedRepository extends JpaRepository<CouponIssued, Long> {
-    boolean existsByCouponId(Coupon coupon, User user);
+    boolean existsByCouponAndUser(Coupon coupon, User user);
+
 }
