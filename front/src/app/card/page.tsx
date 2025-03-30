@@ -45,7 +45,9 @@ const MainPage = () => {
   useEffect(() => {
     const fetchCardInfo = async (userId: number) => {
       const cardInfo = await getCardInfo(userId);
-      setCard(cardInfo);
+      if (cardInfo) {
+        setCard(cardInfo);
+      }
     };
     dispatch(resetIsModalOpen());
     dispatch(
@@ -73,7 +75,7 @@ const MainPage = () => {
     fetchCardInfo(1);
   }, []);
 
-  const [card, setCard] = useState<Card>();
+  const [card, setCard] = useState(null);
 
   return (
     <div
@@ -118,7 +120,7 @@ const MainPage = () => {
           <div className="flex-1 flex flex-col justify-end h-2/3">
             {/* 카드 섹션 */}
             <div className="mb-8 flex justify-center items-center overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
-              {cardList.length === 0 ? (
+              {card === null ? (
                 <div
                   onClick={() => dispatch(toggleIsModalOpen())}
                   className="cursor-pointer min-w-[290px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
@@ -127,16 +129,13 @@ const MainPage = () => {
                 </div>
               ) : (
                 <div className="">
-                  {cardList.map((card, index) => (
-                    <Cards
-                      key={index}
-                      number={card.cardNo}
-                      expiry={card.expirationDate}
-                      cvc={""}
-                      name={"유저명"}
-                      focused={""}
-                    />
-                  ))}
+                  <Cards
+                    number={""}
+                    expiry={""}
+                    cvc={""}
+                    name={"유저명"}
+                    focused={""}
+                  />
                 </div>
               )}
             </div>

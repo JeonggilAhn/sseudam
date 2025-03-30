@@ -27,7 +27,7 @@ const CardRegist = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // 여기에 카드 등록 로직 추가
-    alert("카드가 등록되었습니다!");
+
     dispatch(toggleIsModalOpen());
   };
 
