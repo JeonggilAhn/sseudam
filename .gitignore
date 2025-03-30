@@ -3,3 +3,4 @@ package-lock.json
 
 # Environment variables
 .env
+.idea/
