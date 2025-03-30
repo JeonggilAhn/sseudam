@@ -68,11 +68,9 @@ public class CardController {
     };
 
     @GetMapping("/{userId}")
-    public ResponseEntity<CardDto> getCardList(@PathVariable long userId) throws Exception{
-        CardDto userCard = cardService.getUserCard(userId);
+    public ResponseEntity<String[]> getCardNumber(@PathVariable long userId) throws Exception{
+        String[] userCard = cardService.getUserCard(userId);
         return ResponseEntity.ok(userCard);
     };
-
-
 
 }
