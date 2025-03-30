@@ -66,12 +66,12 @@ public class CardController {
         }
 
     };
-    // 테스트용
-//    @GetMapping("/list/{userId}")
-//    public ResponseEntity<CardDto> getCardList(@PathVariable long userId) throws Exception{
-//        CardDto userCard = cardService.getUserCard(userId);
-//        return ResponseEntity.ok(userCard);
-//    };
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<CardDto> getCardList(@PathVariable long userId) throws Exception{
+        CardDto userCard = cardService.getUserCard(userId);
+        return ResponseEntity.ok(userCard);
+    };
 
 
 
