@@ -86,7 +86,9 @@ const CouponPage = () => {
             <ArrowLeft size={24} />
             <span className="font-medium">뒤로가기</span>
           </button>
-          <h1 className="text-xl font-bold text-center">쿠폰 상세정보</h1>
+          <h1 className="text-xl text-gray-500 font-bold text-center">
+            쿠폰 상세정보
+          </h1>
           <div className="w-[72px]"></div>
         </div>
       </div>
@@ -102,7 +104,7 @@ const CouponPage = () => {
                   <h2 className="text-white text-2xl font-bold">
                     {currentCoupon?.couponName}
                   </h2>
-                  <p className="text-white/80 mt-1">
+                  <p className="text-white mt-1">
                     유효기간: {currentCoupon?.couponDeadline}
                   </p>
                 </div>
@@ -134,7 +136,9 @@ const CouponPage = () => {
 
           {/* 쿠폰 세부 정보 */}
           <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6 space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">쿠폰 정보</h3>
+            <h3 className="text-lg font-semibold border-b pb-2 text-gray-500">
+              쿠폰 정보
+            </h3>
 
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -153,13 +157,12 @@ const CouponPage = () => {
 
           {/* 쿠폰 사용 방법 */}
           <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6 space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">사용 방법</h3>
+            <h3 className="text-lg font-semibold border-b pb-2 text-gray-500">
+              사용 방법
+            </h3>
 
-            <ol className="list-decimal pl-5 space-y-2">
-              <li>쿠폰 사용하기 버튼을 누르세요.</li>
-              <li>발급된 쿠폰 코드를 매장 직원에게 보여주세요.</li>
-              <li>해당 코드로 적립금이 자동으로 등록됩니다.</li>
-              <li>적립된 금액은 계좌에서 확인 가능합니다.</li>
+            <ol className="list-decimal pl-5 space-y-2 text-gray-500">
+              <li>'적금상품으로 이동하기' 버튼을 눌러주세요.</li>
             </ol>
           </div>
         </div>

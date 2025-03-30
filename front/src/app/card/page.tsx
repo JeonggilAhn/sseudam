@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import CloudInfo from "./components/cloudInfo";
 import { useRouter } from "next/navigation";
+import { getCardInfo } from "./api/getCard";
 
 import Image from "next/image";
 
@@ -26,9 +27,7 @@ import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
 
 export interface Card {
-  cardIssuerName: string;
   cardNo: string;
-  expirationDate: string;
 }
 
 export interface Coupon {
@@ -44,6 +43,10 @@ const MainPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const fetchCardInfo = async (userId: number) => {
+      const cardInfo = await getCardInfo(userId);
+      setCard(cardInfo);
+    };
     dispatch(resetIsModalOpen());
     dispatch(
       setUserCouponList([
@@ -65,51 +68,12 @@ const MainPage = () => {
           couponDeadline: "2025-12-31",
           savingId: 103,
         },
-        {
-          couponId: 3,
-          couponName: "최종 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-        },
-        {
-          couponId: 3,
-          couponName: "최종 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-        },
-        {
-          couponId: 3,
-          couponName: "최종 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-        },
-        {
-          couponId: 3,
-          couponName: "ㄹㅇ 최종 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-        },
       ])
     );
+    fetchCardInfo(1);
   }, []);
 
-  const [cardList] = useState<Card[]>([
-    {
-      cardIssuerName: "삼성카드",
-      cardNo: "1234567890123456",
-      expirationDate: "12/25",
-    },
-    {
-      cardIssuerName: "신한카드",
-      cardNo: "1234567890123456",
-      expirationDate: "12/25",
-    },
-    {
-      cardIssuerName: "하나카드",
-      cardNo: "1234567890123456",
-      expirationDate: "12/25",
-    },
-  ]);
+  const [card, setCard] = useState<Card>();
 
   return (
     <div
@@ -153,23 +117,28 @@ const MainPage = () => {
           {/* 상단 여백 */}
           <div className="flex-1 flex flex-col justify-end h-2/3">
             {/* 카드 섹션 */}
-            <div className="mb-8 flex overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
-              {cardList.map((card, index) => (
-                <Cards
-                  key={index}
-                  number={card.cardNo}
-                  expiry={card.expirationDate}
-                  cvc={""}
-                  name={"유저명"}
-                  focused={""}
-                />
-              ))}
-              <div
-                onClick={() => dispatch(toggleIsModalOpen())}
-                className="cursor-pointer min-w-[84px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
-              >
-                <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
-              </div>
+            <div className="mb-8 flex justify-center items-center overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
+              {cardList.length === 0 ? (
+                <div
+                  onClick={() => dispatch(toggleIsModalOpen())}
+                  className="cursor-pointer min-w-[290px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
+                >
+                  <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
+                </div>
+              ) : (
+                <div className="">
+                  {cardList.map((card, index) => (
+                    <Cards
+                      key={index}
+                      number={card.cardNo}
+                      expiry={card.expirationDate}
+                      cvc={""}
+                      name={"유저명"}
+                      focused={""}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 쿠폰 섹션 */}
