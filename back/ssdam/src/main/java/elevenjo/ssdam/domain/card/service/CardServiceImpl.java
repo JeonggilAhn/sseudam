@@ -71,19 +71,16 @@ public class CardServiceImpl implements CardService {
         cardRepository.deleteById(cardId);
     }
 
-
-
     @Override
-    public CardDto getUserCard(long userId) throws Exception{
+    public String[] getUserCard(long userId) throws Exception{
         Optional<Card> userCard = cardRepository.findByUserId(userId);
         if (userCard.isEmpty()){
-            throw new UserNotFoundException();
+            throw new CardNotFoundException();
         }
         HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.get().getKeyInfo());
-        CardDto tmpUserCard = new CardDto();
-        tmpUserCard.setCardNo(hybridDecryptor.decryptWithAES(userCard.get().getCardNo() ,keyInfo));
-        tmpUserCard.setCvc(hybridDecryptor.decryptWithAES(userCard.get().getCvc() ,keyInfo));
-        tmpUserCard.setUserId(userId);
-        return tmpUserCard;
+        String cardNo = hybridDecryptor.decryptWithAES(userCard.get().getCardNo() ,keyInfo).replaceAll("[^0-9]+","");
+        String first2Digit = cardNo.substring(0,2);
+        String last4Digit = cardNo.substring(cardNo.length()-4);
+        return new String[] {first2Digit, last4Digit};
     }
 }
