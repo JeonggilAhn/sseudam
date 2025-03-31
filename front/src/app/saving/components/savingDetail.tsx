@@ -84,7 +84,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         </button>
 
         <div className="flex items-center justify-center mb-4">
-          <Icon name={getBankIconName(saving.fin_co_nm)} width={120} height={40} />
+          <Icon name={getBankIconName(saving.fin_prdt_cd)} width={80} height={20} />
         </div>
 
         <div className="text-center">

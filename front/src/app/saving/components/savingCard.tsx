@@ -15,12 +15,12 @@ type Props = {
 const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
   return (
     <div className="bg-white rounded-xl border border-[#0074D9] px-4 py-3 shadow flex items-center justify-between mb-4 w-[95%] max-w-[420px] mx-auto">
-      <div className="flex items-center gap-2 min-w-[100px]">
+      <div className="flex items-center justify-center min-w-[120px] max-w-[120px]">
         <Icon name={getBankIconName(saving.fin_co_nm)} width={120} height={40} />
       </div>
 
       <div className="flex flex-col items-center text-center flex-1">
-        <div className="font-bold text-lg">{saving.fin_prdt_nm}</div>
+        <div className="font-bold text-md">{saving.fin_prdt_nm}</div>
         <div className="text-sm">
           {saving.min_int_rate / 100}% ~ {saving.max_int_rate / 100}%
         </div>
