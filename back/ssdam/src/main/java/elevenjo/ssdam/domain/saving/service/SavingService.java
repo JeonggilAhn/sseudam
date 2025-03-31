@@ -90,15 +90,6 @@ public class SavingService {
         body.put("depositBalance", requestDto.getDepositBalance());
         body.put("withdrawalAccountNo", requestDto.getWithdrawalAccountNo());
 
-        System.out.println("====== [적금 개설 요청 바디] ======");
-        System.out.println("userKey: " + userKey);
-        System.out.println("accountTypeUniqueNo: " + accountTypeUniqueNo);
-        System.out.println("depositBalance: " + requestDto.getDepositBalance());
-        System.out.println("withdrawalAccountNo: " + requestDto.getWithdrawalAccountNo());
-        System.out.println("=================================");
-
-
-
         return externalApiUtil.postWithHeader(
                 "https://finopenapi.ssafy.io/ssafy/api/v1/edu/savings/createAccount",
                 "createAccount",
