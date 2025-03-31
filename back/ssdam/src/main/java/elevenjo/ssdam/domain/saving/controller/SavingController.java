@@ -34,7 +34,7 @@ public class SavingController {
     @GetMapping
     public ResponseEntity<ResponseWrapper<Page<SavingCardResponseDto>>> getAllSavings(
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false, defaultValue = "views") String sort,
+            @RequestParam(required = false) String sort,
             Pageable pageable
     ) {
         Page<Saving> page = savingService.getAllSavings(keyword, sort, pageable);
