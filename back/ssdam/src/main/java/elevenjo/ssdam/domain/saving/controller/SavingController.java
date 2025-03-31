@@ -30,7 +30,7 @@ public class SavingController {
     private final LikeSavingService likeSavingService;
     private final FssSavingSyncService syncService;
 
-    // 1. 적금 목록 조회 (검색 + 정렬 + 페이징)
+    // 1. 적금 목록 조회 (정렬 + 검색)
     @GetMapping
     public ResponseEntity<ResponseWrapper<Page<SavingCardResponseDto>>> getAllSavings(
             @RequestParam(required = false) String keyword,
@@ -49,13 +49,12 @@ public class SavingController {
                     saving.getMaxIntRate(),
                     saving.getViews(),
                     likeCount,
-                    false // 로그인 붙이면 수정
+                    false // 로그인 시 liked 처리
             );
         });
 
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
-
 
     // 2. 적금 상세 조회
     @GetMapping("/{savingId}")
@@ -83,31 +82,24 @@ public class SavingController {
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
 
-    // 3. 외부 API 기반 적금 데이터 동기화
+    // 3. 외부 API 적금 동기화
     @PostMapping("/sync")
     public ResponseEntity<ResponseWrapper<Void>> syncSavings() {
         syncService.syncSavingsFromOpenApi();
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, new HttpHeaders(), null);
     }
 
-    // 4. 적금 개설
+    // 4. 적금 가입
     @PostMapping("/{savingId}")
     public ResponseEntity<ResponseWrapper<OpenSavingResponseDto>> openSaving(
             @PathVariable Long savingId,
             @AuthenticationPrincipal CustomOAuth2User oAuthUser,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        User user = oAuthUser.getUser();               // 로그인한 유저 객체
-        String userKey = user.getUserKey();            // userKey 꺼내기
+        User user = oAuthUser.getUser();
+        String userKey = user.getUserKey();
 
-        OpenSavingResponseDto response = savingService.openSaving(
-                savingId,
-                requestDto,
-                userKey
-        );
-
+        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
-
-
 }
