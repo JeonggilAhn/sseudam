@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,33 +25,26 @@ public class SavingService {
     private final FssSavingSyncService syncService;
     private final ExternalApiUtil externalApiUtil;
 
-
-    public void syncSavingsFromOpenApi() {
-        syncService.syncSavingsFromOpenApi();
-    }
-
-    // 적금 전체 조회 (검색 + 정렬 + 페이징)
+    // 검색 + 정렬 분기 처리
     @Transactional(readOnly = true)
     public Page<Saving> getAllSavings(String keyword, String sort, Pageable pageable) {
-        if (keyword != null && !keyword.isBlank()) {
-            return savingRepository.findByFinPrdtNmContainingIgnoreCase(keyword, pageable);
+        boolean hasKeyword = keyword != null && !keyword.isBlank();
+
+        if (hasKeyword) {
+            String keywordNoSpace = keyword.replace(" ", "");
+            Pageable noSortPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            return savingRepository.searchByKeyword(keywordNoSpace, noSortPageable);
         }
 
         return switch (sort) {
-            case "views" -> savingRepository.findAllByOrderByViewsDesc(pageable);
             case "maxIntRate" -> savingRepository.findAllByOrderByMaxIntRateDesc(pageable);
             case "likes" -> {
-                // 정렬 정보 제거해서 넘겨야 에러 안 남
-                Pageable noSortPageable = PageRequest.of(
-                        pageable.getPageNumber(),
-                        pageable.getPageSize()
-                );
+                Pageable noSortPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
                 yield savingRepository.findAllOrderByLikes(noSortPageable);
             }
-            default -> savingRepository.findAll(pageable);
+            default -> savingRepository.findAllByOrderByViewsDesc(pageable);
         };
     }
-
 
     @Transactional
     public Saving getSavingDetail(Long savingId) {
@@ -64,20 +56,6 @@ public class SavingService {
     @Transactional(readOnly = true)
     public Saving getSavingForOpen(Long savingId) {
         return getSavingById(savingId);
-    }
-
-    @Transactional
-    public void registerSavingsFromApi(List<ProductDto> productDtos, Map<String, String> finCoUrlMap) {
-        List<Saving> savings = productDtos.stream()
-                .map(dto -> dto.toEntity(finCoUrlMap.getOrDefault(dto.getFinCoNo(), null)))
-                .toList();
-
-        savingRepository.saveAll(savings);
-    }
-
-    private Saving getSavingById(Long savingId) {
-        return savingRepository.findById(savingId)
-                .orElseThrow(SavingNotFoundException::new);
     }
 
     @Transactional
@@ -95,10 +73,24 @@ public class SavingService {
                 "createAccount",
                 userKey,
                 body,
-                OpenSavingApiResponse.class // 전체 응답을 받아올 클래스
-        ).getRec(); //
+                OpenSavingApiResponse.class
+        ).getRec();
 
     }
 
+    public void syncSavingsFromOpenApi() {
+        syncService.syncSavingsFromOpenApi();
+    }
 
+    public void registerSavingsFromApi(List<ProductDto> productDtos, Map<String, String> finCoUrlMap) {
+        List<Saving> savings = productDtos.stream()
+                .map(dto -> dto.toEntity(finCoUrlMap.getOrDefault(dto.getFinCoNo(), null)))
+                .toList();
+        savingRepository.saveAll(savings);
+    }
+
+    private Saving getSavingById(Long savingId) {
+        return savingRepository.findById(savingId)
+                .orElseThrow(SavingNotFoundException::new);
+    }
 }
