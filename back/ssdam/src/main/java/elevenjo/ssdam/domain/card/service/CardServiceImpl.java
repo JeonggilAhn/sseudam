@@ -1,18 +1,24 @@
 package elevenjo.ssdam.domain.card.service;
 
 import elevenjo.ssdam.domain.card.dto.CardDto;
+import elevenjo.ssdam.domain.card.dto.CardResponseDto;
 import elevenjo.ssdam.domain.card.entity.Card;
 import elevenjo.ssdam.domain.card.exception.CardDuplicateException;
 import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
+import elevenjo.ssdam.domain.card.exception.CardUserMismatchException;
 import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
 import elevenjo.ssdam.domain.card.repository.CardRepository;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.decrypt.HybridDecryptor;
+import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,47 +28,63 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final HybridDecryptor hybridDecryptor;
+    private final ExternalApiUtil externalApiUtil;
 
     @Override
-    public void registerUserCard(CardDto userCard) {
-        System.out.println(userCard.getUserId());
-        System.out.println(userCard.getCardNo());
-        System.out.println(userCard.getCvc());
-        User user = userRepository.findById(userCard.getUserId())
+    public void registerUserCard(CardDto userCard) throws Exception {
+        boolean isCardExist = false;
+        Map<String, String> map = new HashMap<>();
+        String userKey = userRepository.findById(userCard.getUserId()).get().getUserKey();
+
+        HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.getKeyInfo());
+        String cardNo = hybridDecryptor.decryptWithAES(userCard.getCardNo(), keyInfo);
+        String cvc = hybridDecryptor.decryptWithAES(userCard.getCvc(), keyInfo);
+
+        CardResponseDto response = externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireSignUpCreditCardList","inquireSignUpCreditCardList",
+                userKey,map, CardResponseDto.class);
+        for (int i = 0; i < response.rec().size(); i++) {
+            if(response.rec().get(i).cardNo().equals(cardNo) && response.rec().get(i).cvc().equals(cvc)) {
+                isCardExist = true;
+            }else{
+                throw new CardUserMismatchException();
+            }
+        }
+
+        if (isCardExist) {
+            User user = userRepository.findById(userCard.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Card card = Card.builder().cardNo(userCard.getCardNo())
-                .cvc(userCard.getCvc()).user(user).build();
+            Card card = Card.builder().cardNo(userCard.getCardNo())
+                    .cvc(userCard.getCvc()).keyInfo(userCard.getKeyInfo()).user(user).build();
 
-        if (!cardRepository.existsByCardNo(userCard.getCardNo())){
-            cardRepository.save(card);
-        }else{
-            throw new CardDuplicateException();
+            if (!cardRepository.existsByCardNo(userCard.getCardNo())){
+                cardRepository.save(card);
+            }else{
+                throw new CardDuplicateException();
+            }
         }
-
     }
 
+    @Transactional
     @Override
-    public void deleteUserCard(Long cardId) {
-        if (!cardRepository.findById(cardId).isPresent()){
+    public void deleteUserCard(Long userId) {
+        if (!cardRepository.findByUserId(userId).isPresent()) {
+            System.out.println("No card found: " + userId);
             throw new CardNotFoundException();
         };
-        cardRepository.deleteById(cardId);
+        cardRepository.deleteByUserId(userId);
     }
 
-
-
     @Override
-    public CardDto getUserCard(long userId) throws Exception{
+    public String[] getUserCard(long userId) throws Exception{
         Optional<Card> userCard = cardRepository.findByUserId(userId);
         if (userCard.isEmpty()){
-            throw new UserNotFoundException();
+            throw new CardNotFoundException();
         }
         HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.get().getKeyInfo());
-        CardDto tmpUserCard = new CardDto();
-        tmpUserCard.setCardNo(hybridDecryptor.decryptWithAES(userCard.get().getCardNo() ,keyInfo));
-        tmpUserCard.setCvc(hybridDecryptor.decryptWithAES(userCard.get().getCvc() ,keyInfo));
-        tmpUserCard.setUserId(userId);
-        return tmpUserCard;
+        String cardNo = hybridDecryptor.decryptWithAES(userCard.get().getCardNo() ,keyInfo).replaceAll("[^0-9]+","");
+        String first2Digit = cardNo.substring(0,2);
+        String last4Digit = cardNo.substring(cardNo.length()-4);
+        return new String[] {first2Digit, last4Digit};
     }
 }

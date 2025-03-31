@@ -27,7 +27,7 @@ public class CardController {
     private final ExternalApiUtil externalApiUtil;
 
     @PostMapping("/")
-    public ResponseEntity<ResponseWrapper<Void>> registerCard(@RequestBody CardDto card){
+    public ResponseEntity<ResponseWrapper<Void>> registerCard(@RequestBody CardDto card) throws Exception {
         try {
             cardService.registerUserCard(card);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
@@ -56,23 +56,21 @@ public class CardController {
         }
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<ResponseWrapper<Void>> deleteCard(@RequestBody long cardId){
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ResponseWrapper<Void>> deleteCard(@PathVariable long userId){
         try {
-            cardService.deleteUserCard(cardId);
+            cardService.deleteUserCard(userId);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
         } catch (CardNotFoundException e) {
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
         }
 
     };
-    // 테스트용
-//    @GetMapping("/list/{userId}")
-//    public ResponseEntity<CardDto> getCardList(@PathVariable long userId) throws Exception{
-//        CardDto userCard = cardService.getUserCard(userId);
-//        return ResponseEntity.ok(userCard);
-//    };
 
-
+    @GetMapping("/{userId}")
+    public ResponseEntity<String[]> getCardNumber(@PathVariable long userId) throws Exception{
+        String[] userCard = cardService.getUserCard(userId);
+        return ResponseEntity.ok(userCard);
+    };
 
 }

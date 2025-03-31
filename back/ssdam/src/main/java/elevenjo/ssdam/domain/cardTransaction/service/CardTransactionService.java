@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import elevenjo.ssdam.global.decrypt.HybridDecryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,6 +35,7 @@ public class CardTransactionService {
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
     private final ExternalApiUtil externalApiUtil;
+    private final HybridDecryptor hybridDecryptor;
 
     private static final String EXTERNAL_API_URL =
             "https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireCreditCardTransactionList";
@@ -82,7 +84,8 @@ public class CardTransactionService {
                         headerRequestDto,
                         card,
                         startDate,
-                        endDate
+                        endDate,
+                        hybridDecryptor
                 );
 
         RestTemplate restTemplate = new RestTemplate();
