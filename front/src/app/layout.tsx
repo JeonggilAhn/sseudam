@@ -27,22 +27,21 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#000000",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
-      >
+    <html lang="en" className="w-full min-h-screen">
+      <body className="w-full min-h-screen bg-white">
         <ToastModal />
-        <UnderBar />{" "}
         <TransitionWrapper>
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            <main className="min-h-screen flex flex-col">{children}</main>
+          </ReduxProvider>
         </TransitionWrapper>
+        <UnderBar />
       </body>
     </html>
   );
