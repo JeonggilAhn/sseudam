@@ -15,14 +15,16 @@ export const RegistCard = async ({
   keyInfo,
 }: RegistCardProps) => {
   try {
-    const response = await axiosInstance.post("/card", {
+    const response = await axiosInstance.post("/card/", {
       card_no: cardNo,
       cvc: cvc,
       user_id: userId,
       key_info: keyInfo,
     });
-    const data = response.data;
-    return data;
+    if (response && response.status === 200) {
+      toast.success("카드 등록 성공");
+    }
+    return response;
   } catch (error) {
     toast.error("카드 등록 실패");
   }

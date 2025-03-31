@@ -19,7 +19,7 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
     <div className="relative flex flex-col justify-center items-center p-4 w-[130px] h-[5vh] min-h-[50px] rounded-full transition-transform duration-300 hover:scale-105">
       {/* 상단 구름 돌출부 */}
       {color === "dark" ? (
-        <div className="absolute w-[25vw] h-auto min-w-[130px]">
+        <div className="absolute flex w-[25vw] h-auto min-w-[130px] justify-center items-center">
           <Image
             src="/darkcloud.png"
             alt="구름 이미지"
@@ -28,7 +28,7 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
           />
         </div>
       ) : (
-        <div className="absolute w-[25vw] h-auto min-w-[125px]">
+        <div className="absolute flex w-[25vw] h-auto min-w-[125px] justify-center items-center">
           <Image
             src="/whitecloud.png"
             alt="구름 이미지"

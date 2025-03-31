@@ -7,9 +7,20 @@ import { CircleX } from "lucide-react";
 //상태관리
 import { toggleIsModalOpen } from "@/stores/slices/aniModalSlice";
 
-const AnimatedModal = ({ children }: { children: React.ReactNode }) => {
+const AnimatedModal = ({
+  children,
+  onClose,
+}: {
+  children: React.ReactNode;
+  onClose?: () => void;
+}) => {
   const dispatch = useAppDispatch();
   const { isModalOpen } = useAppSelector((state) => state.aniModal);
+
+  const handleClose = () => {
+    dispatch(toggleIsModalOpen());
+    if (onClose) onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -31,10 +42,10 @@ const AnimatedModal = ({ children }: { children: React.ReactNode }) => {
           >
             {/* 닫기 버튼 */}
             <button
-              onClick={() => dispatch(toggleIsModalOpen())}
+              onClick={handleClose}
               className="absolute top-1 right-1 text-gray-600 z-[1000]"
             >
-              <CircleX className="text-gray-600 w-[6vw] h-auto" />
+              <CircleX className="text-gray-600 w-[6vw] max-w-[50px] h-auto" />
             </button>
             {/* 여기 원하는 컨텐츠를 넣으면 됩니다. */}
             {children}
