@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface CloudInfoProps {
   type: "소비" | "저축";
   amount: number;
@@ -14,32 +16,27 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
-    <div
-      className="relative flex flex-col justify-center items-center p-4 w-[130px] h-[5vh] min-h-[50px] rounded-full shadow-xl transition-transform duration-300 hover:scale-105"
-      style={{
-        background: `radial-gradient(circle at 30% 30%, ${color}, #e0f7fa)`,
-      }}
-    >
+    <div className="relative flex flex-col justify-center items-center p-4 w-[130px] h-[5vh] min-h-[50px] rounded-full transition-transform duration-300 hover:scale-105">
       {/* 상단 구름 돌출부 */}
-      <div
-        className="absolute -top-5 left-1/5 w-[38px] h-[38px] rounded-full shadow-md"
-        style={{
-          background: `radial-gradient(circle at 30% 30%, ${color}, #ffffff)`,
-        }}
-      ></div>
-      <div
-        className="absolute -top-8 left-1/3 w-[50px] h-[50px] rounded-full shadow-md"
-        style={{
-          background: `radial-gradient(circle at 40% 40%, ${color}, #ffffff)`,
-        }}
-      ></div>
-      <div
-        className="absolute -top-4 right-1/5 w-[42px] h-[42px] rounded-full shadow-md"
-        style={{
-          background: `radial-gradient(circle at 30% 30%, ${color}, #ffffff)`,
-        }}
-      ></div>
-
+      {color === "dark" ? (
+        <div className="absolute w-[25vw] h-auto min-w-[130px]">
+          <Image
+            src="/darkcloud.png"
+            alt="구름 이미지"
+            width={300}
+            height={300}
+          />
+        </div>
+      ) : (
+        <div className="absolute w-[25vw] h-auto min-w-[125px]">
+          <Image
+            src="/whitecloud.png"
+            alt="구름 이미지"
+            width={300}
+            height={300}
+          />
+        </div>
+      )}
       {/* 텍스트 내용 */}
       <div className="z-10 text-center">
         <p
