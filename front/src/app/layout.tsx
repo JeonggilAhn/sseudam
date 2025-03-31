@@ -35,9 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}>
         <ToastModal />
         <TransitionWrapper>
           <ReduxProvider>
