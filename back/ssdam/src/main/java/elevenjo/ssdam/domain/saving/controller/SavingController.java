@@ -94,10 +94,11 @@ public class SavingController {
     @PostMapping("/{savingId}")
     public ResponseEntity<ResponseWrapper<OpenSavingResponseDto>> openSaving(
             @PathVariable Long savingId,
+            @AuthenticationPrincipal CustomOAuth2User oAuthUser,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        // 로그인 안 된 상태니까 userKey 하드코딩
-        String userKey = "5d5b80b7-103b-419f-90f4-3eace59c22d1"; // <- 이 값 DB에 있는 실제 user_key
+        User user = oAuthUser.getUser();               // 로그인한 유저 객체
+        String userKey = user.getUserKey();            // userKey 꺼내기
 
         OpenSavingResponseDto response = savingService.openSaving(
                 savingId,
