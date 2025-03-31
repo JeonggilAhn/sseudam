@@ -36,15 +36,25 @@ public class SavingService {
             return savingRepository.searchByKeyword(keywordNoSpace, noSortPageable);
         }
 
-        return switch (sort) {
-            case "maxIntRate" -> savingRepository.findAllByOrderByMaxIntRateDesc(pageable);
-            case "likes" -> {
-                Pageable noSortPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-                yield savingRepository.findAllOrderByLikes(noSortPageable);
-            }
-            default -> savingRepository.findAllByOrderByViewsDesc(pageable);
-        };
+        // 정렬 파라미터 없는 경우 (기본: id 순)
+        if (sort == null || sort.isBlank()) {
+            return savingRepository.findAll(pageable);
+        }
+
+        // 정렬 조건에 따른 분기
+        if (sort.equals("views")) {
+            return savingRepository.findAllByOrderByViewsDesc(pageable);
+        } else if (sort.equals("maxIntRate")) {
+            return savingRepository.findAllByOrderByMaxIntRateDesc(pageable);
+        } else if (sort.equals("likes")) {
+            Pageable noSortPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            return savingRepository.findAllOrderByLikes(noSortPageable);
+        }
+
+        // 예외 처리: 정렬 값이 이상할 경우 기본
+        return savingRepository.findAll(pageable);
     }
+
 
     @Transactional
     public Saving getSavingDetail(Long savingId) {
@@ -75,7 +85,6 @@ public class SavingService {
                 body,
                 OpenSavingApiResponse.class
         ).getRec();
-
     }
 
     public void syncSavingsFromOpenApi() {
