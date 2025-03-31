@@ -1,11 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import Cards, { Focused } from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { CreditCard, Calendar, Lock, User, CheckCircle2 } from "lucide-react";
-
 import AnimatedModal from "@/components/animatedModal";
+import { RegistCard } from "../api/postCard";
+import { useRouter } from "next/navigation";
+import { GetCardInfo } from "../api/getCard";
 
 //상태관리
 import {
@@ -15,7 +18,9 @@ import {
   setName,
   setFocus,
 } from "@/stores/slices/cardSlice";
+import { setCurrentCard } from "@/stores/slices/cardSlice";
 import { toggleIsModalOpen } from "@/stores/slices/aniModalSlice";
+import { encryptCardInfo } from "../utils/cardInfoEncryptor";
 
 const CardRegist = () => {
   const dispatch = useAppDispatch();
@@ -24,11 +29,33 @@ const CardRegist = () => {
   );
   const { isModalOpen } = useAppSelector((state) => state.aniModal);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // 여기에 카드 등록 로직 추가
+  useEffect(() => {
+    dispatch(setNumber(""));
+    dispatch(setExpiry(""));
+    dispatch(setCvc(""));
+    dispatch(setName(""));
+    dispatch(setFocus(""));
+  }, [isModalOpen]);
 
-    dispatch(toggleIsModalOpen());
+  const handleClose = async () => {
+    const cardInfo = await GetCardInfo(1);
+    dispatch(setCurrentCard(cardInfo.data));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const secret = await encryptCardInfo(number.replaceAll(" ", ""), cvc);
+    const response = await RegistCard({
+      cardNo: secret.card_no,
+      cvc: secret.cvc,
+      userId: 1,
+      keyInfo: secret.key_info,
+    });
+
+    if (response && response.status === 200) {
+      handleClose();
+      dispatch(toggleIsModalOpen());
+    }
   };
 
   const children = (
@@ -182,7 +209,7 @@ const CardRegist = () => {
     </div>
   );
 
-  return <AnimatedModal children={children} />;
+  return <AnimatedModal children={children} onClose={handleClose} />;
 };
 
 export default CardRegist;

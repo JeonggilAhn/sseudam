@@ -1,4 +1,16 @@
 export async function encryptCardInfo(cardNo: string, cvc: string) {
+  class ResponseDto {
+    key_info: string;
+    card_no: string;
+    cvc: string;
+
+    constructor(key_info: string, card_no: string, cvc: string) {
+      this.key_info = key_info;
+      this.card_no = card_no;
+      this.cvc = cvc;
+    }
+  }
+
   const publicKeyPem =
     "-----BEGIN PUBLIC KEY-----" +
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApciQ2OdgeL4FpcJnQj9s" +
@@ -88,11 +100,13 @@ export async function encryptCardInfo(cardNo: string, cvc: string) {
     const encryptedCvc = await encryptWithAES(cvc);
 
     // 5. 결과 반환
-    return {
-      key_info: encryptedKeyInfo,
-      card_no: encryptedCardNo,
-      cvc: encryptedCvc,
-    };
+    const responseDto = new ResponseDto(
+      encryptedKeyInfo,
+      encryptedCardNo,
+      encryptedCvc
+    );
+
+    return responseDto;
   } catch (error) {
     console.error("암호화 실패:", error);
     throw error;

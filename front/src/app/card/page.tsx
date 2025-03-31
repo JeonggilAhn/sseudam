@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
-import { getCardInfo } from "./api/getCard";
+import { GetCardInfo } from "./api/getCard";
 
 import Image from "next/image";
 
@@ -19,7 +19,7 @@ import {
 } from "@/stores/slices/aniModalSlice";
 
 //이미지
-import { CirclePlus, Loader, LoaderCircle } from "lucide-react";
+import { CirclePlus, LoaderCircle } from "lucide-react";
 
 //컴포넌트
 import TimeBackground from "./components/timeBackground";
@@ -42,15 +42,16 @@ export interface Coupon {
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const userCouponList = useAppSelector((state) => state.coupon.userCouponList);
+  const currentCard = useAppSelector((state) => state.card.currentCard);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchCardInfo = async (userId: number) => {
-      const cardInfo = await getCardInfo(userId);
-      if (cardInfo) {
-        setCard(cardInfo);
+      const cardInfo = await GetCardInfo(userId);
+      if (cardInfo !== undefined) {
+        setCard(cardInfo.data);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -110,8 +111,8 @@ const MainPage = () => {
         },
       ])
     );
-    fetchCardInfo(2);
-  }, []);
+    fetchCardInfo(1);
+  }, [currentCard]);
 
   const [card, setCard] = useState(null);
 

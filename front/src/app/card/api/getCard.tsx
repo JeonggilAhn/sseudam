@@ -1,12 +1,12 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 
-export const getCardInfo = async (userId: number) => {
+export const GetCardInfo = async (userId: number) => {
   try {
     const response = await axiosInstance.get(`/card/${userId}`);
-    const data = response.data;
-    return data;
+    return response;
   } catch (error) {
-    toast.error("카드 정보 조회를 실패하였습니다.");
+    console.error("❌ 카드 정보 조회 실패:", error);
+    throw error;
   }
 };
