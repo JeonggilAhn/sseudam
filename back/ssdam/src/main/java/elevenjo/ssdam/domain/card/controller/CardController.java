@@ -56,10 +56,10 @@ public class CardController {
         }
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<ResponseWrapper<Void>> deleteCard(@RequestBody long cardId){
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ResponseWrapper<Void>> deleteCard(@PathVariable long userId){
         try {
-            cardService.deleteUserCard(cardId);
+            cardService.deleteUserCard(userId);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
         } catch (CardNotFoundException e) {
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);

@@ -12,6 +12,7 @@ import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.decrypt.HybridDecryptor;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +38,12 @@ public class CardServiceImpl implements CardService {
 
         HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.getKeyInfo());
         String cardNo = hybridDecryptor.decryptWithAES(userCard.getCardNo(), keyInfo);
+        String cvc = hybridDecryptor.decryptWithAES(userCard.getCvc(), keyInfo);
 
         CardResponseDto response = externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireSignUpCreditCardList","inquireSignUpCreditCardList",
                 userKey,map, CardResponseDto.class);
         for (int i = 0; i < response.rec().size(); i++) {
-            if(response.rec().get(i).cardNo().equals(cardNo)) {
+            if(response.rec().get(i).cardNo().equals(cardNo) && response.rec().get(i).cvc().equals(cvc)) {
                 isCardExist = true;
             }else{
                 throw new CardUserMismatchException();
@@ -63,12 +65,14 @@ public class CardServiceImpl implements CardService {
         }
     }
 
+    @Transactional
     @Override
-    public void deleteUserCard(Long cardId) {
-        if (!cardRepository.findById(cardId).isPresent()){
+    public void deleteUserCard(Long userId) {
+        if (!cardRepository.findByUserId(userId).isPresent()) {
+            System.out.println("No card found: " + userId);
             throw new CardNotFoundException();
         };
-        cardRepository.deleteById(cardId);
+        cardRepository.deleteByUserId(userId);
     }
 
     @Override
