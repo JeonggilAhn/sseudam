@@ -2,7 +2,7 @@ import axios from "axios";
 // import { useNavigate } from "next/navigation";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080", //백엔드 서버 주소
+  baseURL: "http://localhost:8080/api", //백엔드 서버 주소
   timeout: 1000, //요청 제한 시간(1초 내에 응답 없을 시 요청 실패)
   headers: {
     "Content-Type": "application/json",
