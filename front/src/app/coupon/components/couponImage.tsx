@@ -1,13 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
+import { CheckUserCoupon } from "../api/getCoupon";
 
 interface CouponImageProps {
   couponName: string;
   couponDeadline: string;
   savingId: number;
+  coupon_id: number;
+  coupon_type: string;
   onClick: () => void;
 }
 
@@ -15,6 +19,8 @@ const CouponImage = ({
   couponName,
   couponDeadline,
   savingId,
+  coupon_id,
+  coupon_type,
   onClick,
 }: CouponImageProps) => {
   const currentCouponName = useSelector(
@@ -23,6 +29,20 @@ const CouponImage = ({
   const currentCouponDeadline = useSelector(
     (state: RootState) => state.coupon.currentCouponDeadline
   );
+  const [userHas, setUserHas] = useState(false);
+
+  useEffect(() => {
+    const fetchUserCoupon = async (userId: number, coupon_id: number) => {
+      const response = await CheckUserCoupon(userId, coupon_id);
+      if (response) {
+        setUserHas(true);
+      } else {
+        setUserHas(false);
+      }
+    };
+    fetchUserCoupon(1, coupon_id);
+  }, []);
+
   return (
     <div
       onClick={onClick}
@@ -52,14 +72,22 @@ const CouponImage = ({
         {/* Middle: 코드 정보 */}
         <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
           <span className="text-xs text-gray-500 mt-2">{couponName}</span>
-        </div>
-
-        {/* Right: 유효 기간 */}
-        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
-          <p className="text-xs uppercase text-orange-600 font-semibold">
+          <p className="text-xs mt-1 uppercase text-orange-600 font-semibold">
             유효 기간
           </p>
           <p className="text-md font-medium mt-1">{couponDeadline}</p>
+        </div>
+
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
+          {userHas ? (
+            <button className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition">
+              사용 하러 가기
+            </button>
+          ) : (
+            <button className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition">
+              쿠폰 받기
+            </button>
+          )}
         </div>
       </div>
     </div>
