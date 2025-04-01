@@ -44,6 +44,12 @@ spring:
       port: 6379
       password: ${REDIS_PWD}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
 jwt-secret: ${JWT_SECRET}
 login-endpoint: ${LOGIN_ENDPOINT}
 front-url: ${FRONT_URL}

@@ -54,6 +54,10 @@ dependencies {
 	/* web-client */
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	/* prometheus */
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
 }
 
 tasks.named('test') {
