@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/stores/hooks";
+import axiosInstance from "@/utils/axiosInstance";
 import CreateSuccess from "../components/createSuccess";
+import { toast } from "react-toastify";
 
 const CreateSavingPage: React.FC = () => {
   const router = useRouter();
@@ -11,12 +14,36 @@ const CreateSavingPage: React.FC = () => {
   const [amount, setAmount] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const isDisabled = !accountNumber || !amount;
+  const saving = useAppSelector((state) => state.saving.selectedSavingDetail);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const isDisabled = !accountNumber || !amount || !saving;
+
+  const today = new Date();
+  const formattedDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isDisabled) {
-      setShowSuccess(true); // 성공 모달 띄우기
+    if (!saving) return;
+
+    const requestBody = {
+      withdrawal_account_no: accountNumber,
+      deposit_balance: Number(amount),
+      account_type_unique_no: saving.fin_co_nm,
+    };
+    try {
+      const res = await axiosInstance.post(
+        `/api/savings-products/${saving.saving_id}`,
+        requestBody
+      );
+
+      if (res?.data?.status?.code === "default-200") {
+        setShowSuccess(true);
+      } else {
+        toast.error("가입에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("적금 가입 실패:", error);
+      toast.error("가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -27,10 +54,10 @@ const CreateSavingPage: React.FC = () => {
         <button className="absolute left-0 cursor-pointer" onClick={() => router.back()}>
           <ChevronLeft size={36} />
         </button>
-        <h1 className="text-2xl font-bold">적금 이름</h1>
+        <h1 className="text-2xl font-bold">{saving?.fin_prdt_nm || "적금 상품"}</h1>
       </div>
 
-      {/* 입력 영역: 중앙 정렬 */}
+      {/* 입력 영역 */}
       <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-center items-center">
         <div className="w-full bg-white rounded-md border border-black p-4 space-y-6 max-w-md">
           {/* 출금 계좌 */}
@@ -77,7 +104,13 @@ const CreateSavingPage: React.FC = () => {
       </form>
 
       {/* 가입 완료 모달 */}
-      {showSuccess && <CreateSuccess />}
+      {showSuccess && saving && (
+        <CreateSuccess
+          productName={saving.fin_prdt_nm}
+          amount={Number(amount)}
+          startDate={formattedDate}
+        />
+      )}
     </main>
   );
 };

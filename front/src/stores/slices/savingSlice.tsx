@@ -1,16 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SavingCardType } from "@/types/saving";
+import { SavingCardType, SavingDetailType } from "@/types/saving";
 
 interface SavingState {
   savings: SavingCardType[];
   sort: string;
   keyword: string;
+  selectedSaving: SavingCardType | null;
+  selectedSavingDetail: SavingDetailType | null;
 }
 
 const initialState: SavingState = {
   savings: [],
   sort: "",
   keyword: "",
+  selectedSaving: null,
+  selectedSavingDetail: null,
 };
 
 const savingSlice = createSlice({
@@ -37,7 +41,7 @@ const savingSlice = createSlice({
       state.keyword = action.payload;
     },
 
-    // 초기화화
+    // 초기화
     resetFilters: (state) => {
       state.sort = "views";
       state.keyword = "";
@@ -61,6 +65,16 @@ const savingSlice = createSlice({
         if (likeCount !== undefined) target.like_count = likeCount;
       }
     },
+
+    // 가입 적금 상품 저장
+    setSelectedSaving: (state, action: PayloadAction<SavingCardType>) => {
+      state.selectedSaving = action.payload;
+    },
+
+    // 적금 상품 상세 저장
+    setSelectedSavingDetail: (state, action: PayloadAction<SavingDetailType>) => {
+      state.selectedSavingDetail = action.payload;
+    },
   },
 });
 
@@ -72,6 +86,8 @@ export const {
   resetFilters,
   updateSavingLike,
   updateSavingDetail,
+  setSelectedSaving,
+  setSelectedSavingDetail,
 } = savingSlice.actions;
 
 export default savingSlice.reducer;
