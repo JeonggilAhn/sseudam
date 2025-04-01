@@ -51,6 +51,7 @@ const CardRegist = () => {
       userId: 2,
       keyInfo: secret.key_info,
       userName: name,
+      expiryDate: expiry.replaceAll("/", ""),
     });
 
     if (response && response.status === 200) {

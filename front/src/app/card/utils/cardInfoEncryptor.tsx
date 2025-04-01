@@ -75,7 +75,7 @@ export async function encryptCardInfo(cardNo: string, cvc: string) {
     // 3. AES 키 & IV 암호화
     const rawKey = await window.crypto.subtle.exportKey("raw", aesKey);
     const keyHex = arrayBufferToHex(rawKey);
-    const ivHex = arrayBufferToHex(iv);
+    const ivHex = arrayBufferToHex(iv.buffer);
     const combined = `${keyHex}:${ivHex}`;
     const encodedCombined = new TextEncoder().encode(combined);
     const encryptedKeyInfoBuffer = await window.crypto.subtle.encrypt(

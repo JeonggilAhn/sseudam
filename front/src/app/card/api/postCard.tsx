@@ -7,6 +7,7 @@ export interface RegistCardProps {
   userId: number;
   keyInfo: string;
   userName: string;
+  expiryDate: string;
 }
 
 export const RegistCard = async ({
@@ -15,6 +16,7 @@ export const RegistCard = async ({
   userId,
   keyInfo,
   userName,
+  expiryDate,
 }: RegistCardProps) => {
   try {
     const response = await axiosInstance.post("/card/", {
@@ -23,6 +25,7 @@ export const RegistCard = async ({
       user_id: userId,
       key_info: keyInfo,
       user_name: userName,
+      expiry_date: expiryDate,
     });
     if (response && response.status === 200) {
       toast.success("카드 등록 성공");
