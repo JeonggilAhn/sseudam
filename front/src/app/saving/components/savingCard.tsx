@@ -14,32 +14,42 @@ type Props = {
 
 const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
   return (
-    <div className="bg-white rounded-xl border border-[#0074D9] px-4 py-3 shadow flex items-center justify-between mb-4 w-[95%] max-w-[420px] mx-auto">
-      <div className="flex items-center justify-center min-w-[120px] max-w-[120px]">
-        <Icon name={getBankIconName(saving.fin_co_nm)} width={120} height={40} />
+    <div className="bg-white rounded-2xl border border-gray-200 px-4 py-3 shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center justify-between mb-4 w-[95%] max-w-[420px] mx-auto hover:scale-[1.01] transform-gpu">
+      {/* 은행 아이콘 */}
+      <div className="flex items-center justify-center">
+        <Icon name={getBankIconName(saving.fin_co_nm)} width={80} height={40} />
       </div>
 
+      {/* 적금 정보 */}
       <div className="flex flex-col items-center text-center flex-1">
-        <div className="font-bold text-md">{saving.fin_prdt_nm}</div>
-        <div className="text-sm">
-          {saving.min_int_rate / 100}% ~ {saving.max_int_rate / 100}%
+        <div className="font-bold text-[15px] mb-3">{saving.fin_prdt_nm}</div>
+        <div className="text-sm space-x-1">
+          <span className="font-bold text-red-500 bg-red-100 px-1.5 py-0.5 rounded">
+            {saving.min_int_rate / 100}%
+          </span>
+          <span className="text-gray-500">~</span>
+          <span className="font-bold text-blue-500 bg-blue-100 px-1.5 py-0.5 rounded">
+            {saving.max_int_rate / 100}%
+          </span>
         </div>
       </div>
 
-      <div className="flex flex-col items-end gap-2">
+      {/* 가입 버튼 + 조회/좋아요 */}
+      <div className="flex flex-col items-end gap-1.5">
         <button
-          className="bg-[#60B94D] hover:bg-green-600 text-white font-bold text-sm px-3 py-1 rounded border cursor-pointer"
+          className="bg-[#60B94D] hover:bg-green-600 text-white font-semibold text-sm px-2.5 py-[5px] rounded-md shadow-sm transition cursor-pointer"
           onClick={() => onClickJoin(saving.saving_id)}
         >
           {joinButtonText}
         </button>
-        <div className="flex items-center gap-3 text-sm">
+
+        <div className="flex items-center gap-3 text-sm text-gray-600">
           <div className="flex items-center gap-1">
-            <Eye size={16} />
-            <span>{saving.views}</span>
+            <Eye size={14} className="text-gray-500" />
+            <span>{saving.views.toLocaleString()}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Heart size={16} fill="red" color="black" />
+            <Heart size={14} fill="red" color="black" />
             <span>{saving.like_count}</span>
           </div>
         </div>
