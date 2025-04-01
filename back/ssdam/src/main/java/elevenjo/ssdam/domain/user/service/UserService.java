@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Service
 public class UserService {
 	private final UserRepository userRepository;
@@ -37,6 +36,7 @@ public class UserService {
 		this.ExternalApiUtil = ExternalApiUtil;
 	}
 
+	@Transactional(readOnly = true)
 	public UserDto user(Long id) {
 
 		User user =
