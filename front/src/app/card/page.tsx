@@ -4,6 +4,7 @@ import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
 import { GetCardInfo } from "./api/getCard";
+import { DeleteUserCard } from "./api/deleteCard";
 
 import Image from "next/image";
 
@@ -17,9 +18,9 @@ import {
   resetIsModalOpen,
   toggleIsModalOpen,
 } from "@/stores/slices/aniModalSlice";
-
+import { setCurrentCard } from "@/stores/slices/cardSlice";
 //이미지
-import { CirclePlus, LoaderCircle } from "lucide-react";
+import { CirclePlus, LoaderCircle, CircleX } from "lucide-react";
 
 //컴포넌트
 import TimeBackground from "./components/timeBackground";
@@ -46,17 +47,26 @@ const MainPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [card, setCard] = useState<string[]>([]);
+
+  const handleDeleteCard = async (userId: number) => {
+    await DeleteUserCard(userId);
+    setCard([]);
+    dispatch(setCurrentCard([]));
+  };
+
   useEffect(() => {
     setIsLoading(true);
     const fetchCardInfo = async (userId: number) => {
-      const cardInfo = await GetCardInfo(userId);
-      if (cardInfo !== undefined) {
-        setCard(cardInfo.data);
+      const response = await GetCardInfo(userId);
+      if (response !== undefined) {
+        setCard(response.data);
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     };
+
     dispatch(resetIsModalOpen());
     dispatch(
       setUserCouponList([
@@ -81,40 +91,10 @@ const MainPage = () => {
           savingId: 103,
           isUsed: false,
         },
-        {
-          couponId: 3,
-          couponName: "재구매 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-          isUsed: false,
-        },
-        {
-          couponId: 3,
-          couponName: "재구매 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-          isUsed: false,
-        },
-        {
-          couponId: 3,
-          couponName: "재구매 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-          isUsed: false,
-        },
-        {
-          couponId: 3,
-          couponName: "재구매 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-          isUsed: false,
-        },
       ])
     );
-    fetchCardInfo(1);
+    fetchCardInfo(2);
   }, [currentCard]);
-
-  const [card, setCard] = useState(null);
 
   return (
     <div
@@ -172,7 +152,7 @@ const MainPage = () => {
                 </div>
               ) : (
                 <div>
-                  {card === null ? (
+                  {card.length === 0 ? (
                     <div
                       onClick={() => dispatch(toggleIsModalOpen())}
                       className="cursor-pointer min-w-[290px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
@@ -180,7 +160,11 @@ const MainPage = () => {
                       <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
                     </div>
                   ) : (
-                    <div className="">
+                    <div className="relative">
+                      <CircleX
+                        className="z-[200] text-gray-700 max-w-20 h-auto absolute right-1 top-1"
+                        onClick={() => handleDeleteCard(2)}
+                      />
                       <Cards
                         number={""}
                         expiry={""}
