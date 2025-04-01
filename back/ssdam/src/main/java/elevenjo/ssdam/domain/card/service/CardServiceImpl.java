@@ -45,9 +45,20 @@ public class CardServiceImpl implements CardService {
 
         CardResponseDto response = externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireSignUpCreditCardList","inquireSignUpCreditCardList",
                 userKey,map, CardResponseDto.class);
+
         for (int i = 0; i < response.rec().size(); i++) {
-            if(userCard.getUserName().equals(name)&&response.rec().get(i).cardNo().equals(cardNo) && response.rec().get(i).cvc().equals(cvc)) {
-                isCardExist = true;
+            if(userCard.getUserName().equals(name)
+                    && response.rec().get(i).cardNo().equals(cardNo)
+                    && response.rec().get(i).cvc().equals(cvc)) {
+                System.out.println(response.rec().get(i));
+                String dateStr = response.rec().get(i).cardExpiryDate();
+                String month = dateStr.substring(4,6);
+                String year = dateStr.substring(2, 4);
+                String cardExpiryDate = month+year;
+
+                if (cardExpiryDate.equals(userCard.getExpiryDate())) {
+                    isCardExist = true;
+                }
             }else{
                 throw new CardUserMismatchException();
             }

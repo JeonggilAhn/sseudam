@@ -34,7 +34,7 @@ public record CardResponseDto(
                 String baselinePerformance,
                 String maxBenefitLimit,
                 String cardDescription,
-                String cardExpiryDate,
+                @JsonProperty("cardExpiryDate") String cardExpiryDate,
                 String withdrawalAccountNo,
                 String withdrawalDate
         ) {

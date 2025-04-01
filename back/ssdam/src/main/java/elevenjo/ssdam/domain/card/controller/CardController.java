@@ -28,14 +28,8 @@ public class CardController {
 
     @PostMapping("/")
     public ResponseEntity<ResponseWrapper<Void>> registerCard(@RequestBody CardDto card) throws Exception {
-        try {
             cardService.registerUserCard(card);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
-        }catch (CardDuplicateException e){
-            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
-        }catch (UserNotFoundException e){
-            return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
-        }
     };
 
     @PostMapping("/create")

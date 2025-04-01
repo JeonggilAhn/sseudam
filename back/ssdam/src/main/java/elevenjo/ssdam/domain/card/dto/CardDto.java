@@ -16,4 +16,5 @@ public class CardDto {
     private long userId;
     private String keyInfo;
     private String userName;
+    private String expiryDate;
 }
