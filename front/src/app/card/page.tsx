@@ -10,10 +10,7 @@ import Image from "next/image";
 
 //상태 관리
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
-import {
-  setUserCouponList,
-  setCurrentCoupon,
-} from "@/stores/slices/couponSlice";
+import { setCouponList, setCurrentCoupon } from "@/stores/slices/couponSlice";
 import {
   resetIsModalOpen,
   toggleIsModalOpen,
@@ -37,12 +34,13 @@ export interface Coupon {
   couponName: string;
   couponDeadline: string;
   savingId: number;
-  isUsed: boolean;
+  coupon_id: number;
+  coupon_type: string;
 }
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
-  const userCouponList = useAppSelector((state) => state.coupon.userCouponList);
+  const couponList = useAppSelector((state) => state.coupon.couponList);
   const currentCard = useAppSelector((state) => state.card.currentCard);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -69,27 +67,30 @@ const MainPage = () => {
 
     dispatch(resetIsModalOpen());
     dispatch(
-      setUserCouponList([
+      setCouponList([
         {
           couponId: 1,
           couponName: "웰컴 쿠폰",
           couponDeadline: "2025-04-30",
           savingId: 101,
-          isUsed: false,
+          coupon_id: 1,
+          coupon_type: "웰컴",
         },
         {
           couponId: 2,
           couponName: "생일 축하 쿠폰",
           couponDeadline: "2025-07-15",
           savingId: 102,
-          isUsed: true,
+          coupon_id: 2,
+          coupon_type: "생일",
         },
         {
           couponId: 3,
           couponName: "재구매 감사 쿠폰",
           couponDeadline: "2025-12-31",
           savingId: 103,
-          isUsed: false,
+          coupon_id: 3,
+          coupon_type: "재구매",
         },
       ])
     );
@@ -180,12 +181,13 @@ const MainPage = () => {
 
             {/* 쿠폰 섹션 */}
             <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
-              {userCouponList.map((coupon, index) => (
+              {couponList.map((coupon, index) => (
                 <CouponImage
                   key={index}
                   couponName={coupon.couponName}
                   couponDeadline={coupon.couponDeadline}
                   savingId={coupon.savingId}
+                  isUserHas={coupon.isUsed}
                   onClick={() => {
                     router.push(`/coupon?couponId=${coupon.couponId}`);
                     dispatch(setCurrentCoupon(coupon));
