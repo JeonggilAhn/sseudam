@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { SelectCarrier } from "@/components/ui/selectCarrier";
+import { SelectCarrier } from "@/components/ui/customSelect";
 
 type SignupForm2Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
@@ -20,7 +20,7 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
   setErrors,
   userInfo2,
   setUserInfo2,
-  handleInputChange,
+  // handleInputChange,
 }) => {
   const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
 
@@ -81,17 +81,15 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
       <div className="flex flex-col mb-[48px]">
         <label
           htmlFor="mobileCarrier"
-          className="text-[#7b7b7b]/80 font-bold mb-2"
+          className="text-[#7b7b7b]/80 font-bold mb-3"
         >
           통신사
         </label>
 
-        {/* Select Shadcn으로 수정하기 (추후 작업 예정) */}
-        {/* <SelectCarrier
+        <SelectCarrier
           name="mobileCarrier"
           id="mobileCarrier"
           value={userInfo2.mobileCarrier}
-          // onChange={handleInputChange}
           onChange={(value) => {
             setUserInfo2((prev) => ({
               ...prev,
@@ -99,25 +97,9 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
             }));
           }}
           onBlur={validate}
-        /> */}
+        />
 
-        <select
-          name="mobileCarrier"
-          id="mobileCarrier"
-          value={userInfo2.mobileCarrier}
-          onChange={handleInputChange}
-          onBlur={validate}
-        >
-          <option value="">-- 선택해주세요 --</option>
-          <option value="SKT">SKT</option>
-          <option value="KT">KT</option>
-          <option value="LG U+">LG U+</option>
-          <option value="SKT 알뜰폰">SKT 알뜰폰</option>
-          <option value="KT 알뜰폰">KT 알뜰폰</option>
-          <option value="LG U+ 알뜰폰">LG U+ 알뜰폰</option>
-        </select>
-
-        {!userInfo2.mobileCarrier && localErrors.mobileCarrier && (
+        {localErrors.mobileCarrier && (
           <p className="text-red-500 text-xs mt-1">
             {localErrors.mobileCarrier}
           </p>
@@ -138,7 +120,7 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
           value={formatPhoneNumber(userInfo2.phoneNumber)}
           onChange={handlePhoneNumber}
           onBlur={validate}
-          className="placeholder:text-xl placeholder:font-semibold text-2xl font-semibold w-[80%] h-[40px] focus: outline-none text-2xl"
+          className="placeholder:text-xl placeholder:font-semibold font-semibold w-[80%] h-[40px] focus: outline-none text-2xl"
           placeholder="010-0000-0000"
         />
         <hr />
