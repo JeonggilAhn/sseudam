@@ -58,6 +58,7 @@ public class QuizServiceImpl implements QuizService {
                 "틀렸을 경우 제공할 짧은 해설도 각 문제 마다 필요한데, 답이 O일 경우에는 앞에 '정답!'을 붙이고,"+
                 "답이 X일 경우에는 '오답!'을 붙여야 해"+
                 "- 답은 O와 X만 가능해.\n" +
+                "반환하는 퀴즈는 50개여야 합니다."+
                 "- 출력은 아래 형식을 지켜고, JSON만 해줘:\n" +
                 "\n" +
                 "```json\n" +
@@ -90,7 +91,7 @@ public class QuizServiceImpl implements QuizService {
 
 
             long quizCount = quizRepository.count();
-            if (quizCount > 200){
+            if (quizCount >= 100){
                 quizRepository.deleteAll();
             };
             quizRepository.saveAll(quizEntities);

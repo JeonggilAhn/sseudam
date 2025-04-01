@@ -20,7 +20,7 @@ public class QuizScheduler {
 
 
         try{
-            if (quizCount < 5){
+            if (quizCount <= 200){
                 quizService.AddQuizList();
             }
 
