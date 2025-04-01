@@ -32,7 +32,7 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final SavingRepository savingRepository;
     private final CouponIssuedRepository couponIssuedRepository;
-    private final RedisTemplate<Object, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public CouponCreateResponseDto create(CouponCreateRequestDto requestDto) {
@@ -50,7 +50,7 @@ public class CouponService {
             }
         } else {
             String redisKey = "coupon:counter:" + coupon.getCouponId();
-            redisTemplate.opsForValue().set(redisKey, coupon.getCouponCnt());
+            redisTemplate.opsForValue().set(redisKey, coupon.getCouponCnt().toString());
         }
 
         return CouponCreateResponseDto.of(coupon, saving);
@@ -64,6 +64,20 @@ public class CouponService {
         validateCouponNotExpired(coupon);
         validateCouponStockAvailable(coupon);
         validateCouponNotAlreadyIssued(coupon, user);
+
+        if (coupon.getCouponType() == CouponType.POPULAR_LIMITED) {
+            String redisKey = "coupon:list:" + coupon.getCouponId();
+            Object popped = redisTemplate.opsForList().rightPop(redisKey);
+            if (popped == null) {
+                throw new CouponOutOfStockException();
+            }
+        } else if (coupon.getCouponType() == CouponType.NORMAL_LIMITED) {
+            String redisKey = "coupon:counter:" + coupon.getCouponId();
+            Long remaining = redisTemplate.opsForValue().decrement(redisKey);
+            if (remaining == null || remaining < 0) {
+                throw new CouponOutOfStockException();
+            }
+        }
 
         coupon.decreaseCouponCnt();
 
