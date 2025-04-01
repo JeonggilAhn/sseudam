@@ -1,40 +1,44 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+// import { useRouter, useSearchParams } from "next/navigation";
+// import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { ChevronRight, Check } from "lucide-react";
 import { LongButton } from "@/components/ui/customButton";
 import { Button } from "@/components/ui/button";
 
-type AgreementStepProps = {
+type InsurancePolicyProps = {
   onNext: () => void;
+};
+
+type AgreementStepProps = {
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const InsurancePolicy: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const InsurancePolicy: React.FC<InsurancePolicyProps> = ({ onNext }) => {
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
 
-  const [step, setStep] = useState(1);
+  // const [step, setStep] = useState(1);
   const [checked, setChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
-  const handlePrev = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
-  const handleNext = () => {
-    setStep(step + 1);
-  };
+  // const handlePrev = () => {
+  //   if (step > 1) {
+  //     setStep(step - 1);
+  //   }
+  // };
+  // const handleNext = () => {
+  //   setStep(step + 1);
+  // };
 
-  const handlePage = () => {
-    console.log("완료");
-  };
+  // const handlePage = () => {
+  //   console.log("완료");
+  // };
 
-  const handleCancel = () => {
-    router.push("/");
-  };
+  // const handleCancel = () => {
+  //   router.push("/");
+  // };
 
   const handleCheckButton = () => {
     setChecked(!checked);
@@ -54,12 +58,12 @@ const InsurancePolicy: React.FC = () => {
         <ChevronRight className="h-5 w-5 text-gray-500" />
       </div>
 
-      <AgreementStep onNext={handleNext} setIsAllChecked={setIsAllChecked} />
+      <AgreementStep setIsAllChecked={setIsAllChecked} />
 
       <LongButton
         name="다음"
         color="#2b88d9"
-        onClick={handlePage}
+        onClick={onNext}
         disabled={!(checked && isAllChecked)}
       />
     </>
@@ -68,8 +72,7 @@ const InsurancePolicy: React.FC = () => {
 
 export default InsurancePolicy;
 
-const AgreementStep: React.FC<AgreementStepProps> = ({
-  onNext,
+export const AgreementStep: React.FC<AgreementStepProps> = ({
   setIsAllChecked,
 }) => {
   const [terms, setTerms] = useState([
