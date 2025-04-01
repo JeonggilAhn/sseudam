@@ -32,6 +32,7 @@ public class QuizScheduler {
 
     @Scheduled(cron = "0 0 3 ? * MON")
     public void QuizScheduler() {
+        quizRepository.deleteAll();
         quizService.AddQuizList();
     }
 }
