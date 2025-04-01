@@ -40,7 +40,7 @@ const SavingPage: React.FC = () => {
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
-        const response = await axiosInstance.get("/api/savings-products", { params });
+        const response = await axiosInstance.get("/savings-products", { params });
         const newSavings = response.data.content.content;
 
         const merged =

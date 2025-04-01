@@ -3,23 +3,27 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import QuizCard from "./components/quizCard";
+import { QuizData } from "@/types/quiz";
 import QuizSolution from "./components/quizSolution";
 
 const QuizPage: React.FC = () => {
-  const [flipped, setFlipped] = useState(false); // 카드 뒤짚기
+  const [flipped, setFlipped] = useState(false);
+  const [quizData, setQuizData] = useState<QuizData | null>(null);
+  const [refetchQuiz, setRefetchQuiz] = useState<() => void>(() => () => {});
   const router = useRouter();
 
   const handleWrong = () => {
     setFlipped(true);
-  }; // 정답시 출금
+  };
 
   const handleCorrect = () => {
     router.push("/quiz/withdraw");
-  }; // 오답시 해설
+  };
 
   const handleRetry = () => {
+    refetchQuiz();
     setFlipped(false);
-  }; // 새로운 퀴즈 풀기
+  };
 
   return (
     <main className="relative min-h-screen bg-[#C1E6FA] pt-6 pb-28 px-6 flex flex-col items-center">
@@ -28,14 +32,18 @@ const QuizPage: React.FC = () => {
       <span className="font-bold">정답을 맞춰야 출금이 가능합니다!</span>
       <br />
 
-      {/* 카드 flip 영역 */}
       <div className="flip-container w-full max-w-md h-[420px]">
         <div className={`flipper ${flipped ? "flipped" : ""}`}>
           <div className="front">
-            <QuizCard onWrongAnswer={handleWrong} onCorrectAnswer={handleCorrect} />
+            <QuizCard
+              onWrongAnswer={handleWrong}
+              onCorrectAnswer={handleCorrect}
+              setQuizData={setQuizData}
+              setRefetch={setRefetchQuiz}
+            />
           </div>
           <div className="back">
-            <QuizSolution onRetry={handleRetry} />
+            <QuizSolution onRetry={handleRetry} solution={quizData?.solution || ""} />
           </div>
         </div>
       </div>

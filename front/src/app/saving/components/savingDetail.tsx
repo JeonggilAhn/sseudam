@@ -30,7 +30,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
   const fetchDetail = async () => {
     try {
-      const res = await axiosInstance.get(`/api/savings-products/${savingId}`);
+      const res = await axiosInstance.get(`/savings-products/${savingId}`);
       const data = res.data.content;
       setSaving(data);
       dispatch(updateSavingDetail({ savingId, views: data.views }));
@@ -42,7 +42,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   const fetchLikeInfo = async () => {
     try {
       const res = await axiosInstance.request({
-        url: `/api/savings-products/${savingId}/likes`,
+        url: `/savings-products/${savingId}/likes`,
         method: "get",
         data: { userId: 1 },
       });
