@@ -33,10 +33,7 @@ const CreateSavingPage: React.FC = () => {
       account_type_unique_no: saving.fin_co_nm,
     };
     try {
-      const res = await axiosInstance.post(
-        `/api/savings-products/${saving.saving_id}`,
-        requestBody
-      );
+      const res = await axiosInstance.post(`/savings-products/${saving.saving_id}`, requestBody);
 
       if (res?.data?.status?.code === "default-200") {
         dispatch(setOpenedSaving(res.data.content));
