@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import elevenjo.ssdam.domain.payment.dto.CardTransactionInfoDto;
+import elevenjo.ssdam.domain.payment.dto.PaymentUserDto;
+import elevenjo.ssdam.domain.payment.dto.UserDto;
 import elevenjo.ssdam.domain.payment.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,14 +26,12 @@ public class PaymentController {
     @PostMapping("/payments")
     public ResponseEntity<Void> generateCardTransaction (
             @RequestParam Integer count,
-            @RequestBody CardTransactionInfoDto cardTransactionInfoDto
+            @RequestBody UserDto userDto
     ) {
+        PaymentUserDto paymentUserDto = paymentService.getPaymentUserInfo(userDto.userId());
+
         for (int i = 0; i < count; i++){
-            paymentService.generatePayment(
-                    cardTransactionInfoDto.cardNo(),
-                    cardTransactionInfoDto.cvc(),
-                    cardTransactionInfoDto.userKey()
-            );
+            paymentService.generatePayment(paymentUserDto);
         }
 
         return ResponseEntity.ok().build();
