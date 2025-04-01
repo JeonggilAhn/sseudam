@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { SelectDate } from "@/components/ui/selectDate";
+import { SelectDate } from "@/components/ui/customSelect";
 
 type SignupForm1Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;

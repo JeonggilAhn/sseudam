@@ -1,21 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import SignupForm1 from "./components/SignupForm1";
-import SignupForm2 from "./components/SignupForm2";
+// import { useEffect, useState } from "react";
+import { useState } from "react";
+// import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import SignupForm1 from "./SignupForm1";
+import SignupForm2 from "./SignupForm2";
 
 import {
-  ButtonLoading,
+  // ButtonLoading,
   LongButton,
   ShortButton,
-  ShortOutlineButton,
 } from "@/components/ui/customButton";
-import next from "next";
+// import next from "next";
 
 const SignUpForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -80,6 +81,7 @@ const SignUpForm = () => {
 
     const finalUserInfo = { ...userInfo1, ...userInfo2 };
     console.log("완료되었습니다.", JSON.stringify(finalUserInfo));
+    router.push("success");
   };
 
   return (
@@ -123,18 +125,23 @@ const SignUpForm = () => {
                 setUserInfo2={setUserInfo2}
                 handleInputChange={handleInputChange2}
               />
-              <div className="w-full flex gap-1 justify-center">
-                <ShortOutlineButton
-                  name="이전"
-                  onClick={handlePrevSteps}
-                ></ShortOutlineButton>
+              <div className="absolute bottom-20 w-[80%]">
+                <div className="flex justify-around space-x-10">
+                  <ShortButton
+                    variant="outline"
+                    name="이전"
+                    onClick={handlePrevSteps}
+                    // style={{ width: "120px" }}
+                  ></ShortButton>
 
-                <ShortButton
-                  onClick={handleLastSteps}
-                  disabled={Object.keys(errors).length > 0}
-                  name="확인"
-                  color="#2b88d9"
-                ></ShortButton>
+                  <ShortButton
+                    onClick={handleLastSteps}
+                    disabled={Object.keys(errors).length > 0}
+                    name="확인"
+                    color="#2b88d9"
+                    // style={{ width: "120px" }}
+                  ></ShortButton>
+                </div>
               </div>
             </>
           )}
