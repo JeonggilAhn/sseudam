@@ -12,6 +12,7 @@ export interface SavingCardType {
 
 export interface SavingDetailType {
   saving_id: number;
+  fin_prdt_cd: string;
   fin_co_nm: string;
   fin_prdt_nm: string;
   maxLimit: number;
@@ -22,6 +23,7 @@ export interface SavingDetailType {
   spcl_cnd: string;
   min_int_rate: number;
   max_int_rate: number;
+  homp_url: string;
   views: number;
   like_count: number;
   likes: number;

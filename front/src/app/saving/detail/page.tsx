@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAppSelector } from "@/stores/hooks";
+
 import SavingCard from "../components/savingCard";
 import SavingDetail from "../components/savingDetail";
 import Icon from "@/components/Icon";
@@ -8,14 +10,27 @@ import Icon from "@/components/Icon";
 const DetailPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const selectedSaving = useAppSelector((state) => state.saving.selectedSaving);
+
   return (
     <main className="relative min-h-screen bg-[#C1E6FA] pt-6 pb-28 px-6 flex flex-col items-center">
       <div className="relative flex items-center justify-center mb-4">
         <h1 className="text-2xl font-bold">적금 정보</h1>
       </div>
-
-      <SavingCard onClickJoin={() => setShowModal(true)} joinButtonText="상세보기" />
-      {showModal && <SavingDetail onClose={() => setShowModal(false)} showJoinButton={false} />}
+      {selectedSaving && (
+        <SavingCard
+          saving={selectedSaving}
+          onClickJoin={() => setShowModal(true)}
+          joinButtonText="상세보기"
+        />
+      )}
+      {showModal && selectedSaving && (
+        <SavingDetail
+          savingId={selectedSaving.saving_id}
+          onClose={() => setShowModal(false)}
+          showJoinButton={false}
+        />
+      )}{" "}
       <div className="relative mt-10 flex flex-col items-center">
         <div className="flex items-start justify-center gap-4">
           {/* 돼지 캐릭터 */}
@@ -31,7 +46,6 @@ const DetailPage: React.FC = () => {
           </div>
         </div>
       </div>
-
       {/* 하단 정보 카드 */}
       <div className="mt-8 bg-white rounded-xl border px-6 py-4 w-full max-w-md text-md space-y-3">
         <div className="flex justify-between">
