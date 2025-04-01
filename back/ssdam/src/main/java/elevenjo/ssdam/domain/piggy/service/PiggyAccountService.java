@@ -1,11 +1,15 @@
 package elevenjo.ssdam.domain.piggy.service;
 
+import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
 import elevenjo.ssdam.domain.piggy.dto.AccountResponseDto;
 import elevenjo.ssdam.domain.piggy.dto.AccountTransactionRequestDto;
 import elevenjo.ssdam.domain.piggy.dto.TransactionHistoryDto;
+import elevenjo.ssdam.domain.piggy.dto.WithdrawRequestDto;
+import elevenjo.ssdam.domain.piggy.dto.WithdrawResponseDto;
 import elevenjo.ssdam.domain.piggy.dto.external.InquireAccountResponseDto;
 import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryRequestDto;
 import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryResponseDto;
+import elevenjo.ssdam.domain.piggy.dto.external.UpdateDemandDepositAccountTransferRequestDto;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
@@ -46,7 +50,7 @@ public class PiggyAccountService {
 
         userRepository.save(user);
 
-        return new AccountResponseDto("0");
+        return new AccountResponseDto(0L);
     }
 
     public AccountResponseDto getAccountBalance(Long userId) {
@@ -62,8 +66,9 @@ public class PiggyAccountService {
                 InquireAccountResponseDto.class
         );
 
+        Long accountBalance = Long.parseLong(externalAccount.rec().accountBalance());
 
-        return new AccountResponseDto(externalAccount.rec().accountBalance());
+        return new AccountResponseDto(accountBalance);
     }
 
 
@@ -98,5 +103,34 @@ public class PiggyAccountService {
         }
 
         return result;
+    }
+
+    public WithdrawResponseDto transfer(Long userId, WithdrawRequestDto requestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        String piggyAccountNo = user.getPiggyAccountNo();
+        String apiName = "updateDemandDepositAccountTransfer";
+
+        UpdateDemandDepositAccountTransferRequestDto request =
+                new UpdateDemandDepositAccountTransferRequestDto(
+                        requestDto.accountNo(),
+                        "쓰담 입금",
+                        requestDto.amount().toString(),
+                        piggyAccountNo,
+                        "쓰담 출금"
+                );
+
+
+        InquireTransactionHistoryResponseDto response =
+                externalApiUtil.postWithHeader(
+                        externalBaseUrl + apiName,
+                        apiName,
+                        user.getUserKey(),
+                        request,
+                        InquireTransactionHistoryResponseDto.class
+                );
+
+
+        return new WithdrawResponseDto(requestDto.amount());
     }
 }
