@@ -2,12 +2,18 @@
 
 import React, { useState } from "react";
 import { Search } from "lucide-react";
+import { useAppDispatch } from "@/stores/hooks";
+import { setKeyword, setSort } from "@/stores/slices/savingSlice";
 
 const SavingSearch: React.FC = () => {
   const [query, setQuery] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleSearch = () => {
-    if (!query.trim()) return;
+    const trimmed = query.trim();
+    // 검색어가 공백이면 keyword 없앤 요청으로 처리
+    dispatch(setKeyword(trimmed));
+    dispatch(setSort("")); // 정렬 초기화
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
