@@ -10,6 +10,7 @@ export interface SavingCardType {
   likes: number;
 }
 
+// 가입 성공한 적금 응답
 export interface SavingDetailType {
   saving_id: number;
   fin_prdt_cd: string;
@@ -27,4 +28,15 @@ export interface SavingDetailType {
   views: number;
   like_count: number;
   likes: number;
+}
+
+export interface OpenSavingResponseType {
+  bankCode: string;
+  bankName: string;
+  accountName: string;
+  subscriptionPeriod: string;
+  interestRate: string;
+  accountCreateDate: string;
+  accountExpiryDate: string;
+  depositBalance: number;
 }

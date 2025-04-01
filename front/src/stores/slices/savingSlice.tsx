@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SavingCardType, SavingDetailType } from "@/types/saving";
+import { SavingCardType, SavingDetailType, OpenSavingResponseType } from "@/types/saving";
 
 interface SavingState {
   savings: SavingCardType[];
@@ -7,6 +7,7 @@ interface SavingState {
   keyword: string;
   selectedSaving: SavingCardType | null;
   selectedSavingDetail: SavingDetailType | null;
+  openedSaving: OpenSavingResponseType | null; // 추가
 }
 
 const initialState: SavingState = {
@@ -15,6 +16,7 @@ const initialState: SavingState = {
   keyword: "",
   selectedSaving: null,
   selectedSavingDetail: null,
+  openedSaving: null, // 초기화
 };
 
 const savingSlice = createSlice({
@@ -75,6 +77,10 @@ const savingSlice = createSlice({
     setSelectedSavingDetail: (state, action: PayloadAction<SavingDetailType>) => {
       state.selectedSavingDetail = action.payload;
     },
+
+    setOpenedSaving: (state, action: PayloadAction<OpenSavingResponseType>) => {
+      state.openedSaving = action.payload;
+    },
   },
 });
 
@@ -88,6 +94,7 @@ export const {
   updateSavingDetail,
   setSelectedSaving,
   setSelectedSavingDetail,
+  setOpenedSaving,
 } = savingSlice.actions;
 
 export default savingSlice.reducer;

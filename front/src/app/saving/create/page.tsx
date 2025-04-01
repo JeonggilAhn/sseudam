@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/stores/hooks";
+import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import axiosInstance from "@/utils/axiosInstance";
 import CreateSuccess from "../components/createSuccess";
+import { setOpenedSaving } from "@/stores/slices/savingSlice";
 import { toast } from "react-toastify";
 
 const CreateSavingPage: React.FC = () => {
@@ -15,6 +16,7 @@ const CreateSavingPage: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const saving = useAppSelector((state) => state.saving.selectedSavingDetail);
+  const dispatch = useAppDispatch();
 
   const isDisabled = !accountNumber || !amount || !saving;
 
@@ -37,6 +39,7 @@ const CreateSavingPage: React.FC = () => {
       );
 
       if (res?.data?.status?.code === "default-200") {
+        dispatch(setOpenedSaving(res.data.content));
         setShowSuccess(true);
       } else {
         toast.error("가입에 실패했습니다. 다시 시도해주세요.");
