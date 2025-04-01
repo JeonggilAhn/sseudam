@@ -6,7 +6,13 @@ import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
 import axiosInstance from "@/utils/axiosInstance";
 import { useAppDispatch } from "@/stores/hooks";
-import { updateSavingDetail } from "@/stores/slices/savingSlice";
+import {
+  updateSavingDetail,
+  setSelectedSavingDetail,
+  setSelectedSaving,
+} from "@/stores/slices/savingSlice";
+import { SavingDetailType } from "@/types/saving";
+import { useRouter } from "next/navigation";
 
 type Props = {
   savingId: number;
@@ -16,11 +22,10 @@ type Props = {
 
 const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = true }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const [saving, setSaving] = useState<any | null>(null);
+  const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-
   const detailLoadedRef = useRef(false);
 
   const fetchDetail = async () => {
@@ -28,9 +33,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       const res = await axiosInstance.get(`/api/savings-products/${savingId}`);
       const data = res.data.content;
       setSaving(data);
-      setLikeCount(data.like_count);
-
-      // 조회수 리스트에 반영
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
       console.error("적금 상세 조회 실패", err);
@@ -42,10 +44,9 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       const res = await axiosInstance.request({
         url: `/api/savings-products/${savingId}/likes`,
         method: "get",
-        data: { userId: 1 }, // ✅ 테스트용 userId
+        data: { userId: 1 },
       });
       setLiked(res.data.content.liked);
-      setLikeCount(res.data.content.like_count);
     } catch (err) {
       console.error("좋아요 정보 조회 실패", err);
     }
@@ -57,12 +58,33 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         userId: 1,
       });
       setLiked(res.data.content.liked);
-      setLikeCount(res.data.content.like_count);
-
-      // 리스트에도 반영
       dispatch(updateSavingDetail({ savingId, likeCount: res.data.content.like_count }));
     } catch (err) {
       console.error("좋아요 토글 실패", err);
+    }
+  };
+
+  const handleJoin = () => {
+    if (!saving) return;
+
+    if (saving.homp_url) {
+      window.open(saving.homp_url, "_blank");
+    } else {
+      dispatch(
+        setSelectedSaving({
+          saving_id: saving.saving_id,
+          fin_co_nm: saving.fin_prdt_cd,
+          fin_prdt_nm: saving.fin_prdt_nm,
+          min_int_rate: saving.min_int_rate,
+          max_int_rate: saving.max_int_rate,
+          views: saving.views,
+          like_count: saving.like_count,
+          likes: saving.likes,
+        })
+      );
+
+      dispatch(setSelectedSavingDetail(saving));
+      router.push("/saving/create");
     }
   };
 
@@ -83,8 +105,8 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
           <X />
         </button>
 
-        <div className="flex items-center justify-center mb-4">
-          <Icon name={getBankIconName(saving.fin_prdt_cd)} width={80} height={20} />
+        <div className="flex items-center justify-center">
+          <Icon name={getBankIconName(saving.fin_prdt_cd)} width={180} height={80} />
         </div>
 
         <div className="text-center">
@@ -109,7 +131,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
             {showJoinButton && (
               <button
-                onClick={() => alert("가입 페이지 이동 예정")}
+                onClick={handleJoin}
                 className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer"
               >
                 가입하기

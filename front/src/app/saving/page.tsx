@@ -19,7 +19,6 @@ const SavingPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
   const isLoadingRef = useRef(false);
@@ -29,16 +28,15 @@ const SavingPage: React.FC = () => {
     setPage(0);
     setHasMore(true);
     dispatch(setSavings([]));
-  }, [sort, keyword]);
+  }, [sort, keyword, dispatch]);
 
   useEffect(() => {
     const fetchSavings = async () => {
       if (isLoadingRef.current || !hasMore) return;
 
       isLoadingRef.current = true;
-      setIsLoading(true);
       try {
-        const params: any = { page };
+        const params: { page: number; sort?: string; keyword?: string } = { page };
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
@@ -59,7 +57,6 @@ const SavingPage: React.FC = () => {
         console.error("적금 리스트 불러오기 실패:", error);
       } finally {
         isLoadingRef.current = false;
-        setIsLoading(false);
       }
     };
 
@@ -118,7 +115,7 @@ const SavingPage: React.FC = () => {
       </div>
 
       {/* 스크롤 가능한 카드 리스트 영역 */}
-      <div className="flex-1 overflow-y-auto mt-4 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto mt-4 pb-24 scrollbar-hide">
         {savings.map((item) => (
           <SavingCard key={item.saving_id} saving={item} onClickJoin={handleOpenModal} />
         ))}
