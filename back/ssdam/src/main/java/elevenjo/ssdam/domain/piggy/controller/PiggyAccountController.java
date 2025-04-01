@@ -38,7 +38,7 @@ public class PiggyAccountController {
         );
     }
 
-    @GetMapping("/me")
+    @GetMapping("/my")
     public ResponseEntity<ResponseWrapper<AccountResponseDto>> getAccountBalance(
             @AuthenticationPrincipal User user
     ) {
@@ -49,7 +49,7 @@ public class PiggyAccountController {
         );
     }
 
-    @GetMapping("/me/transaction")
+    @GetMapping("/my/transaction")
     public ResponseEntity<ResponseWrapper<TransactionHistoryDto>> getAccountTransaction(
             @AuthenticationPrincipal User user,
             @RequestParam(name = "start_date") String startDate,
