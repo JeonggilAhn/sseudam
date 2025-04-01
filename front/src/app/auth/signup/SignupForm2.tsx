@@ -20,7 +20,6 @@ const SignupForm2: React.FC<SignupForm2Props> = ({
   setErrors,
   userInfo2,
   setUserInfo2,
-  // handleInputChange,
 }) => {
   const [localErrors, setLocalErrors] = useState<{ [key: string]: string }>({});
 

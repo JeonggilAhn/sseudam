@@ -15,7 +15,6 @@ export default function Accounts() {
       selectedSavingRate,
     };
     console.log(JSON.stringify(data));
-    // console.log(JSON.stringify(data, null, 2));
   };
 
   return (

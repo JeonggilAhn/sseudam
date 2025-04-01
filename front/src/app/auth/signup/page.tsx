@@ -1,22 +1,14 @@
 "use client";
 
-// import { useEffect, useState } from "react";
 import { useState } from "react";
-// import { useRouter, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import SignupForm1 from "./SignupForm1";
 import SignupForm2 from "./SignupForm2";
 
-import {
-  // ButtonLoading,
-  LongButton,
-  ShortButton,
-} from "@/components/ui/customButton";
-// import next from "next";
+import { LongButton, ShortButton } from "@/components/ui/customButton";
 
 const SignUpForm = () => {
   const router = useRouter();
-  // const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -107,7 +99,6 @@ const SignUpForm = () => {
                 setUserInfo1={setUserInfo1}
                 handleInputChange={handleInputChange1}
               />
-              {/* <ButtonLoading /> */}
               <LongButton
                 name="다음"
                 color="#2b88d9"
@@ -131,7 +122,6 @@ const SignUpForm = () => {
                     variant="outline"
                     name="이전"
                     onClick={handlePrevSteps}
-                    // style={{ width: "120px" }}
                   ></ShortButton>
 
                   <ShortButton
@@ -139,7 +129,6 @@ const SignUpForm = () => {
                     disabled={Object.keys(errors).length > 0}
                     name="확인"
                     color="#2b88d9"
-                    // style={{ width: "120px" }}
                   ></ShortButton>
                 </div>
               </div>

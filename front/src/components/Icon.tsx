@@ -8,7 +8,14 @@ type IconProps = {
   color?: string; //svg 파일에 따라 적용이 안 될 수 있음
 };
 
-const Icon = ({ name, width = 60, height = 20, alt = "", isActive = true, color }: IconProps) => {
+const Icon = ({
+  name,
+  width = 60,
+  height = 20,
+  alt = "",
+  isActive = true,
+  color,
+}: IconProps) => {
   const src = `/icons/${name}.svg`;
 
   return (
@@ -19,7 +26,9 @@ const Icon = ({ name, width = 60, height = 20, alt = "", isActive = true, color 
       height={height}
       style={{
         filter: isActive ? "none" : "grayscale(100%)",
-        ...(color ? { filter: `invert(1) sepia(1) saturate(5) hue-rotate(${color})` } : {}),
+        ...(color
+          ? { filter: `invert(1) sepia(1) saturate(5) hue-rotate(${color})` }
+          : {}),
       }}
     />
   );
