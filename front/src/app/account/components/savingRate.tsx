@@ -61,9 +61,7 @@ export const RateBar: React.FC<RateBarProps> = ({
           className="w-[90%] h-2 mb-4"
         ></Slider>
       </div>
-      <div className="text-center font-medium text-xl">
-        {selectedSavingRate}%
-      </div>
+      <div className="text-center font-bold text-xl">{selectedSavingRate}%</div>
     </>
   );
 };
