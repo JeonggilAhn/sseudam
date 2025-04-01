@@ -13,7 +13,7 @@ const bankIconMap: Record<string, string> = {
   수협은행: "logoIconSh",
   "주식회사 케이뱅크": "logoIconKbank",
   "주식회사 카카오뱅크": "logoIconKakao",
-  "토스뱅크 주식회사사": "logoIconToss",
+  "토스뱅크 주식회사": "logoIconToss",
   부산은행: "logoIconBusan",
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChartLine, Eye, Heart } from "lucide-react";
+import { TrendingUp, Eye, Heart } from "lucide-react";
 
 interface Props {
   selected: "interest" | "views" | "likes" | null;
@@ -9,32 +9,48 @@ interface Props {
 }
 
 const SavingButton: React.FC<Props> = ({ selected, onSelect }) => {
-  const buttonBase =
-    "flex items-center gap-1 border-1 border-black px-3 py-1 rounded-lg cursor-pointer";
-
   return (
-    <div className="flex gap-5 mx-auto w-fit">
+    <div className="flex gap-3 mx-auto w-fit bg-white p-1.5 rounded-xl shadow-md">
       <button
         onClick={() => onSelect("interest")}
-        className={`${buttonBase} ${selected === "interest" ? "bg-[#D9D9D9]" : "bg-white"}`}
+        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all duration-200 ${
+          selected === "interest"
+            ? "bg-blue-100 text-blue-700 font-medium shadow-sm"
+            : "bg-white text-gray-600 hover:bg-gray-50"
+        }`}
       >
-        <ChartLine size={16} />
+        <TrendingUp
+          size={18}
+          className={selected === "interest" ? "text-blue-600" : "text-gray-500"}
+        />
         금리순
       </button>
 
       <button
         onClick={() => onSelect("views")}
-        className={`${buttonBase} ${selected === "views" ? "bg-[#D9D9D9]" : "bg-white"}`}
+        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all duration-200 ${
+          selected === "views"
+            ? "bg-blue-100 text-blue-700 font-medium shadow-sm"
+            : "bg-white text-gray-600 hover:bg-gray-50"
+        }`}
       >
-        <Eye size={16} />
+        <Eye size={18} className={selected === "views" ? "text-blue-600" : "text-gray-500"} />
         조회수순
       </button>
 
       <button
         onClick={() => onSelect("likes")}
-        className={`${buttonBase} ${selected === "likes" ? "bg-[#D9D9D9]" : "bg-white"}`}
+        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all duration-200 ${
+          selected === "likes"
+            ? "bg-blue-100 text-blue-700 font-medium shadow-sm"
+            : "bg-white text-gray-600 hover:bg-gray-50"
+        }`}
       >
-        <Heart size={16} color="black" fill="red" />
+        <Heart
+          size={18}
+          className={selected === "likes" ? "text-blue-600" : "text-gray-500"}
+          fill={selected === "likes" ? "rgba(37, 99, 235, 0.2)" : "none"}
+        />
         좋아요순
       </button>
     </div>

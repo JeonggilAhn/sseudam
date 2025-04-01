@@ -24,8 +24,11 @@ const SavingSearch: React.FC = () => {
 
   return (
     <div className="w-full max-w-md mx-auto mb-4">
-      <div className="flex items-center border border-black rounded-md bg-white px-3 py-2 shadow-sm">
-        <button onClick={handleSearch} className="mr-2 text-gray-500 cursor-pointer">
+      <div className="flex items-center border border-gray-200 rounded-xl bg-white px-3 py-2.5 shadow-md focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300 transition-all">
+        <button
+          onClick={handleSearch}
+          className="mr-2 text-gray-400 hover:text-blue-500 cursor-pointer transition-colors"
+        >
           <Search size={20} />
         </button>
         <input
