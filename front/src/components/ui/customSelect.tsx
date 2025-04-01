@@ -49,7 +49,6 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
     if (selectedYear && selectedMonth) {
       const maxDays = getDaysInMonth(selectedYear, selectedMonth);
       setDays(maxDays);
-      // if (selectedDay !== null && selectedDay > maxDays.length) {
       if (selectedDay && !maxDays.includes(selectedDay)) {
         setSelectedDay(null);
         setBirth("");
@@ -148,11 +147,8 @@ type selectCarrierProps = {
 };
 
 export const SelectCarrier: React.FC<selectCarrierProps> = ({
-  // name,
-  // id,
   value,
   onChange,
-  // onBlur,
 }) => {
   return (
     <Select value={value} onValueChange={onChange}>

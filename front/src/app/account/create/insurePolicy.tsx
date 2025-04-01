@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import { useRouter, useSearchParams } from "next/navigation";
-// import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { ChevronRight, Check } from "lucide-react";
 import { LongButton } from "@/components/ui/customButton";
 import { Button } from "@/components/ui/button";
@@ -16,29 +14,8 @@ type AgreementStepProps = {
 };
 
 const InsurancePolicy: React.FC<InsurancePolicyProps> = ({ onNext }) => {
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
-
-  // const [step, setStep] = useState(1);
   const [checked, setChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
-
-  // const handlePrev = () => {
-  //   if (step > 1) {
-  //     setStep(step - 1);
-  //   }
-  // };
-  // const handleNext = () => {
-  //   setStep(step + 1);
-  // };
-
-  // const handlePage = () => {
-  //   console.log("완료");
-  // };
-
-  // const handleCancel = () => {
-  //   router.push("/");
-  // };
 
   const handleCheckButton = () => {
     setChecked(!checked);

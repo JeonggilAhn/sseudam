@@ -1,6 +1,5 @@
 "use client";
 
-// import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import SelectBankBook from "./selectBankBook";
 
@@ -56,7 +55,6 @@ export const RateBar: React.FC<RateBarProps> = ({
       <div className="flex justify-center">
         <Slider
           value={[selectedSavingRate]}
-          // onValueChange={(value: any) => setSelectedSavingRate(value[0])}
           onValueChange={(value) => setSelectedSavingRate(value[0])}
           max={100}
           step={5}
