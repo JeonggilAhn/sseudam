@@ -2,6 +2,7 @@ package elevenjo.ssdam.domain.coupon.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import elevenjo.ssdam.domain.coupon.dto.response.CouponCreateResponseDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponIssueResponseDto;
 import elevenjo.ssdam.domain.coupon.entity.Coupon;
 import elevenjo.ssdam.domain.coupon.entity.CouponIssued;
+import elevenjo.ssdam.domain.coupon.entity.CouponType;
 import elevenjo.ssdam.domain.coupon.exception.CouponAlreadyIssuedException;
 import elevenjo.ssdam.domain.coupon.exception.CouponExpiredException;
 import elevenjo.ssdam.domain.coupon.exception.CouponNotFoundException;
@@ -30,6 +32,7 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final SavingRepository savingRepository;
     private final CouponIssuedRepository couponIssuedRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public CouponCreateResponseDto create(CouponCreateRequestDto requestDto) {
@@ -38,6 +41,17 @@ public class CouponService {
 
         Coupon coupon = requestDto.toEntity(saving);
         couponRepository.save(coupon);
+
+        if (coupon.getCouponType() == CouponType.POPULAR_LIMITED) {
+            String redisKey = "coupon:list:" + coupon.getCouponId();
+            for (int i = 0; i < coupon.getCouponCnt(); i++) {
+                // 재고 개수가 중요하고, 리스트 내용은 중요하지 않기 때문에 더미 데이터("1") 삽입
+                redisTemplate.opsForList().rightPush(redisKey, "1");
+            }
+        } else {
+            String redisKey = "coupon:counter:" + coupon.getCouponId();
+            redisTemplate.opsForValue().set(redisKey, coupon.getCouponCnt().toString());
+        }
 
         return CouponCreateResponseDto.of(coupon, saving);
     }
@@ -50,6 +64,20 @@ public class CouponService {
         validateCouponNotExpired(coupon);
         validateCouponStockAvailable(coupon);
         validateCouponNotAlreadyIssued(coupon, user);
+
+        if (coupon.getCouponType() == CouponType.POPULAR_LIMITED) {
+            String redisKey = "coupon:list:" + coupon.getCouponId();
+            Object popped = redisTemplate.opsForList().rightPop(redisKey);
+            if (popped == null) {
+                throw new CouponOutOfStockException();
+            }
+        } else if (coupon.getCouponType() == CouponType.NORMAL_LIMITED) {
+            String redisKey = "coupon:counter:" + coupon.getCouponId();
+            Long remaining = redisTemplate.opsForValue().decrement(redisKey);
+            if (remaining == null || remaining < 0) {
+                throw new CouponOutOfStockException();
+            }
+        }
 
         coupon.decreaseCouponCnt();
 

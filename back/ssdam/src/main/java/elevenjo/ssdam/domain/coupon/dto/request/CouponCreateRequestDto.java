@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import elevenjo.ssdam.domain.coupon.entity.Coupon;
+import elevenjo.ssdam.domain.coupon.entity.CouponType;
 import elevenjo.ssdam.domain.saving.entity.Saving;
 
 public record CouponCreateRequestDto(
@@ -13,7 +14,8 @@ public record CouponCreateRequestDto(
     Integer couponCnt,
     String couponDeadlineDate,
     String couponDeadlineTime,
-    Long savingId
+    Long savingId,
+    String couponType
 ) {
     public Coupon toEntity(Saving saving) {
 
@@ -21,11 +23,14 @@ public record CouponCreateRequestDto(
         LocalTime time = LocalTime.parse(couponDeadlineTime);
         LocalDateTime couponDeadline = LocalDateTime.of(date, time);
 
+        CouponType type = CouponType.valueOf(couponType.toUpperCase());
+
         return Coupon.builder()
             .couponName(couponName)
             .couponCnt(couponCnt)
             .couponDeadline(couponDeadline)
             .saving(saving)
+            .couponType(type)
             .build();
     }
 }
