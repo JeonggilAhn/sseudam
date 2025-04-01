@@ -3,6 +3,8 @@ package elevenjo.ssdam.domain.piggy.controller;
 import elevenjo.ssdam.domain.piggy.dto.AccountResponseDto;
 import elevenjo.ssdam.domain.piggy.dto.AccountTransactionRequestDto;
 import elevenjo.ssdam.domain.piggy.dto.TransactionHistoryDto;
+import elevenjo.ssdam.domain.piggy.dto.WithdrawRequestDto;
+import elevenjo.ssdam.domain.piggy.dto.WithdrawResponseDto;
 import elevenjo.ssdam.domain.piggy.service.PiggyAccountService;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +52,7 @@ public class PiggyAccountController {
         );
     }
 
-    @GetMapping("/my/transaction")
+    @GetMapping("/my/transactions")
     public ResponseEntity<ResponseWrapper<TransactionHistoryDto>> getAccountTransaction(
             @AuthenticationPrincipal User user,
             @RequestParam(name = "start_date") String startDate,
@@ -70,5 +73,15 @@ public class PiggyAccountController {
         );
     }
 
-
+    @PostMapping("/my/withdraw")
+    public ResponseEntity<ResponseWrapper<WithdrawResponseDto>> withdraw(
+            @AuthenticationPrincipal User user,
+            @RequestBody WithdrawRequestDto requestDto
+    ) {
+        return ResponseWrapperFactory.setResponse(
+                HttpStatus.OK,
+                null,
+                piggyAccountService.transfer(user.getUserId(), requestDto)
+        );
+    }
 }
