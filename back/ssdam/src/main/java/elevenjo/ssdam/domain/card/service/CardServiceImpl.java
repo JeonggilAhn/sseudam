@@ -35,15 +35,18 @@ public class CardServiceImpl implements CardService {
         boolean isCardExist = false;
         Map<String, String> map = new HashMap<>();
         String userKey = userRepository.findById(userCard.getUserId()).get().getUserKey();
+        User user = userRepository.findById(userCard.getUserId())
+                .orElseThrow(UserNotFoundException::new);
 
         HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.getKeyInfo());
         String cardNo = hybridDecryptor.decryptWithAES(userCard.getCardNo(), keyInfo);
         String cvc = hybridDecryptor.decryptWithAES(userCard.getCvc(), keyInfo);
+        String name = user.getUserName();
 
         CardResponseDto response = externalApiUtil.postWithHeader("https://finopenapi.ssafy.io/ssafy/api/v1/edu/creditCard/inquireSignUpCreditCardList","inquireSignUpCreditCardList",
                 userKey,map, CardResponseDto.class);
         for (int i = 0; i < response.rec().size(); i++) {
-            if(response.rec().get(i).cardNo().equals(cardNo) && response.rec().get(i).cvc().equals(cvc)) {
+            if(userCard.getUserName().equals(name)&&response.rec().get(i).cardNo().equals(cardNo) && response.rec().get(i).cvc().equals(cvc)) {
                 isCardExist = true;
             }else{
                 throw new CardUserMismatchException();
@@ -51,9 +54,6 @@ public class CardServiceImpl implements CardService {
         }
 
         if (isCardExist) {
-            User user = userRepository.findById(userCard.getUserId())
-                .orElseThrow(UserNotFoundException::new);
-
             Card card = Card.builder().cardNo(userCard.getCardNo())
                     .cvc(userCard.getCvc()).keyInfo(userCard.getKeyInfo()).user(user).build();
 

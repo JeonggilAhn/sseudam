@@ -15,4 +15,5 @@ public class CardDto {
     private String cvc;
     private long userId;
     private String keyInfo;
+    private String userName;
 }
