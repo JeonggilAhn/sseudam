@@ -13,7 +13,7 @@ const DetailPage: React.FC = () => {
   const selectedSaving = useAppSelector((state) => state.saving.selectedSaving);
   const openedSaving = useAppSelector((state) => state.saving.openedSaving);
 
-  // 계산 값 - 다음 납입일 , 원금 예상, 이자 예상
+  // 계산 값 - 다음 납입 일 , 원금 예상, 이자 예상
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const formattedTomorrow = `${tomorrow.getFullYear()}년 ${tomorrow.getMonth() + 1}월 ${tomorrow.getDate()}일`;
