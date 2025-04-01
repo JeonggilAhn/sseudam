@@ -11,6 +11,7 @@ import elevenjo.ssdam.global.response.ResponseWrapper;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,16 +25,8 @@ public class LikeSavingController {
     @PostMapping
     public ResponseEntity<ResponseWrapper<LikeSavingResponseDto>> toggleLike(
             @PathVariable Long savingId,
-            @RequestBody UserIdRequestDto userIdDto
+            @AuthenticationPrincipal User user
     ) {
-        System.out.println("🪵 userIdDto: " + userIdDto); // <- 여기에 찍히는지 봐봐
-        System.out.println("🪵 userId: " + userIdDto.getUserId()); // <- null이면 요청 문제
-
-
-        User user = userRepository.findById(userIdDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException());
-
-
         boolean liked = likeSavingService.toggleLike(user, savingId);
         Long likeCount = likeSavingService.countLikes(savingId);
 
@@ -41,14 +34,12 @@ public class LikeSavingController {
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
 
+
     @GetMapping
     public ResponseEntity<ResponseWrapper<LikeSavingResponseDto>> getLikeInfo(
             @PathVariable Long savingId,
-            @RequestBody UserIdRequestDto userIdDto
+            @AuthenticationPrincipal User user
     ) {
-        User user = userRepository.findById(userIdDto.getUserId())
-                .orElseThrow(UserNotFoundException::new);
-
         Long likeCount = likeSavingService.countLikes(savingId);
         boolean liked = likeSavingService.isLikedByUser(user, savingId);
 
