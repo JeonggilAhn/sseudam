@@ -11,12 +11,12 @@ interface PageHeaderProps {
 }
 
 interface TitleProps {
-  pageTitle: string;
+  pageTitle?: string;
 }
 
 interface PageSettingProps {
   headerName?: string;
-  pageTitle: string;
+  pageTitle?: string;
   headerLink?: string;
   children: React.ReactNode;
 }
