@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-
 interface NumericKeypadProps {
   onConfirm: (value: string) => void;
   maxLength?: number;
@@ -69,7 +68,7 @@ export default function NumericKeypad({
   return (
     <div className="w-full max-w-md mx-auto">
       {showValue && (
-        <div className="text-center mb-6">
+        <div className="text-center mb-2">
           <div className="text-2xl font-bold tracking-widest flex justify-center space-x-2">
             {value.split("").map((digit, index) => (
               <span key={index}>{visibleDigits[index] ? digit : "•"}</span>
@@ -83,7 +82,7 @@ export default function NumericKeypad({
           <Button
             key={num}
             variant="ghost"
-            className="h-16 text-2xl font-medium rounded-md hover:bg-gray-100"
+            className="h-16 text-2xl font-bold rounded-md hover:bg-gray-100"
             onClick={() => handleKeyPress(num.toString())}
           >
             {num}
@@ -98,7 +97,7 @@ export default function NumericKeypad({
         </Button>
         <Button
           variant="ghost"
-          className="h-16 text-2xl font-medium rounded-md hover:bg-gray-100"
+          className="h-16 text-2xl font-bold rounded-md hover:bg-gray-100"
           onClick={() => handleKeyPress("0")}
         >
           0
@@ -112,11 +111,11 @@ export default function NumericKeypad({
         </Button>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <Button
-          className={`w-full h-14 text-lg font-medium rounded-md ${
+          className={`w-full h-12 text-lg font-bold rounded-md ${
             value.length === maxLength
-              ? "bg-blue-500 hover:bg-blue-600 text-white"
+              ? "bg-[#2b88d9] hover:[#2b88d9] text-white"
               : "bg-gray-300 text-gray-600"
           }`}
           disabled={value.length !== maxLength}
