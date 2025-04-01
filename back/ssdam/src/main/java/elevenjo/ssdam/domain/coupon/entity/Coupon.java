@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class Coupon extends BaseTimeEntity {
     private LocalDateTime couponDeadline;
 
     @ManyToOne
+    @JoinColumn(name = "saving_id")
     private Saving saving;
 
     @Enumerated(EnumType.STRING)
