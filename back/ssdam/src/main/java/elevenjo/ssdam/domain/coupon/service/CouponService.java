@@ -1,6 +1,8 @@
 package elevenjo.ssdam.domain.coupon.service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -44,10 +46,13 @@ public class CouponService {
 
         if (coupon.getCouponType() == CouponType.POPULAR_LIMITED) {
             String redisKey = "coupon:list:" + coupon.getCouponId();
-            for (int i = 0; i < coupon.getCouponCnt(); i++) {
-                // 재고 개수가 중요하고, 리스트 내용은 중요하지 않기 때문에 더미 데이터("1") 삽입
-                redisTemplate.opsForList().rightPush(redisKey, "1");
-            }
+
+            List<String> dummyValues = Collections.nCopies(coupon.getCouponCnt(), "1");
+            redisTemplate.opsForList().rightPushAll(redisKey, dummyValues);
+//            for (int i = 0; i < coupon.getCouponCnt(); i++) {
+//                // 재고 개수가 중요하고, 리스트 내용은 중요하지 않기 때문에 더미 데이터("1") 삽입
+//                redisTemplate.opsForList().rightPush(redisKey, "1");
+//            }
         } else {
             String redisKey = "coupon:counter:" + coupon.getCouponId();
             redisTemplate.opsForValue().set(redisKey, coupon.getCouponCnt().toString());
