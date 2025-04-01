@@ -38,7 +38,7 @@ const CardRegist = () => {
   }, [isModalOpen]);
 
   const handleClose = async () => {
-    const cardInfo = await GetCardInfo(1);
+    const cardInfo = await GetCardInfo(2);
     dispatch(setCurrentCard(cardInfo.data));
   };
 
@@ -48,8 +48,9 @@ const CardRegist = () => {
     const response = await RegistCard({
       cardNo: secret.card_no,
       cvc: secret.cvc,
-      userId: 1,
+      userId: 2,
       keyInfo: secret.key_info,
+      userName: name,
     });
 
     if (response && response.status === 200) {
