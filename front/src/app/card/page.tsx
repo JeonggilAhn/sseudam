@@ -78,7 +78,7 @@ const MainPage = () => {
     dispatch(resetIsModalOpen());
     fetchCardInfo();
     fetchCouponInfo();
-  }, [currentCard]);
+  }, [currentCard, dispatch]);
 
   return (
     <div

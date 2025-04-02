@@ -162,7 +162,7 @@ const CouponPage = () => {
             </h3>
 
             <ol className="list-decimal pl-5 space-y-2 text-gray-500">
-              <li>'적금상품으로 이동하기' 버튼을 눌러주세요.</li>
+              <li>&apos;적금상품으로 이동하기&apos; 버튼을 눌러주세요.</li>
             </ol>
           </div>
         </div>

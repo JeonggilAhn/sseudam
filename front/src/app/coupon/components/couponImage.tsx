@@ -16,9 +16,7 @@ interface CouponImageProps {
 const CouponImage = ({
   couponName,
   couponDeadline,
-  savingId,
   couponId,
-  couponType,
   onClick,
 }: CouponImageProps) => {
   // const currentCouponName = useSelector(
@@ -40,7 +38,7 @@ const CouponImage = ({
       }
     };
     fetchUserCoupon(couponId);
-  }, []);
+  }, [couponId]);
 
   return (
     <div

@@ -7,7 +7,6 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { CreditCard, Calendar, Lock, User, CheckCircle2 } from "lucide-react";
 import AnimatedModal from "@/components/animatedModal";
 import { RegistCard } from "../api/postCard";
-import { useRouter } from "next/navigation";
 import { GetCardInfo } from "../api/getCard";
 
 //상태관리
@@ -35,7 +34,7 @@ const CardRegist = () => {
     dispatch(setCvc(""));
     dispatch(setName(""));
     dispatch(setFocus(""));
-  }, [isModalOpen]);
+  }, [isModalOpen, dispatch]);
 
   const handleClose = async () => {
     const cardInfo = await GetCardInfo();
@@ -216,7 +215,9 @@ const CardRegist = () => {
     </div>
   );
 
-  return <AnimatedModal children={children} onClose={handleClose} />;
+  return <AnimatedModal onClose={handleClose}>
+    {children}
+  </AnimatedModal>;
 };
 
 export default CardRegist;

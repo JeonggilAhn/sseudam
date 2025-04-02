@@ -31,7 +31,7 @@ export const RegistCard = async ({
       toast.error("카드 정보가 일치하지 않습니다.");
     }
     return response;
-  } catch (error) {
+  } catch {
     toast.error("카드 등록 실패");
   }
 };
