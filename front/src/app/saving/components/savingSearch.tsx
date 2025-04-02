@@ -5,14 +5,24 @@ import { Search } from "lucide-react";
 import { useAppDispatch } from "@/stores/hooks";
 import { setKeyword, setSort } from "@/stores/slices/savingSlice";
 
+const stopwords = ["은행", "저축은행", "주식회사"];
+
 const SavingSearch: React.FC = () => {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
 
   const handleSearch = () => {
     const trimmed = query.trim();
-    // 검색어가 공백이면 keyword 없앤 요청으로 처리
-    dispatch(setKeyword(trimmed));
+    if (!trimmed) {
+      dispatch(setKeyword("")); // 공백 입력 시 검색어 초기화
+      dispatch(setSort(""));
+      return;
+    }
+
+    // 불필요 단어 제거
+    const refined = stopwords.reduce((acc, word) => acc.replaceAll(word, ""), trimmed).trim();
+
+    dispatch(setKeyword(refined));
     dispatch(setSort("")); // 정렬 초기화
   };
 
