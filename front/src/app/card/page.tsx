@@ -155,14 +155,16 @@ const MainPage = () => {
                 <div>
                   {card.length === 0 ? (
                     <div
+                      id="add-card"
                       onClick={() => dispatch(toggleIsModalOpen())}
                       className="cursor-pointer min-w-[290px] h-[182.8px] flex justify-center items-center rounded-lg bg-white shadow-xl"
                     >
                       <CirclePlus className="text-gray-700 w-12 h-12 transition-all" />
                     </div>
                   ) : (
-                    <div className="relative">
+                    <div id="cardRegistSuccess" className="relative">
                       <CircleX
+                        id="cardDelete"
                         className="z-[200] text-gray-700 max-w-20 h-auto absolute right-1 top-1"
                         onClick={() => handleDeleteCard(2)}
                       />
@@ -187,7 +189,8 @@ const MainPage = () => {
                   couponName={coupon.couponName}
                   couponDeadline={coupon.couponDeadline}
                   savingId={coupon.savingId}
-                  isUserHas={coupon.isUsed}
+                  coupon_id={coupon.couponId}
+                  coupon_type={coupon.coupon_type}
                   onClick={() => {
                     router.push(`/coupon?couponId=${coupon.couponId}`);
                     dispatch(setCurrentCoupon(coupon));
