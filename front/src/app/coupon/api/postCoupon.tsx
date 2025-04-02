@@ -14,4 +14,9 @@ export const CheckCouponIssued = async (userId: number, couponId: number) => {
   }
 };
 
-export const IssueCoupon = async () => {};
+export const IssueCoupon = async (couponId: number) => {
+  const response = await axiosInstance.post(`coupons/issue`, {
+    couponId,
+  });
+  return response;
+};
