@@ -137,7 +137,7 @@ const SavingPage: React.FC = () => {
       </div>
 
       {/* 적금 카드 리스트 */}
-      <div className="flex-1 overflow-y-auto mt-4 pb-24 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto mt-4 pb-24 scrollbar-hide flex flex-col items-center gap-4 px-4">
         {savings.map((item) => (
           <SavingCard key={item.saving_id} saving={item} onClickJoin={handleOpenModal} />
         ))}
