@@ -39,7 +39,6 @@ public class FssXmlParser {
         return result;
     }
 
-
     @SneakyThrows
     public List<ProductDto> parseSavingProducts(String xml) {
         List<ProductDto> result = new ArrayList<>();
@@ -51,7 +50,6 @@ public class FssXmlParser {
         for (int i = 0; i < productList.getLength(); i++) {
             Element el = (Element) productList.item(i);
 
-            // BaseInfo 추출
             ProductDto.BaseInfo baseInfo = new ProductDto.BaseInfo(
                     getTag(el, "fin_co_no"),
                     getTag(el, "kor_co_nm"),
@@ -65,7 +63,6 @@ public class FssXmlParser {
                     getTag(el, "max_limit")
             );
 
-            // Options 추출
             List<OptionDto> options = new ArrayList<>();
             NodeList optionList = el.getElementsByTagName("option");
             for (int j = 0; j < optionList.getLength(); j++) {
@@ -85,6 +82,17 @@ public class FssXmlParser {
         }
 
         return result;
+    }
+
+    @SneakyThrows
+    public int getMaxPage(String xml) {
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(new InputSource(new StringReader(xml)));
+
+        NodeList list = doc.getElementsByTagName("max_page_no");
+        if (list.getLength() == 0) return 1;
+
+        return Integer.parseInt(list.item(0).getTextContent());
     }
 
     private String getTag(Element el, String tag) {
