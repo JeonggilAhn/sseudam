@@ -61,7 +61,7 @@ const CardRegist = () => {
   };
 
   const children = (
-    <div>
+    <div id="card-regist">
       {/* 카드 미리보기 */}
       <div className="mb-4 transition-transform overflow-hidden w-full h-fit p-4">
         <Cards
@@ -89,6 +89,7 @@ const CardRegist = () => {
               <CreditCard size={16} />
             </div>
             <input
+              id="cardNumber"
               type="text"
               name="cardNumber"
               placeholder="0000 0000 0000 0000"
@@ -122,6 +123,7 @@ const CardRegist = () => {
                 <Calendar size={18} />
               </div>
               <input
+                id="expiry"
                 type="text"
                 name="expiry"
                 placeholder="MM/YY"
@@ -154,6 +156,7 @@ const CardRegist = () => {
                 <Lock size={18} />
               </div>
               <input
+                id="cvc"
                 type="text"
                 name="cvc"
                 placeholder="123"
@@ -183,6 +186,7 @@ const CardRegist = () => {
               <User size={18} />
             </div>
             <input
+              id="name"
               type="text"
               name="name"
               placeholder="영어로 입력해주세요"
@@ -202,6 +206,7 @@ const CardRegist = () => {
         {/* 제출 버튼 */}
         <button
           type="submit"
+          id="registCard"
           className="w-full flex items-center justify-center py-3 px-4 border border-transparent bg-[#F29F05] rounded-xl shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all mt-4"
         >
           <CheckCircle2 size={20} className="mr-2" />
