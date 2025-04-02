@@ -50,7 +50,6 @@ public class CardServiceImpl implements CardService {
             if(userCard.getUserName().equals(name)
                     && response.rec().get(i).cardNo().equals(cardNo)
                     && response.rec().get(i).cvc().equals(cvc)) {
-                System.out.println(response.rec().get(i));
                 String dateStr = response.rec().get(i).cardExpiryDate();
                 String month = dateStr.substring(4,6);
                 String year = dateStr.substring(2, 4);

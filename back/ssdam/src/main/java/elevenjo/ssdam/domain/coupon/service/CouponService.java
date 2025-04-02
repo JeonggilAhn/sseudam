@@ -1,9 +1,12 @@
 package elevenjo.ssdam.domain.coupon.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import elevenjo.ssdam.domain.coupon.dto.response.CouponResponseDto;
+import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,4 +113,44 @@ public class CouponService {
         }
     }
 
+    public List<CouponResponseDto> getCouponList() {
+        try{
+            List<CouponResponseDto> couponList = new ArrayList<>();
+            List<Coupon> tmpCouponList = couponRepository.findAll();
+            for (int i = 0; i < tmpCouponList.size(); i++) {
+                CouponResponseDto tmpCoupon = new CouponResponseDto();
+                tmpCoupon.setCouponId(tmpCouponList.get(i).getCouponId());
+                tmpCoupon.setCouponName(tmpCouponList.get(i).getCouponName());
+                tmpCoupon.setCouponType(tmpCouponList.get(i).getCouponType());
+                tmpCoupon.setSavingId(tmpCouponList.get(i).getSaving().getSavingId());
+                tmpCoupon.setCouponDeadline(tmpCouponList.get(i).getCouponDeadline());
+                tmpCoupon.setCreatedAt(tmpCouponList.get(i).getCreatedAt());
+                tmpCoupon.setUpdatedAt(tmpCouponList.get(i).getUpdatedAt());
+                couponList.add(tmpCoupon);
+            }
+
+            return couponList;
+        }
+        catch (Exception e) {
+            throw new CouponNotFoundException();
+        }
+
+    }
+
+    public boolean checkCouponIssued(long userId,long couponId){
+        boolean isCouponIssued = false;
+        try {
+            List<CouponIssued> tmpCouponIssuedList = couponIssuedRepository.findByUser_UserId(userId);
+            for(CouponIssued issued : tmpCouponIssuedList){
+                if (issued.getCoupon().getCouponId() == couponId){
+                    isCouponIssued = true;
+                    break;
+                }
+            }
+        return isCouponIssued;
+
+        } catch (Exception e) {
+            throw new CouponNotFoundException();
+        }
+    };
 }
