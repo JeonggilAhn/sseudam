@@ -34,7 +34,7 @@ public interface SavingRepository extends JpaRepository<Saving, Long> {
             nativeQuery = true)
     Page<Saving> findAllOrderByLikes(Pageable pageable);
 
-    // 4. 키워드 검색 (공백 제거 + views 기준 정렬)
+    // 4. 키워드 검색 (공백 제거 + views 기준 정렬) 은행명 검색 간략화
     @Query(value = """
     SELECT *
     FROM saving s
