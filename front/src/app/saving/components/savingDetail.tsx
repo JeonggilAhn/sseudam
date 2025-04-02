@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Heart, X, Info, ExternalLink } from "lucide-react";
+import { Heart, X } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
 import axiosInstance from "@/utils/axiosInstance";
@@ -26,11 +26,9 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
   const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
-  const [loading, setLoading] = useState(true);
   const detailLoadedRef = useRef(false);
 
   const fetchDetail = async () => {
-    setLoading(true);
     try {
       const res = await axiosInstance.get(`/savings-products/${savingId}`);
       const data = res.data.content;
@@ -38,8 +36,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
       console.error("적금 상세 조회 실패", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -58,7 +54,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
   const handleLike = async () => {
     try {
-      const res = await axiosInstance.post(`/savings-products/${savingId}/likes`, {
+      const res = await axiosInstance.post(`/api/savings-products/${savingId}/likes`, {
         userId: 1,
       });
       setLiked(res.data.content.liked);
@@ -100,63 +96,33 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
     }
   }, []);
 
-  if (loading) {
-    return <span>로딩 중..</span>;
-  }
-
   if (!saving) return null;
 
-  // 금리 정보를 소수점으로 변환
-  const minRate = (saving.min_int_rate / 100).toFixed(2);
-  const maxRate = (saving.max_int_rate / 100).toFixed(2);
-
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center">
-      <div className="relative bg-white rounded-xl p-8 w-[90%] max-w-md shadow-2xl overflow-hidden">
-        {/* 헤더 색상 배경 */}
-        <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
-
-        {/* 닫기 버튼 */}
-        <button
-          className="absolute top-4 right-4 cursor-pointer bg-white/90 rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
-          onClick={onClose}
-        >
-          <X size={20} />
+    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center">
+      <div className="relative bg-white rounded-lg p-10 w-[90%] max-w-md shadow-lg">
+        <button className="absolute top-2 right-3 cursor-pointer" onClick={onClose}>
+          <X />
         </button>
 
-        {/* 은행 로고 */}
-        <div className="flex items-center justify-center relative z-10 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-3 mb-2">
-            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={160} height={70} />
-          </div>
+        <div className="flex items-center justify-center">
+          <Icon name={getBankIconName(saving.fin_prdt_cd)} width={180} height={80} />
         </div>
 
-        {/* 상품 정보 */}
-        <div className="text-center space-y-5">
-          <div>
-            <h2 className="text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
-            <div className="bg-gray-50 rounded-lg p-4 text-sm leading-relaxed mb-3 max-h-28 overflow-y-auto">
-              {saving.spcl_cnd || saving.etc_note || "상세 설명이 없습니다."}
-            </div>
-          </div>
+        <div className="text-center">
+          <h2 className="text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
+          <p className="text-sm leading-relaxed mb-4">{saving.spcl_cnd || saving.etc_note}</p>
+          <p className="text-xs text-gray-500 mb-4">
+            금리: {saving.min_int_rate / 100}% ~ {saving.max_int_rate / 100}%
+          </p>
 
-          {/* 금리 정보 */}
-          <div className="bg-blue-50 rounded-lg p-4 flex items-center justify-center space-x-2">
-            <Info size={16} className="text-blue-500" />
-            <p className="text-blue-700 font-semibold">
-              금리: <span className="text-lg">{minRate}%</span> ~{" "}
-              <span className="text-lg">{maxRate}%</span>
-            </p>
-          </div>
-
-          {/* 버튼 영역 */}
-          <div className="flex items-center justify-center gap-4 mt-6">
+          <div className="flex items-center justify-center gap-3">
             <button
               onClick={handleLike}
-              className={`w-10 h-10 rounded-md border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md ${
+              className={`w-10 h-10 rounded-md border-2 transition-colors flex items-center justify-center cursor-pointer ${
                 liked
-                  ? "border-red-500 text-red-500 bg-red-50"
-                  : "border-gray-300 text-gray-500 hover:bg-gray-50"
+                  ? "border-red-500 text-red-500 bg-red-100"
+                  : "border-gray-300 text-gray-500 hover:bg-gray-100"
               }`}
               aria-label="좋아요 버튼"
             >
@@ -166,10 +132,9 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
             {showJoinButton && (
               <button
                 onClick={handleJoin}
-                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 text-white px-6 py-3 rounded-lg font-bold cursor-pointer shadow-md hover:shadow-lg transition-all"
+                className="bg-[#60B94D] hover:bg-green-600 text-white px-4 py-2 rounded font-bold cursor-pointer"
               >
                 가입하기
-                <ExternalLink size={16} />
               </button>
             )}
           </div>
