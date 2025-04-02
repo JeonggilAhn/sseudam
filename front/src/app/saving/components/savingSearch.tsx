@@ -14,16 +14,14 @@ const SavingSearch: React.FC = () => {
   const handleSearch = () => {
     const trimmed = query.trim();
     if (!trimmed) {
-      dispatch(setKeyword("")); // 공백 입력 시 검색어 초기화
+      dispatch(setKeyword(""));
       dispatch(setSort(""));
       return;
     }
 
-    // 불필요 단어 제거
     const refined = stopwords.reduce((acc, word) => acc.replaceAll(word, ""), trimmed).trim();
-
     dispatch(setKeyword(refined));
-    dispatch(setSort("")); // 정렬 초기화
+    dispatch(setSort(""));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -38,8 +36,9 @@ const SavingSearch: React.FC = () => {
         <button
           onClick={handleSearch}
           className="mr-2 text-gray-400 hover:text-blue-500 cursor-pointer transition-colors"
+          aria-label="검색"
         >
-          <Search size={20} />
+          <Search size={18} />
         </button>
         <input
           type="text"
@@ -47,7 +46,7 @@ const SavingSearch: React.FC = () => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="검색어를 입력하세요"
-          className="w-full outline-none text-sm"
+          className="w-full min-w-0 outline-none text-sm placeholder:text-gray-400"
         />
       </div>
     </div>

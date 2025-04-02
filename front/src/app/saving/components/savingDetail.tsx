@@ -45,7 +45,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         item.saving_id === savingId ? { ...item, views: data.views } : item
       );
       const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
-
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
@@ -81,7 +80,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         item.saving_id === savingId ? { ...item, like_count: updatedLikes } : item
       );
       const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
-
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, likeCount: updatedLikes }));
     } catch (err) {
@@ -127,8 +125,8 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   const maxRate = (saving.max_int_rate / 100).toFixed(2);
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center">
-      <div className="relative bg-white rounded-xl p-8 w-[90%] max-w-md shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center px-2 sm:px-0">
+      <div className="relative bg-white rounded-xl p-6 sm:p-8 w-[95%] max-w-md shadow-2xl overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
 
         <button
@@ -139,44 +137,44 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         </button>
 
         <div className="flex items-center justify-center relative z-10 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-3 mb-2">
-            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={160} height={70} />
+          <div className="bg-white rounded-lg shadow-md p-2 sm:p-3 mb-2">
+            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={120} height={50} />
           </div>
         </div>
 
         <div className="text-center space-y-5">
           <div>
-            <h2 className="text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
-            <div className="bg-gray-50 rounded-lg p-4 text-sm leading-relaxed mb-3 max-h-28 overflow-y-auto">
+            <h2 className="text-lg sm:text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
+            <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-sm sm:text-base leading-relaxed mb-3 max-h-28 overflow-y-auto">
               {saving.spcl_cnd || saving.etc_note || "상세 설명이 없습니다."}
             </div>
           </div>
 
-          <div className="bg-blue-50 rounded-lg p-4 flex items-center justify-center space-x-2">
+          <div className="bg-blue-50 rounded-lg px-3 py-2 sm:p-4 flex items-center justify-center space-x-2">
             <Info size={16} className="text-blue-500" />
-            <p className="text-blue-700 font-semibold">
-              금리: <span className="text-lg">{minRate}%</span> ~{" "}
-              <span className="text-lg">{maxRate}%</span>
+            <p className="text-blue-700 font-semibold text-sm sm:text-base">
+              금리: <span className="text-base sm:text-lg">{minRate}%</span> ~{" "}
+              <span className="text-base sm:text-lg">{maxRate}%</span>
             </p>
           </div>
 
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
               onClick={handleLike}
-              className={`w-10 h-10 rounded-md border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md ${
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md ${
                 liked
                   ? "border-red-500 text-red-500 bg-red-50"
                   : "border-gray-300 text-gray-500 hover:bg-gray-50"
               }`}
               aria-label="좋아요 버튼"
             >
-              <Heart size={20} fill={liked ? "red" : "none"} className="transition-colors" />
+              <Heart size={18} className="transition-colors" fill={liked ? "red" : "none"} />
             </button>
 
             {showJoinButton && (
               <button
                 onClick={handleJoin}
-                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 text-white px-6 py-3 rounded-lg font-bold cursor-pointer shadow-md hover:shadow-lg transition-all"
+                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-bold cursor-pointer shadow-md hover:shadow-lg transition-all text-sm sm:text-base"
               >
                 가입하기
                 <ExternalLink size={16} />
