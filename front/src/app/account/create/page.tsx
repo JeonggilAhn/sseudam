@@ -15,7 +15,7 @@ export default function CreateAccountPage() {
 
   const handleNext = () => {
     setStep(step + 1);
-    console.log("ss", selectedPassword, selectedSavingRate);
+    // console.log("ss", selectedPassword, selectedSavingRate);
   };
 
   const handlePrev = () => {
@@ -39,9 +39,10 @@ export default function CreateAccountPage() {
               selectedPassword={selectedPassword}
               setSelectedPassword={setSelectedPassword}
             />
-          ) : step === 3 ? (
-            <AccountLinkingStep onPrev={handlePrev} onNext={handleNext} />
-          ) : null}
+          ) : // : step === 3 ? (
+          //   <AccountLinkingStep onPrev={handlePrev} onNext={handleNext} />
+          // )
+          null}
         </div>
       </PageSetting>
     </>

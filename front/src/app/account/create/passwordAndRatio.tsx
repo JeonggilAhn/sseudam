@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { RateBar } from "../components/savingRate";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
@@ -16,14 +17,19 @@ type PasswordAndRatioProps = {
 
 const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   onPrev,
-  onNext,
+  // onNext,
   selectedSavingRate,
   selectedPassword,
   setSelectedPassword,
   setSelectedSavingRate,
 }) => {
-  // const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
-  // const [selectedPassword, setSelectedPassword] = useState<string>("");
+  const [isValue, setIsValue] = useState(false);
+
+  const router = useRouter();
+  const handleLastBtn = () => {
+    console.log("ss", selectedPassword, selectedSavingRate);
+    router.push("create/success");
+  };
 
   return (
     <>
@@ -38,6 +44,8 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
         <InputPassword
           selectedPassword={selectedPassword}
           setSelectedPassword={setSelectedPassword}
+          isValue={isValue}
+          setIsValue={setIsValue}
         />
       </div>
 
@@ -57,10 +65,12 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
             onClick={onPrev}
           />
           <ShortButton
-            name="다음"
+            name="확인"
             color="#2b88d9"
             style={{ width: "180px" }}
-            onClick={onNext}
+            // onClick={onNext}
+            onClick={handleLastBtn}
+            disabled={!isValue}
           />
         </div>
       </div>
