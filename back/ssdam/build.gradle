@@ -25,17 +25,22 @@ repositories {
 
 dependencies {
 
-	/* */
+	/* spring boot starter */
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'commons-codec:commons-codec:1.15'
-	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	/* common util */
+	implementation 'commons-codec:commons-codec:1.15'
+
+	/* dev tools */
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	/* mariaDB */
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.2'
 
 	/* lombok */
 	compileOnly 'org.projectlombok:lombok'
