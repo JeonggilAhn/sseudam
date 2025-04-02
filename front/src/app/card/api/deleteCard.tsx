@@ -1,9 +1,9 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 
-export const DeleteUserCard = async (userId: number) => {
+export const DeleteUserCard = async () => {
   try {
-    const response = await axiosInstance.delete(`/card/${userId}`);
+    const response = await axiosInstance.delete(`/card/`);
     if (response && response.status === 200) {
       toast.success("카드 삭제 성공");
       return response;

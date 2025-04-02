@@ -13,7 +13,6 @@ export interface RegistCardProps {
 export const RegistCard = async ({
   cardNo,
   cvc,
-  userId,
   keyInfo,
   userName,
   expiryDate,
@@ -22,7 +21,6 @@ export const RegistCard = async ({
     const response = await axiosInstance.post("/card/", {
       card_no: cardNo,
       cvc: cvc,
-      user_id: userId,
       key_info: keyInfo,
       user_name: userName,
       expiry_date: expiryDate,
