@@ -135,7 +135,7 @@ const CreateSavingPage: React.FC = () => {
             className={`w-full font-bold py-4 px-8 rounded-xl shadow flex items-center justify-center transition-all ${
               isDisabled
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white"
+                : "bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 text-white"
             }`}
           >
             가입
