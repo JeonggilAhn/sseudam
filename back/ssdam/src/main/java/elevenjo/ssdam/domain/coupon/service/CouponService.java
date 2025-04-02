@@ -83,8 +83,8 @@ public class CouponService {
                 throw new CouponOutOfStockException();
             }
         }
-
-        coupon.decreaseCouponCnt();
+        // coupon의 coupon_cnt는 쿠폰의 초기 수량을 의미하는 것으로 변경됨
+//        coupon.decreaseCouponCnt();
 
         CouponIssued couponIssued = CouponIssued.of(user, coupon);
         couponIssuedRepository.save(couponIssued);
