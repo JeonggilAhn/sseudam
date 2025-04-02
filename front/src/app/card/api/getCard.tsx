@@ -1,5 +1,4 @@
 import axiosInstance from "@/utils/axiosInstance";
-import { toast } from "react-toastify";
 
 export const GetCardInfo = async () => {
   try {

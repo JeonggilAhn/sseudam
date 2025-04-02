@@ -38,7 +38,7 @@ const CardRegist = () => {
   }, [isModalOpen]);
 
   const handleClose = async () => {
-    const cardInfo = await GetCardInfo(2);
+    const cardInfo = await GetCardInfo();
     dispatch(setCurrentCard(cardInfo.data));
   };
 

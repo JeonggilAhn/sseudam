@@ -49,16 +49,16 @@ const MainPage = () => {
 
   const [card, setCard] = useState<string[]>([]);
 
-  const handleDeleteCard = async (userId: number) => {
-    await DeleteUserCard(userId);
+  const handleDeleteCard = async () => {
+    await DeleteUserCard();
     setCard([]);
     dispatch(setCurrentCard([]));
   };
 
   useEffect(() => {
     setIsLoading(true);
-    const fetchCardInfo = async (userId: number) => {
-      const response = await GetCardInfo(userId);
+    const fetchCardInfo = async () => {
+      const response = await GetCardInfo();
       if (response !== undefined) {
         setCard(response.data);
         setIsLoading(false);
@@ -76,7 +76,7 @@ const MainPage = () => {
     };
 
     dispatch(resetIsModalOpen());
-    fetchCardInfo(2);
+    fetchCardInfo();
     fetchCouponInfo();
   }, [currentCard]);
 
@@ -149,7 +149,7 @@ const MainPage = () => {
                       <CircleX
                         id="cardDelete"
                         className="z-[200] text-gray-700 max-w-20 h-auto absolute right-1 top-1"
-                        onClick={() => handleDeleteCard(2)}
+                        onClick={() => handleDeleteCard()}
                       />
                       <Cards
                         number={""}

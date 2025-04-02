@@ -30,8 +30,8 @@ const CouponImage = ({
   const [userHas, setUserHas] = useState(false);
 
   useEffect(() => {
-    const fetchUserCoupon = async (userId: number, couponId: number) => {
-      const response = await CheckCouponIssued(userId, couponId);
+    const fetchUserCoupon = async (couponId: number) => {
+      const response = await CheckCouponIssued(couponId);
       console.log(response?.data.content);
       if (response?.data.content === true) {
         setUserHas(true);
@@ -39,7 +39,7 @@ const CouponImage = ({
         setUserHas(false);
       }
     };
-    fetchUserCoupon(2, couponId);
+    fetchUserCoupon(couponId);
   }, []);
 
   return (
