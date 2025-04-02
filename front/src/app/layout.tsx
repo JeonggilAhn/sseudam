@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ReduxProvider from "./provider";
-import UnderBar from "@/components/underBar";
 import ToastModal from "../components/alertModal/toastModal";
+import UnderBar from "@/components/underBar";
 import TransitionWrapper from "./transitionWrapper";
 
 export const metadata: Metadata = {
