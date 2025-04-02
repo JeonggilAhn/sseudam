@@ -73,6 +73,14 @@ const SavingPage: React.FC = () => {
     fetchSavings(page);
   }, [page]);
 
+  // 페이지 이동시 정렬, 검색어 초기화
+  useEffect(() => {
+    return () => {
+      dispatch(setSort(""));
+      dispatch(setKeyword(""));
+    };
+  }, []);
+
   // 무한스크롤 감지 (하단 도달 시 page 증가)
   useEffect(() => {
     const observer = new IntersectionObserver(

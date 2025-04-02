@@ -5,14 +5,16 @@ import { Heart, X, Info, ExternalLink } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
 import axiosInstance from "@/utils/axiosInstance";
-import { useAppDispatch } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import {
   updateSavingDetail,
   setSelectedSavingDetail,
   setSelectedSaving,
+  setSavings,
 } from "@/stores/slices/savingSlice";
 import { SavingDetailType } from "@/types/saving";
 import { useRouter } from "next/navigation";
+import { sortSavings } from "@/utils/sortSavings";
 
 type Props = {
   savingId: number;
@@ -23,6 +25,9 @@ type Props = {
 const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = true }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const savings = useAppSelector((state) => state.saving.savings);
+  const sort = useAppSelector((state) => state.saving.sort);
 
   const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
@@ -35,6 +40,13 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       const res = await axiosInstance.get(`/savings-products/${savingId}`);
       const data = res.data.content;
       setSaving(data);
+
+      const updatedList = savings.map((item) =>
+        item.saving_id === savingId ? { ...item, views: data.views } : item
+      );
+      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
+
+      dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
       console.error("적금 상세 조회 실패", err);
@@ -61,8 +73,17 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       const res = await axiosInstance.post(`/savings-products/${savingId}/likes`, {
         userId: 1,
       });
+
+      const updatedLikes = res.data.content.like_count;
       setLiked(res.data.content.liked);
-      dispatch(updateSavingDetail({ savingId, likeCount: res.data.content.like_count }));
+
+      const updatedList = savings.map((item) =>
+        item.saving_id === savingId ? { ...item, like_count: updatedLikes } : item
+      );
+      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
+
+      dispatch(setSavings(sortedList));
+      dispatch(updateSavingDetail({ savingId, likeCount: updatedLikes }));
     } catch (err) {
       console.error("좋아요 토글 실패", err);
     }
@@ -86,7 +107,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
           likes: saving.likes,
         })
       );
-
       dispatch(setSelectedSavingDetail(saving));
       router.push("/saving/create");
     }
@@ -100,23 +120,17 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
     }
   }, []);
 
-  if (loading) {
-    return <span>로딩 중..</span>;
-  }
-
+  if (loading) return <span>로딩 중..</span>;
   if (!saving) return null;
 
-  // 금리 정보를 소수점으로 변환
   const minRate = (saving.min_int_rate / 100).toFixed(2);
   const maxRate = (saving.max_int_rate / 100).toFixed(2);
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center">
       <div className="relative bg-white rounded-xl p-8 w-[90%] max-w-md shadow-2xl overflow-hidden">
-        {/* 헤더 색상 배경 */}
         <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
 
-        {/* 닫기 버튼 */}
         <button
           className="absolute top-4 right-4 cursor-pointer bg-white/90 rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
           onClick={onClose}
@@ -124,14 +138,12 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
           <X size={20} />
         </button>
 
-        {/* 은행 로고 */}
         <div className="flex items-center justify-center relative z-10 mb-6">
           <div className="bg-white rounded-lg shadow-md p-3 mb-2">
             <Icon name={getBankIconName(saving.fin_prdt_cd)} width={160} height={70} />
           </div>
         </div>
 
-        {/* 상품 정보 */}
         <div className="text-center space-y-5">
           <div>
             <h2 className="text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
@@ -140,7 +152,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
             </div>
           </div>
 
-          {/* 금리 정보 */}
           <div className="bg-blue-50 rounded-lg p-4 flex items-center justify-center space-x-2">
             <Info size={16} className="text-blue-500" />
             <p className="text-blue-700 font-semibold">
@@ -149,7 +160,6 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
             </p>
           </div>
 
-          {/* 버튼 영역 */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
               onClick={handleLike}
