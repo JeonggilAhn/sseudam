@@ -21,8 +21,8 @@ const SuccessPage = () => {
             alt="logo_smile"
             className="w-55 mb-6 mt-10"
           />
-          <div className="text-[6.2vw] font-bold">
-            &quot통장&quot 가입을 환영합니다!
+          <div className="text-[6.2vw] text-nowrap font-bold">
+            통장 가입이 완료되었습니다!
           </div>
         </div>
 

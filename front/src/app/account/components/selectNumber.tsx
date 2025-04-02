@@ -7,15 +7,21 @@ import NumericKeypad from "./numeric-keypad";
 type InputPasswordProps = {
   selectedPassword: string;
   setSelectedPassword: React.Dispatch<React.SetStateAction<string>>;
+  isValue: boolean;
+  setIsValue: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function InputPassword({ setSelectedPassword }: InputPasswordProps) {
+export function InputPassword({
+  setSelectedPassword,
+  setIsValue,
+}: InputPasswordProps) {
   const [showKeypad, setShowKeypad] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
 
   const handleOpenKeypad = () => {
     setShowKeypad(true);
     setVerificationCode("");
+    setIsValue(false);
   };
 
   const handleKeypadClose = () => {
@@ -26,6 +32,7 @@ export function InputPassword({ setSelectedPassword }: InputPasswordProps) {
     setVerificationCode(value);
     setShowKeypad(false);
     setSelectedPassword(value);
+    setIsValue(true);
   };
 
   return (
