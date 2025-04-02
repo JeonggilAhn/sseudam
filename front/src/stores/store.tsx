@@ -1,13 +1,19 @@
+// src/stores/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import couponReducer from "./slices/couponSlice";
+import cardReducer from "./slices/cardSlice";
+import savingReducer from "./slices/savingSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    coupon: couponReducer,
+    card: cardReducer,
+    saving: savingReducer,
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+// RootState 타입 추론 (state 접근 시 타입 안전성 확보)
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+
+// AppDispatch 타입 추론 (dispatch 사용 시 타입 추론)
 export type AppDispatch = typeof store.dispatch;

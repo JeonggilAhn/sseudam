@@ -1,18 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./provider";
+import ToastModal from "../components/alertModal/toastModal";
 import UnderBar from "@/components/underBar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import TransitionWrapper from "./transitionWrapper";
 
 export const metadata: Metadata = {
   title: "SSDAM",
@@ -25,21 +16,21 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#000000",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ReduxProvider>
-          <div className="pb-16">{children}</div>
-          <UnderBar />
-        </ReduxProvider>
+    <html lang="en" className="w-full min-h-screen">
+      <body className="w-full min-h-screen bg-white">
+        <ToastModal />
+        <TransitionWrapper>
+          <ReduxProvider>
+            <main className="min-h-screen flex flex-col">{children}</main>
+          </ReduxProvider>
+        </TransitionWrapper>
+        <UnderBar />
       </body>
     </html>
   );
