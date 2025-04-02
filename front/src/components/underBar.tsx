@@ -8,6 +8,9 @@ import { HandCoins, Home, User } from "lucide-react";
 const UnderBar = () => {
   const pathname = usePathname();
 
+  const hiddenNav = ["/signup"];
+  const noNav = hiddenNav.some((route) => pathname.includes(route));
+
   const menuList = [
     {
       href: "/saving",
@@ -25,6 +28,10 @@ const UnderBar = () => {
       icon: User,
     },
   ];
+
+  if (noNav) {
+    return null;
+  }
 
   return (
     <nav className="fixed h-[5vh] min-h-15 bottom-0 left-0 right-0 bg-white border-t-2 border-t-[#539DF3] shadow z-[5000]">

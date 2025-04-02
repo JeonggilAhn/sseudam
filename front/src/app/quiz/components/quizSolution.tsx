@@ -10,7 +10,6 @@ interface QuizSolutionProps {
 const QuizSolution: React.FC<QuizSolutionProps> = ({ onRetry, solution }) => {
   return (
     <main className="w-full max-w-md h-[420px] rounded-lg bg-white border-2 border-black overflow-hidden p-6 flex flex-col justify-between items-center">
-      <span className="justify-center font-bold text-4xl">오답!!</span>
       <div className="flex-1 flex items-center justify-center text-lg font-semibold text-black leading-relaxed text-center">
         <div>
           <p className="mb-4">{solution}</p>
