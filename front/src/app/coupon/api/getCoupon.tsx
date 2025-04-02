@@ -1,16 +1,10 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export const CheckUserCoupon = async (userId: number, couponId: number) => {
+export const GetCouponList = async () => {
   try {
-    const response = await axiosInstance.get(``);
-    for (const coupon of response.data) {
-      if (coupon.coupon_id === couponId) {
-        return true;
-      }
-    }
-    return false;
+    const response = await axiosInstance.get(`/coupons/list`);
+    return response;
   } catch (error) {
-    console.error("❌ 쿠폰 조회 실패:", error);
-    throw error;
+    console.error("❌ 쿠폰 목록 조회 실패:", error);
   }
 };

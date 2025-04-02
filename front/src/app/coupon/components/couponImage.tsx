@@ -2,45 +2,44 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
-import { CheckUserCoupon } from "../api/getCoupon";
+import { CheckCouponIssued } from "../api/postCoupon";
 
 interface CouponImageProps {
   couponName: string;
   couponDeadline: string;
   savingId: number;
-  coupon_id: number;
-  coupon_type: string;
-  onClick: () => void;
+  couponId: number;
+  couponType: string;
+  onClick: (e: React.MouseEvent) => void;
 }
 
 const CouponImage = ({
   couponName,
   couponDeadline,
   savingId,
-  coupon_id,
-  coupon_type,
+  couponId,
+  couponType,
   onClick,
 }: CouponImageProps) => {
-  const currentCouponName = useSelector(
-    (state: RootState) => state.coupon.currentCouponName
-  );
-  const currentCouponDeadline = useSelector(
-    (state: RootState) => state.coupon.currentCouponDeadline
-  );
+  // const currentCouponName = useSelector(
+  //   (state: RootState) => state.coupon.currentCouponName
+  // );
+  // const currentCouponDeadline = useSelector(
+  //   (state: RootState) => state.coupon.currentCouponDeadline
+  // );
   const [userHas, setUserHas] = useState(false);
 
   useEffect(() => {
-    const fetchUserCoupon = async (userId: number, coupon_id: number) => {
-      const response = await CheckUserCoupon(userId, coupon_id);
-      if (response) {
+    const fetchUserCoupon = async (userId: number, couponId: number) => {
+      const response = await CheckCouponIssued(userId, couponId);
+      console.log(response?.data.content);
+      if (response?.data.content === true) {
         setUserHas(true);
       } else {
         setUserHas(false);
       }
     };
-    fetchUserCoupon(1, coupon_id);
+    fetchUserCoupon(2, couponId);
   }, []);
 
   return (
@@ -75,16 +74,28 @@ const CouponImage = ({
           <p className="text-xs mt-1 uppercase text-orange-600 font-semibold">
             유효 기간
           </p>
-          <p className="text-md font-medium mt-1">{couponDeadline}</p>
+          <p className="text-md font-medium mt-1">
+            {couponDeadline.replace("T", " ")}
+          </p>
         </div>
 
         <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
           {userHas ? (
-            <button className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+            >
               사용 하러 가기
             </button>
           ) : (
-            <button className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+            >
               쿠폰 받기
             </button>
           )}
