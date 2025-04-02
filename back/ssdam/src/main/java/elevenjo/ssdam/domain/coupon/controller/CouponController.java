@@ -1,6 +1,5 @@
 package elevenjo.ssdam.domain.coupon.controller;
 
-import elevenjo.ssdam.domain.coupon.dto.request.CouponRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResponseDto;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import elevenjo.ssdam.domain.coupon.dto.request.CouponCreateRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.request.CouponIssueRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponCreateResponseDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponIssueResponseDto;
-import elevenjo.ssdam.domain.coupon.entity.Coupon;
 import elevenjo.ssdam.domain.coupon.service.CouponService;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
@@ -56,8 +54,9 @@ public class CouponController {
     };
 
     @PostMapping("/coupons/validate")
-    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@RequestBody CouponRequestDto couponRequestDto){
-        boolean hasRecieved = couponService.checkCouponIssued(couponRequestDto.getUserId(), couponRequestDto.getCouponId());
+    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@Param("couponId") long couponId,
+                                                                   @AuthenticationPrincipal User user){
+        boolean hasRecieved = couponService.checkCouponIssued(user.getUserId(), couponId);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, hasRecieved);
     };
 
