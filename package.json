@@ -6,6 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "commit-msg": "sh .husky/commit-msg",
-    "post-rewrite": "sh .husky/post-rewrite"
+    "post-rewrite": "sh .husky/post-rewrite",
+    "type-check": "tsc --noEmit"
   }
 }
