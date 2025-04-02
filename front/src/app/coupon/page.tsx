@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Ticket } from "lucide-react";
 import { Coupon } from "../card/page";
-import { getCouponDetail } from "./hooks/couponGet";
+import { GetCouponList } from "./api/getCoupon";
 
 // 컴포넌트
 import TimeBackground from "../card/components/timeBackground";
@@ -17,10 +17,8 @@ const CouponPage = () => {
   useEffect(() => {
     const fetchCoupon = async () => {
       try {
-        const tmpCoupon: Coupon = await getCouponDetail(
-          Number(params.couponId)
-        );
-        setCurrentCoupon(tmpCoupon);
+        const tmpCoupon = await GetCouponList();
+        setCurrentCoupon(tmpCoupon?.data);
       } catch (error) {
         console.error("❌ 쿠폰 상세 정보 조회 실패:", error);
       }
@@ -102,10 +100,10 @@ const CouponPage = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-white text-2xl font-bold">
-                    {currentCoupon?.couponName}
+                    {currentCoupon?.coupon_name}
                   </h2>
                   <p className="text-white mt-1">
-                    유효기간: {currentCoupon?.couponDeadline}
+                    유효기간: {currentCoupon?.coupon_deadline}
                   </p>
                 </div>
                 <div className="bg-white rounded-full p-3">
@@ -143,13 +141,15 @@ const CouponPage = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-500">쿠폰명</span>
-                <span className="font-medium">{currentCoupon?.couponName}</span>
+                <span className="font-medium">
+                  {currentCoupon?.coupon_name}
+                </span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-gray-500">유효기간</span>
                 <span className="font-medium">
-                  {currentCoupon?.couponDeadline}
+                  {currentCoupon?.coupon_deadline}
                 </span>
               </div>
             </div>

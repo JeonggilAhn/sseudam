@@ -25,10 +25,10 @@ const couponSlice = createSlice({
       state.couponList = action.payload;
     },
     setCurrentCoupon: (state, action: PayloadAction<Coupon>) => {
-      state.currentCouponId = action.payload.couponId;
-      state.currentCouponName = action.payload.couponName;
-      state.currentCouponDeadline = action.payload.couponDeadline;
-      state.currentCouponSavingId = action.payload.savingId;
+      state.currentCouponId = action.payload.coupon_id;
+      state.currentCouponName = action.payload.coupon_name;
+      state.currentCouponDeadline = action.payload.coupon_deadline;
+      state.currentCouponSavingId = action.payload.saving_id;
     },
     clearCurrentCoupon: (state) => {
       state.currentCouponId = 0;

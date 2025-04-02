@@ -4,6 +4,7 @@ import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
 import { GetCardInfo } from "./api/getCard";
+import { GetCouponList } from "../coupon/api/getCoupon";
 import { DeleteUserCard } from "./api/deleteCard";
 
 import Image from "next/image";
@@ -30,12 +31,13 @@ export interface Card {
 }
 
 export interface Coupon {
-  couponId: number;
-  couponName: string;
-  couponDeadline: string;
-  savingId: number;
   coupon_id: number;
+  coupon_name: string;
   coupon_type: string;
+  created_at: string;
+  updated_at: string;
+  coupon_deadline: string;
+  saving_id: number;
 }
 
 const MainPage = () => {
@@ -65,36 +67,17 @@ const MainPage = () => {
       }
     };
 
+    const fetchCouponInfo = async () => {
+      const response = await GetCouponList();
+      console.log(response?.data.content);
+      if (response !== undefined) {
+        dispatch(setCouponList(response.data.content));
+      }
+    };
+
     dispatch(resetIsModalOpen());
-    dispatch(
-      setCouponList([
-        {
-          couponId: 1,
-          couponName: "웰컴 쿠폰",
-          couponDeadline: "2025-04-30",
-          savingId: 101,
-          coupon_id: 1,
-          coupon_type: "웰컴",
-        },
-        {
-          couponId: 2,
-          couponName: "생일 축하 쿠폰",
-          couponDeadline: "2025-07-15",
-          savingId: 102,
-          coupon_id: 2,
-          coupon_type: "생일",
-        },
-        {
-          couponId: 3,
-          couponName: "재구매 감사 쿠폰",
-          couponDeadline: "2025-12-31",
-          savingId: 103,
-          coupon_id: 3,
-          coupon_type: "재구매",
-        },
-      ])
-    );
     fetchCardInfo(2);
+    fetchCouponInfo();
   }, [currentCard]);
 
   return (
@@ -186,13 +169,14 @@ const MainPage = () => {
               {couponList.map((coupon, index) => (
                 <CouponImage
                   key={index}
-                  couponName={coupon.couponName}
-                  couponDeadline={coupon.couponDeadline}
-                  savingId={coupon.savingId}
-                  coupon_id={coupon.couponId}
-                  coupon_type={coupon.coupon_type}
-                  onClick={() => {
-                    router.push(`/coupon?couponId=${coupon.couponId}`);
+                  couponName={coupon.coupon_name}
+                  couponDeadline={coupon.coupon_deadline}
+                  savingId={coupon.saving_id}
+                  couponId={coupon.coupon_id}
+                  couponType={coupon.coupon_type}
+                  onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    router.push(`/coupon?couponId=${coupon.coupon_id}`);
                     dispatch(setCurrentCoupon(coupon));
                   }}
                 />
