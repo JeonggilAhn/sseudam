@@ -28,10 +28,10 @@ export default function Home() {
 
       <div className="flex flex-col items-center gap-4">
         {/* 비율로 height auto 주고 싶음 */}
-        <Image src="/icons/logo.png" alt="로고" width={150} height={80} />
+        <Image src="/icons/logo.svg" alt="로고" width={150} height={80} />
         <button
           onClick={handleGoogleLogin}
-          className="transition-all duration-200 hover:brightness-105 hover:shadow-md rounded"
+          className="transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
         >
           <Image
             src="/icons/googleLogin.png"

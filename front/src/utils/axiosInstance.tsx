@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 // import { useNavigate } from "next/navigation";
 
 const axiosInstance = axios.create({
@@ -9,24 +9,34 @@ const axiosInstance = axios.create({
   },
 });
 
-const requestInterCeptor = (config) => {};
+const requestInterCeptor = (config: InternalAxiosRequestConfig) => {
+  const token = sessionStorage.getItem("access_token");
+  if (token && config.headers) {
+    config.headers["Authorization"] = `${token}`;
+  }
+  return config;
+};
+
+axiosInstance.interceptors.request.use(requestInterCeptor, (error) => {
+  Promise.reject(error);
+});
 
 // 인터셉터 (오류 예외 처리)
 axiosInstance.interceptors.response.use(
-  (response) => response //200일 경우 통과
-  // (error) => {
-  //400 or 500 오류일 경우 예외 처리
-  // const status = error.response?.status;
-  // if (status === 401) {
-  //   alert("401: 접근 자격 없음");
-  // } else if (status === 403) {
-  //   alert("403: 접근 거부");
-  // } else if (status === 404) {
-  //   alert("404: 페이지 없음");
-  // } else if (status === 500) {
-  //   alert("500: 서버 오류");
-  // }
-  // }
+  (response) => response,
+  (error) => {
+    // 400 or 500 오류일 경우 예외 처리
+    const status = error.response?.status;
+    if (status === 401) {
+      alert("401: 접근 자격 없음");
+    } else if (status === 403) {
+      alert("403: 접근 거부");
+    } else if (status === 404) {
+      alert("404: 페이지 없음");
+    } else if (status === 500) {
+      alert("500: 서버 오류");
+    }
+  }
 );
 
 export default axiosInstance;

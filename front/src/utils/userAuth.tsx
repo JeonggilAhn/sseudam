@@ -4,9 +4,11 @@ export const UserAuth = async () => {
       method: "GET",
       credentials: "include",
     });
-    console.log(response);
-    console.log("로그인 및 인증성공");
-    return response.headers.get("authorization");
+    sessionStorage.setItem(
+      "access_token",
+      response.headers.get("Authorization") || ""
+    );
+    return true;
   } catch (error) {
     console.error("인증 확인 중 오류 발생:", error);
   }

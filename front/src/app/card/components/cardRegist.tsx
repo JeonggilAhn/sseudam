@@ -47,7 +47,6 @@ const CardRegist = () => {
     const response = await RegistCard({
       cardNo: secret.card_no,
       cvc: secret.cvc,
-      userId: 2,
       keyInfo: secret.key_info,
       userName: name,
       expiryDate: expiry.replaceAll("/", ""),
@@ -215,9 +214,7 @@ const CardRegist = () => {
     </div>
   );
 
-  return <AnimatedModal onClose={handleClose}>
-    {children}
-  </AnimatedModal>;
+  return <AnimatedModal onClose={handleClose}>{children}</AnimatedModal>;
 };
 
 export default CardRegist;
