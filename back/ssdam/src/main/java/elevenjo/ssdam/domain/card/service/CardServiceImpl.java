@@ -14,6 +14,7 @@ import elevenjo.ssdam.global.decrypt.HybridDecryptor;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -31,11 +32,12 @@ public class CardServiceImpl implements CardService {
     private final ExternalApiUtil externalApiUtil;
 
     @Override
-    public void registerUserCard(CardDto userCard) throws Exception {
+    public void registerUserCard(CardDto userCard, User user) throws Exception {
         boolean isCardExist = false;
+        long userId = user.getUserId();
         Map<String, String> map = new HashMap<>();
-        String userKey = userRepository.findById(userCard.getUserId()).get().getUserKey();
-        User user = userRepository.findById(userCard.getUserId())
+        String userKey = userRepository.findById(userId).get().getUserKey();
+        User cardUser = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(userCard.getKeyInfo());

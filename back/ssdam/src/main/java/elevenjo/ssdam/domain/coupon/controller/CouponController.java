@@ -1,5 +1,6 @@
 package elevenjo.ssdam.domain.coupon.controller;
 
+import elevenjo.ssdam.domain.coupon.dto.request.CouponValidateRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +51,9 @@ public class CouponController {
     };
 
     @PostMapping("/coupons/validate")
-    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@RequestBody long couponId,
+    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@RequestBody CouponValidateRequestDto cvDto,
                                                                    @AuthenticationPrincipal User user){
-        boolean hasRecieved = couponService.checkCouponIssued(user.getUserId(), couponId);
+        boolean hasRecieved = couponService.checkCouponIssued(user.getUserId(), cvDto.getCouponId());
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, hasRecieved);
     };
 
