@@ -1,141 +1,102 @@
 "use client";
 
-const CouponImage = () => {
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { CheckCouponIssued } from "../api/postCoupon";
+
+interface CouponImageProps {
+  couponName: string;
+  couponDeadline: string;
+  savingId: number;
+  couponId: number;
+  couponType: string;
+  onClick: (e: React.MouseEvent) => void;
+}
+
+const CouponImage = ({
+  couponName,
+  couponDeadline,
+  couponId,
+  onClick,
+}: CouponImageProps) => {
+  // const currentCouponName = useSelector(
+  //   (state: RootState) => state.coupon.currentCouponName
+  // );
+  // const currentCouponDeadline = useSelector(
+  //   (state: RootState) => state.coupon.currentCouponDeadline
+  // );
+  const [userHas, setUserHas] = useState(false);
+
+  useEffect(() => {
+    const fetchUserCoupon = async (couponId: number) => {
+      const response = await CheckCouponIssued(couponId);
+      console.log(response?.data.content);
+      if (response?.data.content === true) {
+        setUserHas(true);
+      } else {
+        setUserHas(false);
+      }
+    };
+    fetchUserCoupon(couponId);
+  }, [couponId]);
+
   return (
-    <div>
-      <div style={{ width: "100%", height: "100%", position: "relative" }}>
-        <div
-          style={{
-            width: 80,
-            height: 15.62,
-            left: 28,
-            top: 43.55,
-            position: "absolute",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              width: 2.17,
-              height: 10.71,
-              left: 37.06,
-              top: 4.01,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 12.19,
-              height: 12.12,
-              left: 0,
-              top: 0.44,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 2.37,
-              height: 2.37,
-              left: 37.01,
-              top: 0.13,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 11.54,
-              height: 10.88,
-              left: 11.04,
-              top: 2.98,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 11.54,
-              height: 10.88,
-              left: 41.06,
-              top: 3,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 11.45,
-              height: 12.26,
-              left: 52.76,
-              top: 0,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 13.71,
-              height: 12.19,
-              left: 22.09,
-              top: 3.42,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
-          <div
-            style={{
-              width: 14.17,
-              height: 8.94,
-              left: 65.83,
-              top: 2.93,
-              position: "absolute",
-              background: "#ED1A3B",
-            }}
-          />
+    <div
+      onClick={onClick}
+      className="relative flex bg-white border-2 border-dashed border-orange-400 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full min-h-[6rem]"
+    >
+      {/* 좌측 절취선 */}
+      <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white border-2 border-orange-300 rounded-full z-10"></div>
+      {/* 우측 절취선 */}
+      <div className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white border-2 border-orange-300 rounded-full z-10"></div>
+
+      {/* 3등분된 정보 */}
+      <div className="flex flex-row justify-between w-full divide-x divide-orange-300 text-center text-sm text-gray-800">
+        {/* Left: 할인 정보 */}
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center w-full h-full">
+          <div className="text-xs uppercase text-orange-600 font-semibold w-full h-full">
+            <div className="flex justify-center items-center w-full h-full">
+              <Image
+                src="/icons/logoIconCiti.svg"
+                width={150}
+                height={150}
+                alt="쿠폰 아이콘"
+              />
+            </div>
+          </div>
         </div>
-        <div
-          style={{
-            left: 140,
-            top: 16.55,
-            position: "absolute",
-            color: "black",
-            fontSize: 24,
-            fontFamily: "Montserrat",
-            fontWeight: "600",
-            wordWrap: "break-word",
-          }}
-        >
-          Pay 1 take 2
+
+        {/* Middle: 코드 정보 */}
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
+          <span className="text-xs text-gray-500 mt-2">{couponName}</span>
+          <p className="text-xs mt-1 uppercase text-orange-600 font-semibold">
+            유효 기간
+          </p>
+          <p className="text-md font-medium mt-1">
+            {couponDeadline.replace("T", " ")}
+          </p>
         </div>
-        <div
-          style={{
-            left: 140,
-            top: 45.55,
-            position: "absolute",
-            color: "black",
-            fontSize: 16,
-            fontFamily: "Montserrat",
-            fontWeight: "500",
-            wordWrap: "break-word",
-          }}
-        >
-          Vapiano
-        </div>
-        <div
-          style={{
-            left: 140,
-            top: 81.55,
-            position: "absolute",
-            color: "rgba(0, 0, 0, 0.30)",
-            fontSize: 10,
-            fontFamily: "Montserrat",
-            fontWeight: "500",
-            wordWrap: "break-word",
-          }}
-        >
-          Valid until 03 October 2022
+
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
+          {userHas ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+            >
+              사용 하러 가기
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+            >
+              쿠폰 받기
+            </button>
+          )}
         </div>
       </div>
     </div>

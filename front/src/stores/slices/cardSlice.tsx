@@ -8,6 +8,7 @@ interface CardState {
   cvc: string;
   name: string;
   focus: string;
+  currentCard: string[];
 }
 
 const initialCardState: CardState = {
@@ -17,6 +18,7 @@ const initialCardState: CardState = {
   cvc: "",
   name: "",
   focus: "",
+  currentCard: [],
 };
 
 const cardSlice = createSlice({
@@ -25,6 +27,11 @@ const cardSlice = createSlice({
   reducers: {
     toggleIsRegistModalOpen: (state) => {
       state.isRegistModalOpen = !state.isRegistModalOpen;
+      state.number = "";
+      state.expiry = "";
+      state.cvc = "";
+      state.name = "";
+      state.focus = "";
     },
     setNumber: (state, action: PayloadAction<string>) => {
       state.number = action.payload;
@@ -41,6 +48,9 @@ const cardSlice = createSlice({
     setFocus: (state, action: PayloadAction<string>) => {
       state.focus = action.payload;
     },
+    setCurrentCard: (state, action: PayloadAction<string[]>) => {
+      state.currentCard = action.payload;
+    },
   },
 });
 
@@ -51,5 +61,6 @@ export const {
   setCvc,
   setName,
   setFocus,
+  setCurrentCard,
 } = cardSlice.actions;
 export default cardSlice.reducer;
