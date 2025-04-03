@@ -1,14 +1,10 @@
 package elevenjo.ssdam.domain.coupon.controller;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResponseDto;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import elevenjo.ssdam.domain.coupon.dto.request.CouponCreateRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.request.CouponIssueRequestDto;
@@ -54,7 +50,7 @@ public class CouponController {
     };
 
     @PostMapping("/coupons/validate")
-    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@Param("couponId") long couponId,
+    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@RequestBody long couponId,
                                                                    @AuthenticationPrincipal User user){
         boolean hasRecieved = couponService.checkCouponIssued(user.getUserId(), couponId);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, hasRecieved);
