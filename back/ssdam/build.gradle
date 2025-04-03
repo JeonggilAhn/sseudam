@@ -33,9 +33,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	/* env */
-	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
-
 	/* common util */
 	implementation 'commons-codec:commons-codec:1.15'
 
@@ -70,4 +67,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+/* .env */
+tasks.named('processResources') {
+	from('.') {
+		include '.env'
+		into ''
+	}
 }
