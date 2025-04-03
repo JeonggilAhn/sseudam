@@ -13,7 +13,10 @@ const QuizPage: React.FC = () => {
   const router = useRouter();
 
   const handleWrong = () => setFlipped(true);
-  const handleCorrect = () => router.push("/quiz/withdraw");
+  const handleCorrect = () => {
+    console.log("정답! 페이지 이동 시도");
+    router.push("/quiz/transfer");
+  };
   const handleRetry = () => {
     refetchQuiz();
     setFlipped(false);
