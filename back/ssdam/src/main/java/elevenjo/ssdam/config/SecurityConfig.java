@@ -75,6 +75,8 @@ public class SecurityConfig {
 	private CorsConfiguration corsConfiguration(HttpServletRequest request) {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.addAllowedHeader("Authorization");
+		corsConfiguration.addAllowedHeader("Content-Type");
 		corsConfiguration.addAllowedHeader("*");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedOrigin(frontUrl);
