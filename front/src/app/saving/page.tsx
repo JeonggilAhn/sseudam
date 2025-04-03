@@ -2,9 +2,12 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import axiosInstance from "@/utils/axiosInstance";
+
+// 상태관리
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setSavings, setSort, setKeyword } from "@/stores/slices/savingSlice";
 
+// 컴포넌트
 import SavingCard from "./components/savingCard";
 import SavingButton from "./components/savingButton";
 import SavingSearch from "./components/savingSearch";
