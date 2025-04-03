@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: classpath:.env.properties
 
   application:
     name: ssdam
