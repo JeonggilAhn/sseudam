@@ -112,7 +112,7 @@ const MainPage = () => {
 
         <Image
           className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[58%] fixed top-1/4 left-1/2 drop-shadow-xl"
-          src="/icons/logo.png"
+          src="/icons/logo.svg"
           alt="logo"
           width={300}
           height={300}
