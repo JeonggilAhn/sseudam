@@ -5,15 +5,23 @@ import { Search } from "lucide-react";
 import { useAppDispatch } from "@/stores/hooks";
 import { setKeyword, setSort } from "@/stores/slices/savingSlice";
 
+const stopwords = ["은행", "저축은행", "주식회사"];
+
 const SavingSearch: React.FC = () => {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
 
   const handleSearch = () => {
     const trimmed = query.trim();
-    // 검색어가 공백이면 keyword 없앤 요청으로 처리
-    dispatch(setKeyword(trimmed));
-    dispatch(setSort("")); // 정렬 초기화
+    if (!trimmed) {
+      dispatch(setKeyword(""));
+      dispatch(setSort(""));
+      return;
+    }
+
+    const refined = stopwords.reduce((acc, word) => acc.replaceAll(word, ""), trimmed).trim();
+    dispatch(setKeyword(refined));
+    dispatch(setSort(""));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,10 +31,14 @@ const SavingSearch: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mb-4">
-      <div className="flex items-center border border-black rounded-md bg-white px-3 py-2 shadow-sm">
-        <button onClick={handleSearch} className="mr-2 text-gray-500 cursor-pointer">
-          <Search size={20} />
+    <div className="w-full max-w-md mx-auto mb-4 px-4 sm:px-0">
+      <div className="flex items-center border border-gray-200 rounded-xl bg-white px-3 py-2.5 shadow-md focus-within:ring-2 focus-within:ring-blue-300 focus-within:border-blue-300 transition-all">
+        <button
+          onClick={handleSearch}
+          className="mr-2 text-gray-400 hover:text-blue-500 cursor-pointer transition-colors"
+          aria-label="검색"
+        >
+          <Search size={18} />
         </button>
         <input
           type="text"
@@ -34,7 +46,7 @@ const SavingSearch: React.FC = () => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="검색어를 입력하세요"
-          className="w-full outline-none text-sm"
+          className="w-full min-w-0 outline-none text-sm placeholder:text-gray-400"
         />
       </div>
     </div>
