@@ -9,20 +9,19 @@ interface QuizSolutionProps {
 
 const QuizSolution: React.FC<QuizSolutionProps> = ({ onRetry, solution }) => {
   return (
-    <main className="w-full max-w-md h-[420px] rounded-lg bg-white border-2 border-black overflow-hidden p-6 flex flex-col justify-between items-center">
-      <div className="flex-1 flex items-center justify-center text-lg font-semibold text-black leading-relaxed text-center">
-        <div>
-          <p className="mb-4">{solution}</p>
-        </div>
+    <section className="w-full h-[420px] bg-white rounded-xl border-2 border-black p-6 flex flex-col justify-between items-center">
+      <span className="text-3xl font-bold text-center">오답!!</span>
+      <div className="flex-1 flex items-center justify-center text-center px-2">
+        <p className="text-base sm:text-lg font-medium leading-relaxed">{solution}</p>
       </div>
 
       <button
         onClick={onRetry}
-        className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+        className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-6 rounded border-2 border-black transition text-sm sm:text-base"
       >
         새로운 문제 풀기
       </button>
-    </main>
+    </section>
   );
 };
 
