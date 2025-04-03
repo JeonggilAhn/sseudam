@@ -71,11 +71,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-/* .env */
-//tasks.named('processResources') {
-//	from('.') {
-//		include '.env'
-//		into ''
-//	}
-//}
