@@ -22,7 +22,7 @@ const SuccessPage = () => {
             className="w-55 mb-6 mt-10"
           />
           <div className="text-[6.2vw] font-bold">
-            "쓰담" 가입을 환영합니다!
+            &quot;쓰담&quot; 가입을 환영합니다!
           </div>
         </div>
 

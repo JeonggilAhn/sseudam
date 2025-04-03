@@ -4,7 +4,7 @@ import { useState } from "react";
 import PageSetting from "@/app/pageSetting";
 import PasswordAndRatio from "./passwordAndRatio";
 import InsurancePolicy from "./insurePolicy";
-import AccountLinkingStep from "./accountLinking";
+// import AccountLinkingStep from "./accountLinking";
 
 export default function CreateAccountPage() {
   const [step, setStep] = useState(1);
