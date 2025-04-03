@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import couponReducer from "./slices/couponSlice";
 import cardReducer from "./slices/cardSlice";
 import savingReducer from "./slices/savingSlice";
+import aniModalReducer from "./slices/aniModalSlice";
 
 export const store = configureStore({
   reducer: {
     coupon: couponReducer,
     card: cardReducer,
     saving: savingReducer,
+    aniModal: aniModalReducer,
   },
 });
 

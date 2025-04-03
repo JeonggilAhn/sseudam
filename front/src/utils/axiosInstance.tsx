@@ -11,20 +11,20 @@ const axiosInstance = axios.create({
 
 // 인터셉터 (오류 예외 처리)
 axiosInstance.interceptors.response.use(
-  (response) => response, //200일 경우 통과
-  (error) => {
-    //400 or 500 오류일 경우 예외 처리
-    const status = error.response?.status;
-    if (status === 401) {
-      alert("401: 접근 자격 없음");
-    } else if (status === 403) {
-      alert("403: 접근 거부");
-    } else if (status === 404) {
-      alert("404: 페이지 없음");
-    } else if (status === 500) {
-      alert("500: 서버 오류");
-    }
-  }
+  (response) => response //200일 경우 통과
+  // (error) => {
+  //400 or 500 오류일 경우 예외 처리
+  // const status = error.response?.status;
+  // if (status === 401) {
+  //   alert("401: 접근 자격 없음");
+  // } else if (status === 403) {
+  //   alert("403: 접근 거부");
+  // } else if (status === 404) {
+  //   alert("404: 페이지 없음");
+  // } else if (status === 500) {
+  //   alert("500: 서버 오류");
+  // }
+  // }
 );
 
 export default axiosInstance;

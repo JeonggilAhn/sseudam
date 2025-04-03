@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Coupon } from "@/app/card/page";
 
 interface CouponState {
-  userCouponList: Coupon[];
+  couponList: Coupon[];
   currentCouponId: number;
   currentCouponName: string;
   currentCouponDeadline: string;
@@ -10,7 +10,7 @@ interface CouponState {
 }
 
 const initialState: CouponState = {
-  userCouponList: [],
+  couponList: [],
   currentCouponId: 0,
   currentCouponName: "",
   currentCouponDeadline: "",
@@ -21,14 +21,14 @@ const couponSlice = createSlice({
   name: "coupon",
   initialState,
   reducers: {
-    setUserCouponList: (state, action: PayloadAction<Coupon[]>) => {
-      state.userCouponList = action.payload;
+    setCouponList: (state, action: PayloadAction<Coupon[]>) => {
+      state.couponList = action.payload;
     },
-    setCurrentCoupon: (state, action: PayloadAction<CouponState>) => {
-      state.currentCouponId = action.payload.currentCouponId;
-      state.currentCouponName = action.payload.currentCouponName;
-      state.currentCouponDeadline = action.payload.currentCouponDeadline;
-      state.currentCouponSavingId = action.payload.currentCouponSavingId;
+    setCurrentCoupon: (state, action: PayloadAction<Coupon>) => {
+      state.currentCouponId = action.payload.coupon_id;
+      state.currentCouponName = action.payload.coupon_name;
+      state.currentCouponDeadline = action.payload.coupon_deadline;
+      state.currentCouponSavingId = action.payload.saving_id;
     },
     clearCurrentCoupon: (state) => {
       state.currentCouponId = 0;
@@ -39,6 +39,6 @@ const couponSlice = createSlice({
   },
 });
 
-export const { setUserCouponList, setCurrentCoupon, clearCurrentCoupon } =
+export const { setCouponList, setCurrentCoupon, clearCurrentCoupon } =
   couponSlice.actions;
 export default couponSlice.reducer;

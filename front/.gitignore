@@ -40,5 +40,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Playwright test results
+test-results/
+
+# Playwright report
+playwright-report/
+
+# Playwright test results
+test-results/
+
+# Playwright report
+playwright-report/
+
 .vscode/
 sw.js
