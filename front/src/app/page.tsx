@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { UserAuth } from "@/utils/userAuth";
 
 export default function Home() {
   const handleGoogleLogin = async () => {

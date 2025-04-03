@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { GetCardInfo } from "./api/getCard";
 import { GetCouponList } from "../coupon/api/getCoupon";
 import { DeleteUserCard } from "./api/deleteCard";
-
+import { AuthGuard } from "@/utils/authGuard";
 import Image from "next/image";
 
 //상태 관리
@@ -189,4 +189,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default AuthGuard(MainPage);

@@ -8,6 +8,7 @@ export const UserAuth = async () => {
       "access_token",
       response.headers.get("Authorization") || ""
     );
+
     return true;
   } catch (error) {
     console.error("인증 확인 중 오류 발생:", error);
