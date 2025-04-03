@@ -70,7 +70,7 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
       <div className="flex w-full gap-1 justify-center">
         <Select
           value={selectedYear?.toString()}
-          onValueChange={(value: string) => setSelectedYear(Number(value))}
+          onValueChange={(value) => setSelectedYear(Number(value))}
         >
           <SelectTrigger className="w-[100px]">
             <SelectValue
@@ -91,7 +91,7 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
 
         <Select
           value={selectedMonth?.toString()}
-          onValueChange={(value: string) => setSelectedMonth(Number(value))}
+          onValueChange={(value) => setSelectedMonth(Number(value))}
         >
           <SelectTrigger className="w-[80px]">
             <SelectValue
@@ -115,7 +115,7 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
         <Select
           disabled={!(selectedYear && selectedMonth)}
           value={selectedDay !== null ? selectedDay?.toString() : ""}
-          onValueChange={(value: string) => setSelectedDay(Number(value))}
+          onValueChange={(value) => setSelectedDay(Number(value))}
         >
           <SelectTrigger className="w-[80px]">
             <SelectValue

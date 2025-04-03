@@ -27,7 +27,7 @@ const DetailPage: React.FC = () => {
     : 0;
 
   return (
-    <main className="relative min-h-screen bg-[#C1E6FA] pt-2 pb-16 px-4 flex flex-col items-center">
+    <main className="relative min-h-screen bg-[#C1E6FA] pt-4 pb-20 px-4 flex flex-col items-center">
       <div className="relative flex items-center justify-center mb-4">
         <h1 className="text-2xl font-bold">적금 정보</h1>
       </div>
@@ -54,9 +54,7 @@ const DetailPage: React.FC = () => {
           <div className="relative bg-white rounded-4xl px-8 py-8 text-lg font-bold text-black">
             누적 납입금
             <br />
-            <span className="text-green-600">
-              {openedSaving?.depositBalance?.toLocaleString()} 원!!
-            </span>
+            {openedSaving?.depositBalance?.toLocaleString()} 원!!
             <div className="absolute left-[-12px] top-18 w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[12px] border-r-white"></div>
           </div>
         </div>

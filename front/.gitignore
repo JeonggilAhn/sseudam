@@ -45,3 +45,12 @@ test-results/
 
 # Playwright report
 playwright-report/
+
+# Playwright test results
+test-results/
+
+# Playwright report
+playwright-report/
+
+.vscode/
+sw.js
