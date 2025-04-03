@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
   },
 });
 
+const requestInterCeptor = (config) => {};
+
 // 인터셉터 (오류 예외 처리)
 axiosInstance.interceptors.response.use(
   (response) => response //200일 경우 통과
