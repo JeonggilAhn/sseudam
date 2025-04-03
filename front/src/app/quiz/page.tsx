@@ -12,27 +12,24 @@ const QuizPage: React.FC = () => {
   const [refetchQuiz, setRefetchQuiz] = useState<() => void>(() => () => {});
   const router = useRouter();
 
-  const handleWrong = () => {
-    setFlipped(true);
-  };
-
+  const handleWrong = () => setFlipped(true);
   const handleCorrect = () => {
-    router.push("/quiz/withdraw");
+    console.log("정답! 페이지 이동 시도");
+    router.push("/quiz/transfer");
   };
-
   const handleRetry = () => {
     refetchQuiz();
     setFlipped(false);
   };
 
   return (
-    <main className="relative min-h-screen bg-[#C1E6FA] pt-6 pb-28 px-6 flex flex-col items-center">
-      <h1 className="text-3xl font-bold">출금 퀴즈!!</h1>
-      <br />
-      <span className="font-bold">정답을 맞춰야 출금이 가능합니다!</span>
-      <br />
+    <main className="relative min-h-screen bg-[#C1E6FA] flex flex-col items-center justify-start pt-10 pb-28 px-4 sm:px-6">
+      <h1 className="text-2xl sm:text-3xl font-bold text-center">출금 퀴즈!!</h1>
+      <p className="mt-2 text-center font-medium text-sm sm:text-base">
+        정답을 맞춰야 출금이 가능합니다!
+      </p>
 
-      <div className="flip-container w-full max-w-md h-[420px]">
+      <div className="w-full max-w-md mt-8 perspective">
         <div className={`flipper ${flipped ? "flipped" : ""}`}>
           <div className="front">
             <QuizCard

@@ -36,34 +36,31 @@ const QuizCard: React.FC<QuizCardProps> = ({
 
   const handleAnswer = (userAns: "O" | "X") => {
     if (!quiz) return;
-    if (userAns === quiz.ans) {
-      onCorrectAnswer();
-    } else {
-      onWrongAnswer();
-    }
+    if (userAns === quiz.ans) onCorrectAnswer();
+    else onWrongAnswer();
   };
 
   if (!quiz) {
-    return <div className="text-center p-4">문제를 불러오는 중...</div>;
+    return <div className="text-center p-4 text-sm sm:text-base">문제를 불러오는 중...</div>;
   }
 
   return (
-    <section className="w-full max-w-md h-[420px] rounded-lg bg-white border-2 border-black overflow-hidden flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-6 text-center">
-        <p className="text-lg font-semibold">Q. {quiz.quest}</p>
+    <section className="w-full h-[420px] bg-white rounded-xl border-2 border-black overflow-hidden flex flex-col">
+      <div className="flex-1 flex items-center justify-center px-4 text-center">
+        <p className="text-base sm:text-lg font-semibold leading-relaxed">Q. {quiz.quest}</p>
       </div>
 
       <div className="border-t-2 border-black" />
       <div className="grid grid-cols-2">
         <button
           onClick={() => handleAnswer("O")}
-          className="flex items-center justify-center aspect-square text-5xl text-blue-500 border-r-2 border-black hover:bg-blue-100"
+          className="aspect-square text-5xl text-blue-600 border-r-2 border-black hover:bg-blue-100 transition"
         >
           O
         </button>
         <button
           onClick={() => handleAnswer("X")}
-          className="flex items-center justify-center aspect-square text-5xl text-red-500 hover:bg-red-100"
+          className="aspect-square text-5xl text-red-600 hover:bg-red-100 transition"
         >
           X
         </button>
