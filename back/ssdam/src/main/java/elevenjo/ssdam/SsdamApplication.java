@@ -10,8 +10,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class SsdamApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SsdamApplication.class, args);
-	}
-
+	public static void main(String[] args) {SpringApplication.run(SsdamApplication.class, args);}
 }

@@ -32,11 +32,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-implementation 'org.apache.commons:commons-text:1.10.0'
-
 
 	/* common util */
 	implementation 'commons-codec:commons-codec:1.15'
+	implementation 'org.apache.commons:commons-text:1.10.0'
 
 	/* dev tools */
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -64,7 +63,6 @@ implementation 'org.apache.commons:commons-text:1.10.0'
 	/* prometheus */
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
-
 }
 
 tasks.named('test') {

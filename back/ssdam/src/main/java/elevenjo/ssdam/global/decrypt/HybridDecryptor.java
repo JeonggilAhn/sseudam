@@ -10,6 +10,10 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.KeyFactory;
@@ -17,6 +21,7 @@ import java.security.PrivateKey;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -29,8 +34,15 @@ public class HybridDecryptor {
     public void init() throws Exception {
         // 1. pem 키 불러오기
         ClassPathResource classPathResource = new ClassPathResource("keys/private_key.pem");
-        String keyPem = new String(Files.readAllBytes(classPathResource.getFile().toPath()), StandardCharsets.UTF_8);
-    
+        //String keyPem = new String(Files.readAllBytes(classPathResource.getFile().toPath()), StandardCharsets.UTF_8);
+        String keyPem;
+        try (InputStream inputStream = classPathResource.getInputStream()) {
+            keyPem = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+        }
+
+
         //헤더 푸터 및 줄바꿈 제거
         keyPem = keyPem.replace("-----BEGIN PRIVATE KEY-----","")
                 .replace("-----END PRIVATE KEY-----","")
