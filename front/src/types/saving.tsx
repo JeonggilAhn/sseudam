@@ -8,6 +8,7 @@ export interface SavingCardType {
   views: number;
   like_count: number;
   likes: number;
+  liked?: boolean;
 }
 
 // 가입 성공한 적금 응답

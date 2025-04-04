@@ -6,6 +6,7 @@ import axiosInstance from "@/utils/axiosInstance";
 // 상태관리
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setSavings, setSort, setKeyword } from "@/stores/slices/savingSlice";
+import { SavingCardType } from "@/types/saving";
 
 // 컴포넌트
 import SavingCard from "./components/savingCard";
@@ -39,14 +40,23 @@ const SavingPage: React.FC = () => {
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
-        const res = await axiosInstance.get("/savings-products", { params });
-        const data = res.data?.content?.content || [];
+        const [res, likedRes] = await Promise.all([
+          axiosInstance.get("/savings-products", { params }),
+          axiosInstance.get("/savings-products/likes/me"),
+        ]);
 
-        // isReset이 true면 새로 덮어쓰기, 아니면 기존 리스트에 추가
+        const data = res.data?.content?.content || [];
+        const likedIds: number[] = likedRes.data?.content || [];
+
+        const mergedWithLiked = (data as SavingCardType[]).map((item) => ({
+          ...item,
+          liked: likedIds.includes(item.saving_id),
+        }));
+
         const merged =
           isReset || pageToLoad === 0
-            ? data
-            : [...savings, ...data].filter(
+            ? mergedWithLiked
+            : [...savings, ...mergedWithLiked].filter(
                 (item, index, self) =>
                   self.findIndex((s) => s.saving_id === item.saving_id) === index
               );

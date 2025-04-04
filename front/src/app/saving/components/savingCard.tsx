@@ -58,7 +58,11 @@ const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "ê°
             <span>{saving.views.toLocaleString()}</span>
           </div>
           <div className="flex items-center gap-0.5">
-            <Heart size={15} fill={saving.like_count > 0 ? "red" : "none"} stroke="red" />
+            <Heart
+              size={15}
+              fill={saving.liked ? "red" : "none"}
+              stroke={saving.liked ? "red" : "gray"}
+            />
             <span>{saving.like_count}</span>
           </div>
         </div>
