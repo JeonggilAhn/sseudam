@@ -77,15 +77,22 @@ public class CardTransactionService {
 
         Card card = cardRepository.findByUserId(user.getUserId()).orElseThrow(CardNotFoundException::new);
 
+
+        HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(card.getKeyInfo());
+
+        String decryptedCardNo = hybridDecryptor.decryptWithAES(card.getCardNo(), keyInfo);
+        String decryptedCvc = hybridDecryptor.decryptWithAES(card.getCvc(), keyInfo);
+
+
         HeaderRequestDto headerRequestDto = HeaderRequestDto.from(API_NAME, user.getUserKey());
 
         InquireCreditCardTransactionListRequestDto externalRequest =
                 InquireCreditCardTransactionListRequestDto.from(
                         headerRequestDto,
-                        card,
+                        decryptedCardNo,
+                        decryptedCvc,
                         startDate,
-                        endDate,
-                        hybridDecryptor
+                        endDate
                 );
 
         RestTemplate restTemplate = new RestTemplate();
