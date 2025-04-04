@@ -130,10 +130,10 @@ const SavingPage: React.FC = () => {
   }, [sort]);
 
   // 모달 열기
-  const handleOpenModal = (savingId: number) => {
+  const handleOpenModal = useCallback((savingId: number) => {
     setSelectedSavingId(savingId);
     setShowModal(true);
-  };
+  }, []);
 
   // 모달 닫기
   const handleCloseModal = () => {
