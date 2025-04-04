@@ -38,8 +38,15 @@ const WithdrawPage: React.FC = () => {
               </label>
               <input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={depositAccountNo}
-                onChange={(e) => setDepositAccountNo(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+                    setDepositAccountNo(value);
+                  }
+                }}
                 placeholder="이체할 계좌 번호 입력"
                 className="w-full text-base border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 text-right placeholder:text-left"
               />

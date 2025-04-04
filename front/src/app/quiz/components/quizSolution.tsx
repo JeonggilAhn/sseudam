@@ -9,15 +9,18 @@ interface QuizSolutionProps {
 
 const QuizSolution: React.FC<QuizSolutionProps> = ({ onRetry, solution }) => {
   return (
-    <section className="w-full h-[420px] bg-white rounded-xl border-2 border-black p-6 flex flex-col justify-between items-center">
-      <span className="text-3xl font-bold text-center">오답!!</span>
-      <div className="flex-1 flex items-center justify-center text-center px-2">
-        <p className="text-base sm:text-lg font-medium leading-relaxed">{solution}</p>
+    <section className="w-full h-[420px] bg-white rounded-2xl shadow-lg border border-gray-200 p-6 flex flex-col justify-between items-center animate-fade-slide-in">
+      <div className="text-center">
+        <span className="text-4xl font-bold text-red-500">오답!!</span>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center text-center px-4 my-4">
+        <p className="text-lg font-bold leading-relaxed">{solution}</p>
       </div>
 
       <button
         onClick={onRetry}
-        className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-6 rounded border-2 border-black transition text-sm sm:text-base"
+        className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer"
       >
         새로운 문제 풀기
       </button>

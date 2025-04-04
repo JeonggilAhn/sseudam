@@ -3,7 +3,7 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/api", //백엔드 서버 주소
-  timeout: 1000, //요청 제한 시간(1초 내에 응답 없을 시 요청 실패)
+  timeout: 5000, //요청 제한 시간(1초 내에 응답 없을 시 요청 실패)
   headers: {
     "Content-Type": "application/json",
   },
