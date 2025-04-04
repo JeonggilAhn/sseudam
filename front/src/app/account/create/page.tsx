@@ -4,10 +4,12 @@ import { useState } from "react";
 import PageSetting from "@/app/pageSetting";
 import PasswordAndRatio from "./passwordAndRatio";
 import InsurancePolicy from "./insurePolicy";
-// import AccountLinkingStep from "./accountLinking";
 
 export default function CreateAccountPage() {
   const [step, setStep] = useState(1);
+
+  // 개설할 계좌 정보
+  const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
 
   // AccountLinkingStep
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
@@ -38,6 +40,7 @@ export default function CreateAccountPage() {
               setSelectedSavingRate={setSelectedSavingRate}
               selectedPassword={selectedPassword}
               setSelectedPassword={setSelectedPassword}
+              accountTypeUniqueNo={accountTypeUniqueNo}
             />
           ) : // : step === 3 ? (
           //   <AccountLinkingStep onPrev={handlePrev} onNext={handleNext} />

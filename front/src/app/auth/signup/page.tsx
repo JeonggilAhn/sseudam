@@ -6,6 +6,7 @@ import SignupForm1 from "./SignupForm1";
 import SignupForm2 from "./SignupForm2";
 
 import { LongButton, ShortButton } from "@/components/ui/customButton";
+import { postSignup } from "../api/postSignup";
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -68,12 +69,23 @@ const SignUpForm = () => {
     router.push(`?step=${nextStep}`);
   };
 
-  const handleLastSteps = () => {
+  const handleLastSteps = async () => {
     if (Object.keys(errors).length > 0) return;
 
-    const finalUserInfo = { ...userInfo1, ...userInfo2 };
-    console.log("완료되었습니다.", JSON.stringify(finalUserInfo));
-    router.push("success");
+    const data = {
+      ...userInfo1,
+      ...userInfo2,
+    };
+    try {
+      const postedSignup = await postSignup(data);
+      console.log("회원가입 성공", postedSignup, JSON.stringify(data));
+      router.push("success");
+    } catch (error) {
+      console.log("회원가입 실패", error);
+    }
+
+    // const finalUserInfo = { ...userInfo1, ...userInfo2 };
+    // console.log("완료되었습니다.", JSON.stringify(finalUserInfo));
   };
 
   return (
