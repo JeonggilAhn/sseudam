@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LikeSavingService {
@@ -51,5 +53,12 @@ public class LikeSavingService {
         return likeSavingRepository.findByUserAndSaving(user, saving).isPresent();
     }
 
+
+    @Transactional(readOnly = true)
+    public List<Long> getLikedSavingIdsByUser(User user) {
+        return likeSavingRepository.findAllByUser(user).stream()
+                .map(like -> like.getSaving().getSavingId())
+                .toList();
+    }
 
 }

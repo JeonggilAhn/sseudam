@@ -5,6 +5,7 @@ import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LikeSavingRepository extends JpaRepository<LikeSaving, Long> {
@@ -14,4 +15,7 @@ public interface LikeSavingRepository extends JpaRepository<LikeSaving, Long> {
 
     // 특정 적금 상품의 총 좋아요 수 조회
     Long countBySaving(Saving saving);
+
+    List<LikeSaving> findAllByUser(User user);
+
 }
