@@ -80,7 +80,7 @@ const SavingPage: React.FC = () => {
     fetchSavings(0, true); // 첫 페이지 요청
   }, [keyword, sort]);
 
-  // 페이지 번호 변경되면 새로운 페이지 요청
+  // 페이지 번호 변경되면 새로운 페이지 요청.
   useEffect(() => {
     if (page === 0) return; // 0은 위 useEffect에서 이미 처리
     fetchSavings(page);
