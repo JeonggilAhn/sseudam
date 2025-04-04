@@ -1,35 +1,71 @@
 "use client";
 
 import React, { useState } from "react";
-import SelectSavingRate from "../components/savingRate";
+// import SelectSavingRate from "../components/savingRate";
+import { RateBar } from "../components/savingRate";
 import PageSetting from "@/app/pageSetting";
+import { patchSavingSettings } from "../api/patchSavingSettings";
 import { LongButton } from "@/components/ui/customButton";
+import SignupForm3 from "@/app/auth/signup/SignupForm3";
 
 export default function Accounts() {
-  const [selectedBankBook, setSelectedBankBook] = useState<string | null>(null);
+  // 사용자의 정보에서 미리 연결은행과 계좌번호 받아오기
+  // const [selectedBankBook, setSelectedBankBook] = useState<string | null>(null);
+  const [withdrawAccountNo, setWithdrawAccountNo] = useState<string>("")
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
 
-  const handleConfirm = () => {
+
+  const [userInfo3, setUserInfo3] = useState({
+    bankList: "",
+    withdrawAccountNo: "",
+  });
+
+  const handleInputChange3 = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setUserInfo3((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleConfirm = async() => {
+
     const data = {
-      selectedBankBook,
+      // selectedBankBook,
+      withdrawAccountNo,
       selectedSavingRate,
     };
-    console.log(JSON.stringify(data));
+
+    try {
+      const result = await patchSavingSettings(data)
+      console.log(result, JSON.stringify(data))
+    } catch (error){
+      console.error("Error updating data:", error)
+    }
   };
 
   return (
     <>
       <PageSetting
         headerName="마이페이지"
-        pageTitle="저축 비율 설정"
-        headerLink="/"
+        pageTitle="저축 설정"
+        headerLink="user"
       >
-        <SelectSavingRate
-          selectedBankBook={selectedBankBook}
-          setSelectedBankBook={setSelectedBankBook}
+        <SignupForm3
+          setErrors={setErrors}
+          userInfo3={userInfo3}
+          setUserInfo3={setUserInfo3}
+          handleInputChange={handleInputChange3}
           selectedSavingRate={selectedSavingRate}
           setSelectedSavingRate={setSelectedSavingRate}
         />
+
       </PageSetting>
 
       <LongButton name="확인" onClick={handleConfirm} />
