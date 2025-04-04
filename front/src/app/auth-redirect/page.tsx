@@ -1,6 +1,5 @@
 "use client";
 
-import { UserAuth } from "@/utils/userAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -16,6 +15,7 @@ const RedirectPage = () => {
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
+    setIsError(false);
     const dotsInterval = setInterval(() => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500);
