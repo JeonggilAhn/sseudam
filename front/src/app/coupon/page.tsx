@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthGuard } from "@/utils/authGuard";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Ticket } from "lucide-react";
@@ -171,4 +172,4 @@ const CouponPage = () => {
   );
 };
 
-export default CouponPage;
+export default AuthGuard(CouponPage);

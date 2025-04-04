@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 export interface RegistCardProps {
   cardNo: string;
   cvc: string;
-  userId: number;
   keyInfo: string;
   userName: string;
   expiryDate: string;
