@@ -20,14 +20,14 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     // 유저 이름 : 실제 이름
     private String userName;
 
     // 유저 닉네임 (userEmail@gamil.com -> userEmail)
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column(unique = true)
     private String userEmail;
@@ -42,18 +42,53 @@ public class User extends BaseTimeEntity {
 
     private Integer savingRate;
 
+    @Column(length = 60)
+    private String userKey;
+
+    private String oauthProvider;
+
     private Boolean resigned;
 
     private LocalDateTime resignedAt;
 
+
     @Builder
-    public User(String userName, String userEmail, String nickName, LocalDateTime birthday) {
+    public User(
+        String userName,
+        String userEmail,
+        String nickname,
+        LocalDateTime birthday,
+        String oauthProvider
+    ) {
         this.userName = userName;
         this.userEmail = userEmail;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.birthday = birthday;
         this.savingRate = 0;
+        this.oauthProvider = oauthProvider;
         this.resigned = false;
+    }
+
+    public void registerUserInfo(
+            String userName,
+            LocalDateTime birthday,
+            String withdrawAccountNo,
+            Integer savingRate,
+            String userKey
+    ) {
+        this.userName = userName;
+        this.birthday = birthday;
+        this.withdrawAccountNo = withdrawAccountNo;
+        this.savingRate = savingRate;
+        this.userKey = userKey;
+    }
+
+    public void updateUserInfo(
+            String withdrawAccountNo,
+            Integer savingRate
+    ) {
+        this.withdrawAccountNo = withdrawAccountNo;
+        this.savingRate = savingRate;
     }
 
     public void registerWithdrawAccountNo(String withdrawAccountNo) {
@@ -66,6 +101,11 @@ public class User extends BaseTimeEntity {
 
     public void changeSavingRate(int savingRate) {
         this.savingRate = savingRate;
+    }
+
+    public void resign() {
+        this.resigned = true;
+        this.resignedAt = LocalDateTime.now();
     }
 
 }

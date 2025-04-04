@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,22 +21,27 @@ public class Card extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CardId;
+    private Long cardId;
 
-    @Column(length = 16,unique = true, nullable = false)
+    @Column(length = 128,unique = true, nullable = false)
     private String cardNo;
 
-    @Column(length = 3, nullable = false)
+    @Column(length = 128, nullable = false)
     private String cvc;
 
+    @Column(length = 2048, nullable = false)
+    private String keyInfo;
+
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Card(String cardNo, String cvc, User user) {
+    public Card(String cardNo, String cvc, User user, String keyInfo) {
         this.cardNo = cardNo;
         this.cvc = cvc;
         this.user = user;
+        this.keyInfo = keyInfo;
     }
 
 

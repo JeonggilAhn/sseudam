@@ -26,9 +26,13 @@ public class Quiz extends BaseTimeEntity {
     @Column(nullable = false)
     private String ans;
 
+    @Column (nullable = false)
+    private String solution;
+
     @Builder
-    public Quiz(String quest, String ans) {
+    public Quiz(String quest, String ans, String solution) {
         this.quest = quest;
         this.ans = ans;
+        this.solution = solution;
     }
 }

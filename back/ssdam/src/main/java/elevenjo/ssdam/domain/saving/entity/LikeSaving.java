@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
-    name = "like_saving",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "saving_id"})
-    }
+        name = "like_saving",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "saving_id"})
+        }
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,5 +39,10 @@ public class LikeSaving extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "saving_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Saving saving;
+
+    public LikeSaving(User user, Saving saving) {
+        this.user = user;
+        this.saving = saving;
+    }
 
 }
