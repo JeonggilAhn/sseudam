@@ -73,13 +73,13 @@ const QuizCard: React.FC<QuizCardProps> = ({
       <div className="grid grid-cols-2 h-32">
         <button
           onClick={() => handleAnswer("O")}
-          className="flex items-center justify-center font-bold text-5xl text-blue-600 border-t border-r border-gray-200 hover:bg-blue-50 active:bg-blue-100 transition-transform duration-150 active:scale-95"
+          className="flex items-center justify-center font-bold text-5xl text-blue-600 border-t border-r border-gray-200 hover:bg-blue-50 active:bg-blue-100 transition-transform duration-150 active:scale-95 cursor-pointer"
         >
           O
         </button>
         <button
           onClick={() => handleAnswer("X")}
-          className="flex items-center justify-center font-bold text-5xl text-red-600 border-t border-gray-200 hover:bg-red-50 active:bg-red-100 transition-transform duration-150 active:scale-95"
+          className="flex items-center justify-center font-bold text-5xl text-red-600 border-t border-gray-200 hover:bg-red-50 active:bg-red-100 transition-transform duration-150 active:scale-95 cursor-pointer"
         >
           X
         </button>
