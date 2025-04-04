@@ -55,15 +55,15 @@ public class AuthService {
 		refreshTokenEntity.updateToken(refreshToken);
 		refreshTokenRepository.save(refreshTokenEntity);
 
-		boolean isDev = true;
+		
 		
 		System.out.println(accessToken);
 		ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
 			.path("/")
 			.httpOnly(true)
-			.secure(!isDev)
+			.secure(true)
+			.sameSite("None")
 			.build();
-
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
