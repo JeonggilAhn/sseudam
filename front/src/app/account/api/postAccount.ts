@@ -1,6 +1,6 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export const postAccount = async (data: any) => {
+export const postAccount = async (data: object) => {
   try {
     const response = await axiosInstance.post(`/accounts`, data, {
       headers: {

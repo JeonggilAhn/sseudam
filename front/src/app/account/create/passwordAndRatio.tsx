@@ -27,12 +27,12 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   accountTypeUniqueNo,
 }) => {
   const [isValue, setIsValue] = useState(false);
-  const [responst, setResponse] = useState<any>(null);
+  // const [response, setResponse] = useState<any>(null);
 
-  const router = useRouter();
+  // const router = useRouter();
   const handleLastBtn = async () => {
     const data = {
-      accountTypeUniqueNo: "accountTypeUniqueNo",
+      "accountTypeUniqueNo": accountTypeUniqueNo,
     };
 
     try {
