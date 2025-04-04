@@ -17,18 +17,19 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#000000",
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full min-h-[768px]">
-      <body className="w-full min-h-[768px] bg-white">
+    <html lang="en" className="w-full h-full overflow-hidden">
+      <body className="w-full h-full overflow-hidden bg-white">
         <ToastModal />
         <TransitionWrapper>
           <ReduxProvider>
-            <main className="min-h-screen flex flex-col">{children}</main>
+            <main className="h-full w-full flex flex-col">{children}</main>
           </ReduxProvider>
         </TransitionWrapper>
         <UnderBar />
