@@ -10,7 +10,7 @@ export default function CreateAccountPage() {
   const [step, setStep] = useState(1);
 
   // 개설할 계좌 정보
-  const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
+  // const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
 
   // AccountLinkingStep
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
