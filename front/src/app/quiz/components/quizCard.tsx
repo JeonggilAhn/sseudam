@@ -18,14 +18,19 @@ const QuizCard: React.FC<QuizCardProps> = ({
   setRefetch,
 }) => {
   const [quiz, setQuiz] = useState<QuizData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [wrongEffect, setWrongEffect] = useState(false);
 
   const fetchQuiz = async () => {
+    setLoading(true);
     try {
       const res = await axiosInstance.get("/quiz/random");
       setQuiz(res.data);
       setQuizData(res.data);
     } catch (error) {
       console.error("퀴즈 로딩 실패", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,30 +42,44 @@ const QuizCard: React.FC<QuizCardProps> = ({
   const handleAnswer = (userAns: "O" | "X") => {
     if (!quiz) return;
     if (userAns === quiz.ans) onCorrectAnswer();
-    else onWrongAnswer();
+    else {
+      setWrongEffect(true);
+      setTimeout(() => setWrongEffect(false), 600);
+      onWrongAnswer();
+    }
   };
 
-  if (!quiz) {
-    return <div className="text-center p-4 text-sm sm:text-base">문제를 불러오는 중...</div>;
+  if (loading) {
+    return (
+      <div className="w-full h-[420px] bg-white rounded-2xl shadow-lg border border-gray-200 flex items-center justify-center animate-fade-in">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-6 w-32 bg-gray-300 rounded mb-4"></div>
+          <div className="h-4 w-48 bg-gray-300 rounded"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <section className="w-full h-[420px] bg-white rounded-xl border-2 border-black overflow-hidden flex flex-col">
-      <div className="flex-1 flex items-center justify-center px-4 text-center">
-        <p className="text-base sm:text-lg font-semibold leading-relaxed">Q. {quiz.quest}</p>
+    <section
+      className={`w-full h-[420px] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col border border-gray-200 animate-fade-slide-in ${wrongEffect ? "animate-shake" : ""}`}
+    >
+      <div className="flex-1 flex items-center justify-center px-6 py-8">
+        <p className="text-lg sm:text-xl font-semibold leading-relaxed text-center">
+          Q. {quiz?.quest}
+        </p>
       </div>
 
-      <div className="border-t-2 border-black" />
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 h-32">
         <button
           onClick={() => handleAnswer("O")}
-          className="aspect-square text-5xl text-blue-600 border-r-2 border-black hover:bg-blue-100 transition"
+          className="flex items-center justify-center font-bold text-5xl text-blue-600 border-t border-r border-gray-200 hover:bg-blue-50 active:bg-blue-100 transition-transform duration-150 active:scale-95"
         >
           O
         </button>
         <button
           onClick={() => handleAnswer("X")}
-          className="aspect-square text-5xl text-red-600 hover:bg-red-100 transition"
+          className="flex items-center justify-center font-bold text-5xl text-red-600 border-t border-gray-200 hover:bg-red-50 active:bg-red-100 transition-transform duration-150 active:scale-95"
         >
           X
         </button>

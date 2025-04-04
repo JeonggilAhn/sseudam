@@ -6,11 +6,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "next/navigation";
 
-export const TransitionWrapper = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const TransitionWrapper = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
 
