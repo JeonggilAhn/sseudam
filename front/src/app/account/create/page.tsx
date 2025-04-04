@@ -41,7 +41,7 @@ export default function CreateAccountPage() {
               setSelectedSavingRate={setSelectedSavingRate}
               selectedPassword={selectedPassword}
               setSelectedPassword={setSelectedPassword}
-              accountTypeUniqueNo={accountTypeUniqueNo}
+              // accountTypeUniqueNo={accountTypeUniqueNo}
             />
           ) : null}
         </div>

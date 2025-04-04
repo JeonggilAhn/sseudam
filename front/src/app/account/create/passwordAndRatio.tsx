@@ -14,7 +14,7 @@ type PasswordAndRatioProps = {
   setSelectedSavingRate: React.Dispatch<React.SetStateAction<number>>;
   selectedPassword: string;
   setSelectedPassword: React.Dispatch<React.SetStateAction<string>>;
-  accountTypeUniqueNo: string;
+  // accountTypeUniqueNo: string;
 };
 
 const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
@@ -24,7 +24,7 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   selectedPassword,
   setSelectedPassword,
   setSelectedSavingRate,
-  accountTypeUniqueNo,
+  // accountTypeUniqueNo,
 }) => {
   const [isValue, setIsValue] = useState(false);
   // const [response, setResponse] = useState<any>(null);
@@ -32,7 +32,7 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   // const router = useRouter();
   const handleLastBtn = async () => {
     const data = {
-      "accountTypeUniqueNo": accountTypeUniqueNo,
+      accountTypeUniqueNo: "accountTypeUniqueNo",
     };
 
     try {
