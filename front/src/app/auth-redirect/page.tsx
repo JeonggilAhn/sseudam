@@ -3,6 +3,7 @@
 import { UserAuth } from "@/utils/userAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const RedirectPage = () => {
   const router = useRouter();
@@ -67,7 +68,14 @@ const RedirectPage = () => {
             <div className="flex justify-center mb-6">
               <div className="relative w-32 h-32">
                 {/* 귀여운 캐릭터 - 간단한 이모지 사용 */}
-                <div className="text-6xl animate-bounce">🐰</div>
+                <div className="text-6xl animate-bounce">
+                  <Image
+                    src="/icons/logo.svg"
+                    alt="로딩 이미지"
+                    width={150}
+                    height={80}
+                  />
+                </div>
               </div>
             </div>
 
