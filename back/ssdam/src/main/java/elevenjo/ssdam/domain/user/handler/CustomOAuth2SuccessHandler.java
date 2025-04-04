@@ -55,15 +55,12 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity(nickname, refreshToken);
 		refreshTokenRepository.save(refreshTokenEntity);
 
-		boolean isDev = request.getServerName().contains("localhost")
-				|| request.getServerName().contains("127.0.0.1");
-
 
 		String cookieStr = ResponseCookie.from("refreshToken", refreshToken)
 				.httpOnly(true)
-				.secure(!isDev)
+				.secure(true)
 				.path("/").
-				sameSite("Lax").
+				sameSite("None").
 				build().
 				toString();
 
