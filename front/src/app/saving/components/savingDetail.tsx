@@ -131,8 +131,10 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
         <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
 
         <button
-          className="absolute top-4 right-4 cursor-pointer bg-white/90 rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
           onClick={onClose}
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center 
+             rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors z-10 
+             cursor-pointer overflow-hidden"
         >
           <X size={20} />
         </button>
