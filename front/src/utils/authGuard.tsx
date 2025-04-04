@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function AuthGuard<P extends JSX.IntrinsicAttributes>(
+export function AuthGuard<P extends object = {}>(
   WrappedComponent: React.ComponentType<P>
 ) {
   const AuthComponent = (props: P) => {
