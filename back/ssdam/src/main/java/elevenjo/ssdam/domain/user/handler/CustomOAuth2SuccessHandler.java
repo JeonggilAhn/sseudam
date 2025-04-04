@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -54,14 +55,27 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		RefreshTokenEntity refreshTokenEntity = new RefreshTokenEntity(nickname, refreshToken);
 		refreshTokenRepository.save(refreshTokenEntity);
 
-		boolean isDev = request.getServerName().equals("localhost");
+		boolean isDev = request.getServerName().contains("localhost")
+				|| request.getServerName().contains("127.0.0.1");
 
-		ResponseWrapperFactory.setResponse(HttpStatus.OK, null, refreshToken);
-		Cookie cookie = new Cookie("refreshToken", refreshToken);
-		cookie.setPath("/");
-		cookie.setHttpOnly(true);
-		cookie.setSecure(!isDev);
-		response.addCookie(cookie);
+
+		String cookieStr = ResponseCookie.from("refreshToken", refreshToken)
+				.httpOnly(true)
+				.secure(!isDev)
+				.path("/").
+				sameSite("Lax").
+				build().
+				toString();
+
+		response.setHeader("Set-Cookie", cookieStr);
 		response.sendRedirect(loginSuccessEndpoint);
+
+//		ResponseWrapperFactory.setResponse(HttpStatus.OK, null, refreshToken);
+//		Cookie cookie = new Cookie("refreshToken", refreshToken);
+//		cookie.setPath("/");
+//		cookie.setHttpOnly(true);
+//		cookie.setSecure(!isDev);
+//		response.addCookie(cookie);
+//		response.sendRedirect(loginSuccessEndpoint);
 	}
 }
