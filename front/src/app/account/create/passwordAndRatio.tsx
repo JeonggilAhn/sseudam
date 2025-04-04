@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { RateBar } from "../components/savingRate";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
+import { postAccount } from "../api/postAccount";
 
 type PasswordAndRatioProps = {
   onPrev: () => void;
@@ -13,6 +14,7 @@ type PasswordAndRatioProps = {
   setSelectedSavingRate: React.Dispatch<React.SetStateAction<number>>;
   selectedPassword: string;
   setSelectedPassword: React.Dispatch<React.SetStateAction<string>>;
+  // accountTypeUniqueNo: string;
 };
 
 const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
@@ -22,13 +24,26 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   selectedPassword,
   setSelectedPassword,
   setSelectedSavingRate,
+  // accountTypeUniqueNo,
 }) => {
   const [isValue, setIsValue] = useState(false);
+  // const [response, setResponse] = useState<any>(null);
 
-  const router = useRouter();
-  const handleLastBtn = () => {
+  // const router = useRouter();
+  const handleLastBtn = async () => {
+    const data = {
+      accountTypeUniqueNo: "accountTypeUniqueNo",
+    };
+
+    try {
+      const postedAccount = await postAccount(data);
+      console.log(postedAccount);
+      // setResponse(postedAccount);
+      // router.push("create/success");
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
     console.log("ss", selectedPassword, selectedSavingRate);
-    router.push("create/success");
   };
 
   return (

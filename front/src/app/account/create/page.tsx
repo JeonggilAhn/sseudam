@@ -9,6 +9,9 @@ import InsurancePolicy from "./insurePolicy";
 export default function CreateAccountPage() {
   const [step, setStep] = useState(1);
 
+  // 개설할 계좌 정보
+  // const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
+
   // AccountLinkingStep
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
   const [selectedPassword, setSelectedPassword] = useState<string>("");
@@ -38,11 +41,9 @@ export default function CreateAccountPage() {
               setSelectedSavingRate={setSelectedSavingRate}
               selectedPassword={selectedPassword}
               setSelectedPassword={setSelectedPassword}
+              // accountTypeUniqueNo={accountTypeUniqueNo}
             />
-          ) : // : step === 3 ? (
-          //   <AccountLinkingStep onPrev={handlePrev} onNext={handleNext} />
-          // )
-          null}
+          ) : null}
         </div>
       </PageSetting>
     </>

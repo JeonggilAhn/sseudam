@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 
 interface seletedDateProps {
-  setBirth: (birth: string) => void;
+  setBirthDay: (birthday: string) => void;
   value: string;
   onBlur: object;
 }
@@ -21,7 +21,10 @@ const getDaysInMonth = (year: number, month: number) => {
   return Array.from({ length: daysInMonth }, (_, i) => i + 1);
 };
 
-export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
+export const SelectDate: React.FC<seletedDateProps> = ({
+  setBirthDay,
+  value,
+}) => {
   const years = Array.from(
     { length: 100 },
     (_, i) => new Date().getFullYear() - i
@@ -51,7 +54,7 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
       setDays(maxDays);
       if (selectedDay && !maxDays.includes(selectedDay)) {
         setSelectedDay(null);
-        setBirth("");
+        setBirthDay("");
       }
     }
   }, [selectedYear, selectedMonth, selectedDay]);
@@ -59,9 +62,9 @@ export const SelectDate: React.FC<seletedDateProps> = ({ setBirth, value }) => {
   useEffect(() => {
     if (selectedYear && selectedMonth && selectedDay) {
       const formattedDate = `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
-      setBirth(formattedDate);
+      setBirthDay(formattedDate);
     } else {
-      setBirth("");
+      setBirthDay("");
     }
   }, [selectedYear, selectedMonth, selectedDay]);
 
@@ -165,6 +168,37 @@ export const SelectCarrier: React.FC<selectCarrierProps> = ({
           <SelectItem value="SKT 알뜰폰">SKT 알뜰폰</SelectItem>
           <SelectItem value="KT 알뜰폰">KT 알뜰폰</SelectItem>
           <SelectItem value="LG U+ 알뜰폰">LG U+ 알뜰폰</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
+
+type selectBank = {
+  name: string;
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: React.FocusEventHandler<HTMLButtonElement>;
+};
+
+export const SelectBank: React.FC<selectBank> = ({ value, onChange }) => {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select a Bank" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>은행</SelectLabel>
+          <SelectItem value=" ">-- 선택해주세요 --</SelectItem>
+          <SelectItem value="싸피은행">싸피은행</SelectItem>
+          <SelectItem value="신한은행">신한은행</SelectItem>
+          <SelectItem value="국민은행">국민은행</SelectItem>
+          <SelectItem value="농협은행">농협은행</SelectItem>
+          <SelectItem value="우리은행">우리은행</SelectItem>
+          <SelectItem value="하나은행">하나은행</SelectItem>
+          <SelectItem value="카카오뱅크">카카오뱅크</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
