@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function AuthGuard<P extends object = {}>(
+export function AuthGuard<P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) {
   const AuthComponent = (props: P) => {
@@ -15,7 +15,7 @@ export function AuthGuard<P extends object = {}>(
       } else {
         setIsAuthenticated(true);
       }
-    }, []);
+    }, [router]);
 
     if (!isAuthenticated) {
       return null;
