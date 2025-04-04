@@ -8,8 +8,11 @@ import { HandCoins, Home, User } from "lucide-react";
 const UnderBar = () => {
   const pathname = usePathname();
 
-  const hiddenNav = ["/signup"];
-  const noNav = hiddenNav.some((route) => pathname.includes(route));
+  // 아직 hydration 안 됐을 때 (SSR 초기 렌더 방지)
+  if (!pathname) return null;
+
+  // "/" (홈) 일 때만 숨기기
+  if (pathname === "/") return null;
 
   const menuList = [
     {
@@ -29,10 +32,6 @@ const UnderBar = () => {
     },
   ];
 
-  if (noNav) {
-    return null;
-  }
-
   return (
     <nav className="fixed h-[5vh] min-h-15 bottom-0 left-0 right-0 bg-white border-t-2 border-t-[#539DF3] shadow z-[5000]">
       <ul className="flex justify-around">
@@ -43,9 +42,7 @@ const UnderBar = () => {
             <li key={href} className="flex-1">
               <Link href={href} className="flex flex-col items-center py-2">
                 <div className="flex flex-col items-center">
-                  <Icon
-                    className={`w-6 h-6 ${isActive ? "text-[#539DF3]" : "text-gray-600"}`}
-                  />
+                  <Icon className={`w-6 h-6 ${isActive ? "text-[#539DF3]" : "text-gray-600"}`} />
                   <span
                     className={`text-sm font-semibold ${
                       isActive ? "text-[#539DF3]" : "text-gray-600"
