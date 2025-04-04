@@ -36,6 +36,7 @@ const RedirectPage = () => {
             router.push("/card");
           }, 2000);
         } catch (err) {
+          console.error(err);
           setIsError(true);
         }
       };
@@ -46,6 +47,7 @@ const RedirectPage = () => {
     return () => {
       clearInterval(dotsInterval);
       clearInterval(messageInterval);
+      clearTimeout(timer);
     };
   }, [router]);
 
