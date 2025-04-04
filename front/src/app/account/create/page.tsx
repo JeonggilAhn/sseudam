@@ -4,6 +4,7 @@ import { useState } from "react";
 import PageSetting from "@/app/pageSetting";
 import PasswordAndRatio from "./passwordAndRatio";
 import InsurancePolicy from "./insurePolicy";
+import AccountLinkingStep from "./accountLinking";
 
 export default function CreateAccountPage() {
   const [step, setStep] = useState(1);
@@ -42,10 +43,7 @@ export default function CreateAccountPage() {
               setSelectedPassword={setSelectedPassword}
               accountTypeUniqueNo={accountTypeUniqueNo}
             />
-          ) : // : step === 3 ? (
-          //   <AccountLinkingStep onPrev={handlePrev} onNext={handleNext} />
-          // )
-          null}
+          ) : null}
         </div>
       </PageSetting>
     </>

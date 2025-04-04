@@ -5,9 +5,9 @@ import { SelectDate } from "@/components/ui/customSelect";
 
 type SignupForm1Props = {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
-  userInfo1: { name: string; birth: string };
+  userInfo1: { name: string; birthday: string };
   setUserInfo1: React.Dispatch<
-    React.SetStateAction<{ name: string; birth: string }>
+    React.SetStateAction<{ name: string; birthday: string }>
   >;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -27,8 +27,8 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
       errors.name = "이름을 입력해주세요.";
     }
 
-    if (userInfo1.birth.trim() === "") {
-      errors.birth = "생년월일을 입력해주세요.";
+    if (userInfo1.birthday.trim() === "") {
+      errors.birthday = "생년월일을 입력해주세요.";
     }
 
     setLocalErrors(errors);
@@ -38,7 +38,7 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
 
   useEffect(() => {
     validate();
-  }, [userInfo1.name, userInfo1.birth]);
+  }, [userInfo1.name, userInfo1.birthday]);
 
   return (
     <>
@@ -63,19 +63,19 @@ const SignupForm1: React.FC<SignupForm1Props> = ({
       </div>
 
       <div className="flex flex-col">
-        <label htmlFor="birth" className="text-[#7b7b7b]/80 font-bold mb-3">
+        <label htmlFor="birthday" className="text-[#7b7b7b]/80 font-bold mb-3">
           생년월일
         </label>
         <SelectDate
-          value={userInfo1.birth}
-          setBirth={(birth: string) =>
-            setUserInfo1((prev) => ({ ...prev, birth }))
+          value={userInfo1.birthday}
+          setBirthDay={(birthday: string) =>
+            setUserInfo1((prev) => ({ ...prev, birthday }))
           }
           onBlur={validate}
         ></SelectDate>
 
-        {!userInfo1.birth && localErrors.birth && (
-          <p className="text-red-500 text-xs mt-1.5">{localErrors.birth}</p>
+        {!userInfo1.birthday && localErrors.birthday && (
+          <p className="text-red-500 text-xs mt-1.5">{localErrors.birthday}</p>
         )}
       </div>
     </>
