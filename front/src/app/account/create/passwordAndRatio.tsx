@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 // import { useRouter } from "next/navigation";
-import { RateBar } from "../components/savingRate";
+// import { RateBar } from "../components/savingRate";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
 import { postAccount } from "../api/postAccount";
@@ -10,8 +10,8 @@ import { postAccount } from "../api/postAccount";
 type PasswordAndRatioProps = {
   onPrev: () => void;
   onNext: () => void;
-  selectedSavingRate: number;
-  setSelectedSavingRate: React.Dispatch<React.SetStateAction<number>>;
+  // selectedSavingRate: number;
+  // setSelectedSavingRate: React.Dispatch<React.SetStateAction<number>>;
   selectedPassword: string;
   setSelectedPassword: React.Dispatch<React.SetStateAction<string>>;
   // accountTypeUniqueNo: string;
@@ -20,10 +20,10 @@ type PasswordAndRatioProps = {
 const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   onPrev,
   // onNext,
-  selectedSavingRate,
+  // selectedSavingRate,
   selectedPassword,
   setSelectedPassword,
-  setSelectedSavingRate,
+  // setSelectedSavingRate,
   // accountTypeUniqueNo,
 }) => {
   const [isValue, setIsValue] = useState(false);
@@ -31,19 +31,21 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
 
   // const router = useRouter();
   const handleLastBtn = async () => {
-    const data = {
-      accountTypeUniqueNo: "accountTypeUniqueNo",
-    };
+    // const data = {
+    //   accountTypeUniqueNo: "accountTypeUniqueNo",
+    // };
 
     try {
-      const postedAccount = await postAccount(data);
+      // const postedAccount = await postAccount(data);
+      const postedAccount = await postAccount();
       console.log(postedAccount);
       // setResponse(postedAccount);
       // router.push("create/success");
     } catch (error) {
       console.error("Error updating data:", error);
     }
-    console.log("ss", selectedPassword, selectedSavingRate);
+    console.log("ss", selectedPassword);
+    // console.log("ss", selectedPassword, selectedSavingRate);
   };
 
   return (
@@ -64,12 +66,12 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
         />
       </div>
 
-      <div className="flex justify-center flex-col">
+      {/* <div className="flex justify-center flex-col">
         <RateBar
           selectedSavingRate={selectedSavingRate}
           setSelectedSavingRate={setSelectedSavingRate}
         />
-      </div>
+      </div> */}
 
       <div className="mt-auto absolute bottom-20 w-[80%]">
         <div className="flex justify-center space-x-6">

@@ -1,13 +1,10 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export const postAccount = async (data: object) => {
+// export const postAccount = async (data: object) => {
+export const postAccount = async () => {
   try {
-    const response = await axiosInstance.post(`/accounts`, data, {
-      headers: {
-        Authorization: `Bearer ${"token"}`,
-        // "Content-Type": "application/json",
-      },
-    });
+    // const response = await axiosInstance.post(`/accounts`, data, {}
+    const response = await axiosInstance.post(`/accounts`);
     return response;
   } catch (error) {
     console.error("❌ 계좌개설 실패:", error);
