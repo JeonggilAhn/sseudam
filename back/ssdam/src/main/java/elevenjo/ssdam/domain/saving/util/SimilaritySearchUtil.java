@@ -11,50 +11,69 @@ import java.util.*;
 public class SimilaritySearchUtil {
 
     private final LevenshteinDistance levenshtein = new LevenshteinDistance();
-    private final int threshold = 1;
+    private final int threshold = 1; // 유사도 판단
     private final double normalizedThreshold = 0.5;
 
+    // 검색 로직
     public List<Saving> searchWithKeyword(String keyword, List<Saving> all) {
         String refinedKeyword = keyword.toLowerCase().replaceAll(" ", "");
+        boolean isEnglishKeyword = refinedKeyword.matches("^[a-zA-Z]+$");
+
         String engToKorComposed = joinHangul(convertEngToKor(refinedKeyword));
-        String keywordAsJamo = toJamo(
-                refinedKeyword.matches(".*[a-zA-Z].*") ? engToKorComposed : refinedKeyword
-        );
+        String keywordAsJamo = toJamo(isEnglishKeyword ? engToKorComposed : refinedKeyword);
 
         List<Pair<Saving, Integer>> matched = new ArrayList<>();
 
         for (Saving s : all) {
             List<String> candidates = List.of(
-                    s.getFinPrdtNm(),
-                    s.getFinCoNm(),
-                    s.getEtcNote(),
-                    s.getSpclCnd()
+                    Optional.ofNullable(s.getFinPrdtNm()).orElse(""),
+                    Optional.ofNullable(s.getFinCoNm()).orElse(""),
+                    Optional.ofNullable(s.getEtcNote()).orElse(""),
+                    Optional.ofNullable(s.getSpclCnd()).orElse("")
             );
 
-            boolean directMatch = candidates.stream().anyMatch(field ->
-                    field.replaceAll(" ", "").contains(refinedKeyword) ||
-                            toJamo(field).contains(keywordAsJamo)
-            );
-            if (directMatch) {
+            boolean englishDirectMatch = false;
+            boolean jamoDirectMatch = false;
+
+            for (String field : candidates) {
+                String fieldRefined = field.toLowerCase().replaceAll(" ", "");
+                if (fieldRefined.contains(refinedKeyword)) {
+                    englishDirectMatch = true;
+                }
+                if (toJamo(fieldRefined).contains(keywordAsJamo)) {
+                    jamoDirectMatch = true;
+                }
+            }
+
+            // 영문 포함: 최우선
+            if (englishDirectMatch) {
+                matched.add(Pair.of(s, -10000));
+                continue;
+            }
+
+            // 자모 포함: 두 번째 우선순위
+            if (jamoDirectMatch) {
                 matched.add(Pair.of(s, -9999));
                 continue;
             }
 
+            // 유사도 기반 비교
             int minScore = Integer.MAX_VALUE;
+
             for (String field : candidates) {
                 String fieldRefined = field.toLowerCase().replaceAll(" ", "");
                 String fieldJamo = toJamo(fieldRefined);
 
-                int dist1 = levenshtein.apply(refinedKeyword, fieldRefined);
-                int dist2 = levenshtein.apply(engToKorComposed, fieldRefined);
-                int dist3 = levenshtein.apply(keywordAsJamo, fieldJamo);
+                int distOriginal = levenshtein.apply(refinedKeyword, fieldRefined);
+                int distConverted = levenshtein.apply(engToKorComposed, fieldRefined);
+                int distJamo = levenshtein.apply(keywordAsJamo, fieldJamo);
 
                 int matchCount = 0;
                 for (char c : keywordAsJamo.toCharArray()) {
                     if (fieldJamo.indexOf(c) >= 0) matchCount++;
                 }
 
-                int minDist = Math.min(dist1, Math.min(dist2, dist3));
+                int minDist = Math.min(distOriginal, Math.min(distConverted, distJamo));
                 double normalized = (double) minDist / Math.max(refinedKeyword.length(), 1);
                 double jamoMatchRatio = (double) matchCount / keywordAsJamo.length();
 
@@ -74,7 +93,7 @@ public class SimilaritySearchUtil {
     }
 
 
-
+    // 한영 변환
     private String convertEngToKor(String input) {
         Map<Character, String> map = Map.ofEntries(
                 Map.entry('r', "ㄱ"), Map.entry('s', "ㄴ"), Map.entry('e', "ㄷ"), Map.entry('f', "ㄹ"),
@@ -90,7 +109,7 @@ public class SimilaritySearchUtil {
         return sb.toString();
     }
 
-    // 한글 자모 조합
+    // 단어 조합
     private String joinHangul(String jamo) {
         String[] cho = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ".split("");
         String[] jung = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ".split("");
@@ -114,7 +133,6 @@ public class SimilaritySearchUtil {
                 boolean isVowel = Arrays.asList(jung).contains(third);
                 int tmp = Arrays.asList(jong).indexOf(third);
 
-                // 다음 글자가 초성+중성 조합 가능한 경우 받침 아님
                 boolean nextIsSyllable = false;
                 if (i + 3 < buf.size()) {
                     int nextCho = Arrays.asList(cho).indexOf(String.valueOf(buf.get(i + 2)));
@@ -136,7 +154,7 @@ public class SimilaritySearchUtil {
         return result.toString();
     }
 
-
+    // 자모 분해
     private String toJamo(String input) {
         StringBuilder sb = new StringBuilder();
         for (char ch : input.toCharArray()) {
