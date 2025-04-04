@@ -15,7 +15,7 @@ export function AuthGuard<P extends object>(
       } else {
         setIsAuthenticated(true);
       }
-    }, [router]);
+    }, []);
 
     if (!isAuthenticated) {
       return null;
