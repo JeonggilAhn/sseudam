@@ -5,6 +5,7 @@ import Image from "next/image";
 export default function Home() {
   const handleGoogleLogin = async () => {
     try {
+      // window.location.href = "http://localhost:8080/oauth2/authorization/google";
       window.location.href = "https://j12a106.p.ssafy.io/oauth2/authorization/google";
       console.log("✅ 로그인 성공");
     } catch (error) {
