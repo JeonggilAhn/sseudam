@@ -26,21 +26,21 @@ const RedirectPage = () => {
     }, 1000);
 
     // 인증 처리
-    const timer = setTimeout(() => {
-      const handleAuth = async () => {
-        try {
-          await UserAuth();
-          // 인증 성공 후 메인 페이지로 이동
-          setTimeout(() => {
-            router.push("/card");
-          }, 2000);
-        } catch (err) {
-          setIsError(true);
-        }
-      };
+    // const timer = setTimeout(() => {
+    //   const handleAuth = async () => {
+    //     try {
+    //       await UserAuth();
+    //       // 인증 성공 후 메인 페이지로 이동
+    //       setTimeout(() => {
+    //         router.push("/card");
+    //       }, 2000);
+    //     } catch (err) {
+    //       setIsError(true);
+    //     }
+    //   };
 
-      handleAuth();
-    }, 200);
+    //   handleAuth();
+    // }, 200);
 
     return () => {
       clearInterval(dotsInterval);

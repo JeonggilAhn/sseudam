@@ -38,7 +38,7 @@ const CardRegist = () => {
 
   const handleClose = async () => {
     const cardInfo = await GetCardInfo();
-    dispatch(setCurrentCard(cardInfo.data));
+    dispatch(setCurrentCard(cardInfo?.data));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
