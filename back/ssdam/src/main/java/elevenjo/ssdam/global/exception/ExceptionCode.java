@@ -21,6 +21,7 @@ public enum ExceptionCode implements ResponseCode {
 	CARD_NOT_FOUND("card-401-1", "해당 카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 	CARD_USER_MISMATCH("card-401-2","일치하는 카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 	CARD_ALREADY_EXITSTS("card-401-3", "이미 등록된 카드입니다.", HttpStatus.BAD_REQUEST),
+	CARD_REGISTER_FAIL("card-401-4","카드 등록에 실패하였습니다.", HttpStatus.BAD_REQUEST),
 
 	// Saving
 	SAVING_NOT_FOUND("saving-401-1", "해당 저축상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

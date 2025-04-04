@@ -19,17 +19,15 @@ public record InquireCreditCardTransactionListRequestDto(
 
     public static InquireCreditCardTransactionListRequestDto from(
         HeaderRequestDto headerRequestDto,
-        Card card,
+        String cardNo,
+        String cvc,
         String startDate,
-        String endDate,
-        HybridDecryptor hybridDecryptor
+        String endDate
     ) throws Exception {
-        HybridDecryptor.AESKeyInfo keyInfo = hybridDecryptor.decryptKeyInfo(card.getKeyInfo());
-
         return new InquireCreditCardTransactionListRequestDto(
             headerRequestDto,
-                hybridDecryptor.decryptWithAES(card.getCardNo(), keyInfo),
-                hybridDecryptor.decryptWithAES(card.getCvc(),keyInfo),
+            cardNo,
+            cvc,
             startDate,
             endDate
         );

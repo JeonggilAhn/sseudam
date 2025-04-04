@@ -1,22 +1,23 @@
 package elevenjo.ssdam.domain.coupon.controller;
 
+import elevenjo.ssdam.domain.coupon.dto.request.CouponValidateRequestDto;
+import elevenjo.ssdam.domain.coupon.dto.response.CouponResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import elevenjo.ssdam.domain.coupon.dto.request.CouponCreateRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.request.CouponIssueRequestDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponCreateResponseDto;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponIssueResponseDto;
-import elevenjo.ssdam.domain.coupon.entity.Coupon;
 import elevenjo.ssdam.domain.coupon.service.CouponService;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.response.ResponseWrapper;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,5 +43,18 @@ public class CouponController {
         CouponIssueResponseDto response = couponService.issueCoupon(requestDto, user);
         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, response);
     }
+
+    @GetMapping("/coupons/list")
+    public ResponseEntity<ResponseWrapper<List<CouponResponseDto>>> getCouponList(){
+         List<CouponResponseDto> couponList =  couponService.getCouponList();
+         return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, couponList);
+    };
+
+    @PostMapping("/coupons/validate")
+    public ResponseEntity<ResponseWrapper<Boolean>> validateCoupon(@RequestBody CouponValidateRequestDto cvDto,
+                                                                   @AuthenticationPrincipal User user){
+        boolean hasRecieved = couponService.checkCouponIssued(user.getUserId(), cvDto.getCouponId());
+        return ResponseWrapperFactory.setResponse(HttpStatus.OK, null, hasRecieved);
+    };
 
 }

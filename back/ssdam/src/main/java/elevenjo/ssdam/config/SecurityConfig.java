@@ -80,6 +80,7 @@ public class SecurityConfig {
 		corsConfiguration.addAllowedHeader("*");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedOrigin(frontUrl);
+		corsConfiguration.addExposedHeader("Authorization");
 
 		return corsConfiguration;
 	}
