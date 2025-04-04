@@ -77,8 +77,9 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       setLiked(res.data.content.liked);
 
       const updatedList = savings.map((item) =>
-        item.saving_id === savingId ? { ...item, like_count: updatedLikes } : item
+        item.saving_id === savingId ? { ...item, like_count: updatedLikes, liked: !liked } : item
       );
+
       const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, likeCount: updatedLikes }));
