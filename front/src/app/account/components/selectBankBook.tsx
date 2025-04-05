@@ -27,9 +27,12 @@ const SelectBankBook: React.FC<selectBankBookProps> = ({
           <SelectValue placeholder="통장을 선택해주세요" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
+          <SelectItem value="싸피 계좌번호">싸피은행 | 계좌번호</SelectItem>
+          <SelectItem value="신한 계좌번호">신한은행 | 계좌번호</SelectItem>
+          <SelectItem value="국민 계좌번호">국민은행 | 계좌번호</SelectItem>
+          <SelectItem value="농협 계좌번호">농협은행 | 계좌번호</SelectItem>
+          <SelectItem value="우리 계좌번호">우리은행 | 계좌번호</SelectItem>
+          <SelectItem value="하나 계좌번호">하나은행 | 계좌번호</SelectItem>
         </SelectContent>
       </Select>
     </>
