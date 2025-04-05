@@ -69,25 +69,20 @@ export default function SavingsJournalPage() {
     }
   };
 
-  // useEffect(() => {
-  //   if (dateRange.from) {
-  //     setStartDate(dateRange.from.toISOString().split("T")[0]);
-  //   }
-  //   if (dateRange.to) {
-  //     setEndDate(dateRange.to.toISOString().split("T")[0]);
-  //   }
-  // }, [dateRange]);
-
   useEffect(() => {
     if (dateRange.from) {
       const startDateWithAddedDay = new Date(dateRange.from);
       startDateWithAddedDay.setDate(startDateWithAddedDay.getDate() + 1);
       setStartDate(startDateWithAddedDay.toISOString().split("T")[0]);
+
+      // setStartDate(dateRange.from.toISOString().split("T")[0]);
     }
     if (dateRange.to) {
-      const endDateWithAddedDay = new Date(dateRange.to);
-      endDateWithAddedDay.setDate(endDateWithAddedDay.getDate() + 1);
-      setEndDate(endDateWithAddedDay.toISOString().split("T")[0]);
+      // const endDateWithAddedDay = new Date(dateRange.to);
+      // endDateWithAddedDay.setDate(endDateWithAddedDay.getDate() + 1);
+      // setEndDate(endDateWithAddedDay.toISOString().split("T")[0]);
+
+      setEndDate(dateRange.to.toISOString().split("T")[0]);
     }
   }, [dateRange]);
 
@@ -233,7 +228,10 @@ export default function SavingsJournalPage() {
                   <div className="flex flex-row items-center gap-2">
                     <CalendarIcon className="h-4 w-4" />
                     <div className="text-m">
-                      {startDate} ~ {endDate}
+                      {/* {startDate} ~ {endDate} */}
+                      {dateRange.from && dateRange.to
+                        ? `${format(dateRange.from, "yyyy.MM.dd")} ~ ${format(dateRange.to, "yyyy.MM.dd")}`
+                        : "잘못된 날짜 범위"}
                     </div>
                   </div>
                 </PopoverTrigger>
