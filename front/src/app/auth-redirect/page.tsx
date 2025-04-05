@@ -45,7 +45,7 @@ const RedirectPage = () => {
           dispatch(resetIsModalOpen());
           setTimeout(() => {
             router.push("/account/create");
-          }, 1000);
+          }, 200);
         }, 2500);
       } else {
         setIsContinue(false);
@@ -59,10 +59,10 @@ const RedirectPage = () => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500);
 
-    // 귀여운 메시지 변경
-    const messageInterval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % cuteMessages.length);
-    }, 1000);
+    // 메시지 변경
+    // const messageInterval = setInterval(() => {
+    //   setMessageIndex((prev) => (prev + 1) % cuteMessages.length);
+    // }, 1000);
 
     // 인증 처리
 
@@ -80,15 +80,13 @@ const RedirectPage = () => {
     return () => {
       if (isContinue) {
         clearInterval(dotsInterval);
-        clearInterval(messageInterval);
       }
     };
   }, [router]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 container-responsive">
-      {" "}
-      <div className="w-full h-auto">
+      <div className="w-full h-auto absolute top-0 left-0 right-0">
         <AnimatedModal onClose={resetIsModalOpen}>{children}</AnimatedModal>
       </div>
       <div className="w-full max-w-xs bg-card rounded-3xl shadow-lg overflow-hidden transition-all duration-300 p-6 text-center">
