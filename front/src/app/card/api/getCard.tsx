@@ -11,7 +11,7 @@ export const GetCardInfo = async () => {
 
 export const CheckAccount = async () => {
   try {
-    const response = await axiosInstance.post(`/accounts/my`);
+    const response = await axiosInstance.get(`/accounts/my`);
     return response;
   } catch (error) {
     console.error("❌ 계좌 조회 실패:", error);
