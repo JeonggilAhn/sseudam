@@ -10,6 +10,19 @@ const UnderBar = () => {
   const pathname = usePathname();
   const [show, setShow] = useState(true);
 
+  useEffect(() => {
+    if (
+      pathname === "/" ||
+      pathname.includes("/account") ||
+      pathname.includes("/signup") ||
+      pathname.includes("/auth-redirect")
+    ) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  }, [pathname]);
+
   // 아직 hydration 안 됐을 때 (SSR 초기 렌더 방지)
   if (!pathname) return null;
 
@@ -33,19 +46,6 @@ const UnderBar = () => {
       icon: User,
     },
   ];
-
-  useEffect(() => {
-    if (
-      pathname === "/" ||
-      pathname.includes("/account") ||
-      pathname.includes("/signup") ||
-      pathname.includes("/auth-redirect")
-    ) {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  }, [pathname]);
 
   return (
     <div>

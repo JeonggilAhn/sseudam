@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full min-h-[768px]">
+    <html lang="en" className="w-full h-screen min-h-[768px]">
       <head>
         <link
           rel="stylesheet"
@@ -35,7 +35,7 @@ export default function RootLayout({
         <ToastModal />
         <TransitionWrapper>
           <ReduxProvider>
-            <main className="h-full w-full flex flex-col">{children}</main>
+            <main className="min-h-screen flex flex-col">{children}</main>
           </ReduxProvider>
         </TransitionWrapper>
         <UnderBar />
