@@ -24,8 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full h-full overflow-hidden">
-      <body className="w-full h-full overflow-hidden bg-white">
+    <html lang="en" className="w-full min-h-[768px]">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+        />
+      </head>
+      <body className="w-full min-h-[768px] bg-white">
         <ToastModal />
         <TransitionWrapper>
           <ReduxProvider>

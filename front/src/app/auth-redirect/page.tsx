@@ -3,20 +3,58 @@
 import { UserAuth } from "@/utils/userAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckAccount } from "../card/api/getCard";
+import AnimatedModal from "@/components/animatedModal";
+import { useAppDispatch } from "@/stores/hooks";
+import {
+  toggleIsModalOpen,
+  resetIsModalOpen,
+} from "@/stores/slices/aniModalSlice";
 import Image from "next/image";
 
 const RedirectPage = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [dots, setDots] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isContinue, setIsContinue] = useState(false);
 
   // 귀여운 로딩 메시지들
-  const cuteMessages = ["두근두근! 거의 다 됐어요", "조금만 더 기다려주세요!"];
-
+  const cuteMessages = ["조금만 더 기다려주세요!"];
   const [messageIndex, setMessageIndex] = useState(0);
+  const children = (
+    <div className="space-y-4 flex flex-col justify-center items-center w-full h-[50vh]">
+      <div className="text-6xl mb-4">😢</div>
+      <div className="text-lg font-medium text-center break-all">
+        서비스를 이용하시려면 저금통 계좌가 필요해요!
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     setIsError(false);
+    dispatch(resetIsModalOpen());
+    setIsContinue(false);
+
+    const hasAccount = async () => {
+      const response = await CheckAccount();
+      if (response === undefined) {
+        dispatch(toggleIsModalOpen());
+
+        setTimeout(() => {
+          dispatch(resetIsModalOpen());
+          setTimeout(() => {
+            router.push("/account/create");
+          }, 1000);
+        }, 2500);
+      } else {
+        setIsContinue(false);
+        setTimeout(() => {
+          router.push("/card");
+        }, 1000);
+      }
+    };
+
     const dotsInterval = setInterval(() => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500);
@@ -27,32 +65,32 @@ const RedirectPage = () => {
     }, 1000);
 
     // 인증 처리
-    const timer = setTimeout(() => {
-      const handleAuth = async () => {
-        try {
-          await UserAuth();
-          // 인증 성공 후 메인 페이지로 이동
-          setTimeout(() => {
-            router.push("/card");
-          }, 2000);
-        } catch (err) {
-          console.error(err);
-          setIsError(true);
-        }
-      };
 
-      handleAuth();
-    }, 200);
-
+    const handleAuth = async () => {
+      try {
+        await UserAuth();
+        // 인증 성공 후 메인 페이지로 이동
+      } catch (err) {
+        console.error(err);
+        setIsError(true);
+      }
+    };
+    handleAuth();
+    hasAccount();
     return () => {
-      clearInterval(dotsInterval);
-      clearInterval(messageInterval);
-      clearTimeout(timer);
+      if (isContinue) {
+        clearInterval(dotsInterval);
+        clearInterval(messageInterval);
+      }
     };
   }, [router]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 container-responsive">
+      {" "}
+      <div className="w-full h-auto">
+        <AnimatedModal onClose={resetIsModalOpen}>{children}</AnimatedModal>
+      </div>
       <div className="w-full max-w-xs bg-card rounded-3xl shadow-lg overflow-hidden transition-all duration-300 p-6 text-center">
         {isError ? (
           <div className="space-y-4">
@@ -110,7 +148,6 @@ const RedirectPage = () => {
           </>
         )}
       </div>
-
       <div className="mt-6 text-center text-sm text-muted-foreground">
         <button
           onClick={() => router.push("/")}

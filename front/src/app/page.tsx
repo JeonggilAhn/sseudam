@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const handleGoogleLogin = async () => {
     try {
       window.location.href =
@@ -12,6 +15,16 @@ export default function Home() {
       console.error("❌ 로그인 실패:", error);
     }
   };
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const accessToken = sessionStorage.getItem("access_token");
+      if (accessToken) {
+        router.push("/card");
+      }
+    };
+    checkToken();
+  }, []);
 
   return (
     <main
