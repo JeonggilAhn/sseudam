@@ -21,7 +21,7 @@ const RedirectPage = () => {
 
   // 귀여운 로딩 메시지들
   const cuteMessages = ["조금만 더 기다려주세요!"];
-  const [messageIndex, setMessageIndex] = useState(0);
+  // const [messageIndex, setMessageIndex] = useState(0);
   const children = (
     <div className="space-y-4 flex flex-col justify-center items-center w-full h-[50vh]">
       <div className="text-6xl mb-4">😢</div>
@@ -120,7 +120,7 @@ const RedirectPage = () => {
 
             <div className="space-y-2">
               <p className="text-lg font-medium">
-                {cuteMessages[messageIndex]}
+                {cuteMessages[0]}
                 {dots}
               </p>
               <p className="text-sm text-muted-foreground">

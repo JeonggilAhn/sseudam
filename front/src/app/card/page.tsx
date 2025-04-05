@@ -46,7 +46,6 @@ const MainPage = () => {
   const currentCard = useAppSelector((state) => state.card.currentCard);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [noAccount, setNoAccount] = useState(false);
   const [card, setCard] = useState<string[]>([]);
 
   const handleDeleteCard = async () => {
@@ -57,7 +56,6 @@ const MainPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    setNoAccount(false);
     dispatch(resetIsModalOpen());
 
     const fetchCardInfo = async () => {
@@ -85,7 +83,6 @@ const MainPage = () => {
           router.push("/account/create");
         }, 100);
       } else {
-        setNoAccount(false);
         fetchCardInfo();
         fetchCouponInfo();
       }
