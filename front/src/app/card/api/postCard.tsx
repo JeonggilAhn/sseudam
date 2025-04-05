@@ -17,7 +17,7 @@ export const RegistCard = async ({
   expiryDate,
 }: RegistCardProps) => {
   try {
-    const response = await axiosInstance.post("/card/", {
+    const response = await axiosInstance.post("/card/regist", {
       card_no: cardNo,
       cvc: cvc,
       key_info: keyInfo,

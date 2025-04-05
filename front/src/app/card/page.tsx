@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
-import { GetCardInfo } from "./api/getCard";
+import { GetCardInfo, CheckAccount } from "./api/getCard";
 import { GetCouponList } from "../coupon/api/getCoupon";
 import { DeleteUserCard } from "./api/deleteCard";
 import { AuthGuard } from "@/utils/authGuard";
@@ -46,7 +46,6 @@ const MainPage = () => {
   const currentCard = useAppSelector((state) => state.card.currentCard);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
   const [card, setCard] = useState<string[]>([]);
 
   const handleDeleteCard = async () => {
@@ -57,6 +56,8 @@ const MainPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
+    dispatch(resetIsModalOpen());
+
     const fetchCardInfo = async () => {
       const response = await GetCardInfo();
       if (response !== undefined) {
@@ -75,9 +76,19 @@ const MainPage = () => {
       }
     };
 
-    dispatch(resetIsModalOpen());
-    fetchCardInfo();
-    fetchCouponInfo();
+    const hasAccount = async () => {
+      const response = await CheckAccount();
+      if (response === undefined) {
+        setTimeout(() => {
+          router.push("/account/create");
+        }, 100);
+      } else {
+        fetchCardInfo();
+        fetchCouponInfo();
+      }
+    };
+
+    hasAccount();
   }, [currentCard, dispatch]);
 
   return (

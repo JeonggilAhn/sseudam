@@ -1,6 +1,6 @@
 export const UserAuth = async () => {
   try {
-    const response = await fetch("http://localhost:8080/api/auth/issue", {
+    const response = await fetch("https://j12a106.p.ssafy.io/api/auth/issue", {
       method: "GET",
       credentials: "include",
     });
