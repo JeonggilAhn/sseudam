@@ -2,9 +2,10 @@ package elevenjo.ssdam.global.interceptor;
 
 
 import elevenjo.ssdam.global.passkey.service.WaitingQueueService;
+import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,17 +37,14 @@ public class PasskeyInterceptor implements HandlerInterceptor {
             waitingQueueService.refreshPasskey(userId);
             return true;
         } else {
-
-            /**
-             * 대기열로 보낼 때 어떤식으로 응답을 보내줘야하는지?
-             * 대기열 페이지를 만들어서 거기로 redirect를 시켜야하나?
-             * or
-             *
-             */
             // passkey가 없으면 대기열에 등록 후 대기중 메시지 응답
             waitingQueueService.enqueueUser(userId);
-//            response.setStatus(HttpServletResponse.SC_TOO_MANY_REQUESTS);
-            response.getWriter().write("Waiting in queue, please try again later.");
+            ResponseWrapperFactory.setResponse(
+                    response,
+                    HttpStatus.ACCEPTED,
+                    null,
+                    "Waiting in queue, please try again later."
+            );
             return false;
         }
     }

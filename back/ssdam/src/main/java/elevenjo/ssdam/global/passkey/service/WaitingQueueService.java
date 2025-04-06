@@ -39,7 +39,8 @@ public class WaitingQueueService {
         /**
          * UUID 왜?
          */
-        String passkey = UUID.randomUUID().toString();
+//        String passkey = UUID.randomUUID().toString();
+        String passkey = userId;
         redisTemplate.opsForValue().set(PASSKEY_PREFIX + userId, passkey, PASSKEY_TTL_SECONDS, TimeUnit.SECONDS);
         return passkey;
     }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum DefaultResponseCode implements ResponseCode {
 	OK("default-200", "HTTP_STATUS_OK", HttpStatus.OK),
 	CREATED("default-201", "HTTP_STATUS_CREATED", HttpStatus.CREATED),
+	ACCEPTED("default-202", "HTTP_STATUS_ACCEPTED", HttpStatus.ACCEPTED),
 	BAD_REQUEST("default-400", "HTTP_STATUS_BAD_REQUEST", HttpStatus.BAD_REQUEST),
 	UNAUTHORIZED("default-403", "HTTP_STATUS_UNAUTHORIZED", HttpStatus.UNAUTHORIZED),
 	FORBIDDEN("default-403", "HTTP_STATUS_FORBIDDEN", HttpStatus.FORBIDDEN),
