@@ -7,6 +7,7 @@ import { GetCardInfo, CheckAccount } from "./api/getCard";
 import { GetCouponList } from "../coupon/api/getCoupon";
 import { DeleteUserCard } from "./api/deleteCard";
 import { AuthGuard } from "@/utils/authGuard";
+import axiosInstance from "@/utils/axiosInstance";
 import Image from "next/image";
 
 //상태 관리
@@ -26,8 +27,20 @@ import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
 
-export interface Card {
+// export interface Card {
+//   cardNo: string;
+//   expiryDate: string;
+//   userName: string;
+// }
+
+class Card {
   cardNo: string;
+  userName: string;
+
+  constructor(cardNo: string, userName: string) {
+    this.cardNo = cardNo;
+    this.userName = userName;
+  }
 }
 
 export interface Coupon {
@@ -46,7 +59,7 @@ const MainPage = () => {
   const currentCard = useAppSelector((state) => state.card.currentCard);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [card, setCard] = useState<string[]>([]);
+  const [card, setCard] = useState<Card[]>([]);
 
   const handleDeleteCard = async () => {
     await DeleteUserCard();
@@ -61,7 +74,12 @@ const MainPage = () => {
     const fetchCardInfo = async () => {
       const response = await GetCardInfo();
       if (response !== undefined) {
-        setCard(response.data);
+        console.log(response.data);
+        const tmpCardNo = response.data[0] + "**********" + response.data[1];
+        const userName = (await axiosInstance.get("/users/me")).data.content
+          .user_name;
+        const tmpCard = new Card(tmpCardNo, userName);
+        setCard([tmpCard]);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -163,10 +181,10 @@ const MainPage = () => {
                         onClick={() => handleDeleteCard()}
                       />
                       <Cards
-                        number={""}
+                        number={card[0].cardNo}
                         expiry={""}
                         cvc={""}
-                        name={"유저명"}
+                        name={card[0].userName}
                         focused={""}
                       />
                     </div>
