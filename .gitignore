@@ -1,7 +1,3 @@
 node_modules/
 package-lock.json
-
-# Environment variables
-.env
-.idea/
-
+pnpm-lock.yaml
