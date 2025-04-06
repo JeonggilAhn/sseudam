@@ -1,17 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const handleGoogleLogin = async () => {
     try {
-      // window.location.href = "http://localhost:8080/oauth2/authorization/google";
-      window.location.href = "https://j12a106.p.ssafy.io/oauth2/authorization/google";
+      window.location.href =
+        "https://j12a106.p.ssafy.io/oauth2/authorization/google";
       console.log("✅ 로그인 성공");
     } catch (error) {
       console.error("❌ 로그인 실패:", error);
     }
   };
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const accessToken = sessionStorage.getItem("access_token");
+      if (accessToken) {
+        router.push("/card");
+      }
+    };
+    checkToken();
+  }, []);
 
   return (
     <main
@@ -31,7 +44,7 @@ export default function Home() {
         <Image src="/icons/logo.svg" alt="로고" width={150} height={80} />
         <button
           onClick={handleGoogleLogin}
-          className="transition-all duration-200 hover:brightness-105 hover:shadow-md rounded"
+          className="transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
         >
           <Image
             src="/icons/googleLogin.png"

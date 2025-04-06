@@ -29,13 +29,13 @@ axiosInstance.interceptors.response.use(
     // 400 or 500 오류일 경우 예외 처리
     const status = error.response?.status;
     if (status === 401) {
-      alert("401: 접근 자격 없음");
+      console.error("401: 접근 자격 없음");
     } else if (status === 403) {
-      alert("403: 접근 거부");
+      console.error("403: 접근 거부");
     } else if (status === 404) {
-      alert("404: 페이지 없음");
+      console.error("404: 페이지 없음");
     } else if (status === 500) {
-      alert("500: 서버 오류");
+      console.error("500: 서버 오류");
     }
   }
 );

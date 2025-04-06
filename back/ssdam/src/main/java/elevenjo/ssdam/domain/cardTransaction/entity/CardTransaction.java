@@ -1,4 +1,4 @@
-package elevenjo.ssdam.domain.transaction;
+package elevenjo.ssdam.domain.cardTransaction.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,18 +43,21 @@ public class CardTransaction {
     private Long transactionBalance;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Card card;
 
     @Builder
-    public CardTransaction(Long transactionId,
-                           Integer categoryId,
-                           String categoryName,
-                           Integer merchantId,
-                           String merchantName,
-                           LocalDate transactionDate,
-                           LocalTime transactionTime,
-                           Long transactionBalance,
-                           Card card) {
+    public CardTransaction(
+        Long transactionId,
+       Integer categoryId,
+       String categoryName,
+       Integer merchantId,
+       String merchantName,
+       LocalDate transactionDate,
+       LocalTime transactionTime,
+       Long transactionBalance,
+       Card card
+    ) {
         this.transactionId = transactionId;
         this.categoryId = categoryId;
         this.categoryName = categoryName;

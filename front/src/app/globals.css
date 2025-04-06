@@ -2,9 +2,7 @@
 @import "tw-animate-css";
 
 html,
-body {
-  font-family: "Noto Sans KR", sans-serif;
-}
+body,
 #__next {
   height: 100%;
 }

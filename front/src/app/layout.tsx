@@ -17,15 +17,19 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#000000",
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full min-h-[768px]">
+    <html lang="en" className="w-full h-screen min-h-[768px]">
       <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+        />
       </head>
       <body className="w-full min-h-[768px] bg-white">
         <ToastModal />

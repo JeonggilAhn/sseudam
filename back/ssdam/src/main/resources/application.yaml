@@ -1,0 +1,60 @@
+spring:
+  config:
+    import: classpath:.env.properties
+
+  application:
+    name: ssdam
+
+  datasource:
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: google
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_PASSWORD}
+            redirect-uri: ${OAUTH_REDIRECT_URI_PREFIX}/google
+            authorization-grant-type: authorization_code
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PWD}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+jwt-secret: ${JWT_SECRET}
+login-endpoint: ${LOGIN_ENDPOINT}
+front-url: ${FRONT_URL}
+ssafy-api-key: ${SSAFY_API_KEY}
+fss-api-key:
+  value: ${FSS_API_KEY}
+
+

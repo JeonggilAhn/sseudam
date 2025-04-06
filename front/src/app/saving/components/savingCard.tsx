@@ -71,4 +71,5 @@ const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "�
   );
 };
 
-export default SavingCard;
+// React.memo로 불필요한 리렌더링 방지
+export default React.memo(SavingCard);
