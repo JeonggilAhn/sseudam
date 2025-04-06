@@ -115,7 +115,7 @@ export default function NumericKeypad({
         <Button
           className={`w-full h-12 text-lg font-bold rounded-md ${
             value.length === maxLength
-              ? "bg-[#2b88d9] hover:[#2b88d9] text-white"
+              ? "bg-[#2b88d9] hover:bg-blue-300 text-white"
               : "bg-gray-300 text-gray-600"
           }`}
           disabled={value.length !== maxLength}

@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+// import { useEffect } from "react";
+import { useRouter} from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import SignupForm1 from "./SignupForm1";
 import SignupForm2 from "./SignupForm2";
 import SignupForm3 from "./SignupForm3";
@@ -11,7 +13,7 @@ import { postSignup } from "../api/postSignup";
 
 const SignUpForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
@@ -29,13 +31,13 @@ const SignUpForm = () => {
     withdrawAccountNo: "",
   });
 
-  // 개발용 (새로고침 시, 첫페이지로 넘어가지 않게 막아줌)
-  useEffect(() => {
-    const step = searchParams.get("step");
-    if (step) {
-      setStep(Number(step));
-    }
-  }, [searchParams]);
+  // // 개발용 (새로고침 시, 첫페이지로 넘어가지 않게 막아줌)
+  // useEffect(() => {
+  //   const step = searchParams.get("step");
+  //   if (step) {
+  //     setStep(Number(step));
+  //   }
+  // }, [searchParams]);
 
   const handleInputChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -93,15 +95,21 @@ const SignUpForm = () => {
     if (Object.keys(errors).length > 0) return;
 
     const data = {
-      ...userInfo1,
+      userName: userInfo1.name,
+      birthDay: userInfo1.birthday,
       withdrawAccountNo: userInfo3.withdrawAccountNo,
       savingRate: selectedSavingRate,
     };
 
     try {
       const postedSignup = await postSignup(data);
-      console.log("회원가입 성공", postedSignup, JSON.stringify(data));
-      router.push("success");
+      console.log("response: ", postedSignup, "data: ", JSON.stringify(data))
+
+      // 백엔드 응답 확인 후 수정예정
+      // if (postedSignup.data === 200){
+      //   console.log("회원가입 성공", postedSignup, JSON.stringify(data));
+      //   router.push("success");
+      // }
     } catch (error) {
       console.log("회원가입 실패", error);
     }
