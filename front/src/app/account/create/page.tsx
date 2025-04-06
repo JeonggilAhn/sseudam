@@ -26,7 +26,7 @@ export default function CreateAccountPage() {
 
   return (
     <>
-      <PageSetting pageTitle="쓰담 통장 만들기" headerLink="">
+      <PageSetting pageTitle="쓰담 통장 만들기" headerLink="" className="">
         <div className="flex flex-col bg-white">
           {step === 1 ? (
             <InsurancePolicy onNext={handleNext} />

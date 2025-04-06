@@ -33,8 +33,7 @@ export default function Accounts() {
     }));
   };
 
-  const handleConfirm = async() => {
-
+  const handleConfirm = async () => {
     const data = {
       // selectedBankBook,
       withdrawAccountNo: userInfo3.withdrawAccountNo,
@@ -42,10 +41,10 @@ export default function Accounts() {
     };
 
     try {
-      const result = await patchSavingSettings(data)
-      console.log(result, JSON.stringify(data))
-    } catch (error){
-      console.error("Error updating data:", error)
+      const result = await patchSavingSettings(data);
+      console.log(result, JSON.stringify(data));
+    } catch (error) {
+      console.error("Error updating data:", error);
     }
   };
 
@@ -54,7 +53,7 @@ export default function Accounts() {
       <PageSetting
         headerName="마이페이지"
         pageTitle="저축 설정"
-        headerLink="user"
+        headerLink="/user"
       >
         <SignupForm3
           setErrors={setErrors}
@@ -64,7 +63,6 @@ export default function Accounts() {
           selectedSavingRate={selectedSavingRate}
           setSelectedSavingRate={setSelectedSavingRate}
         />
-
       </PageSetting>
 
       <LongButton name="확인" onClick={handleConfirm} />
