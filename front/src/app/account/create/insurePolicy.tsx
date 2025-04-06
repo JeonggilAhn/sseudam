@@ -23,7 +23,7 @@ const InsurancePolicy: React.FC<InsurancePolicyProps> = ({ onNext }) => {
 
   return (
     <>
-      <div className="w-full h-[50px] border-2 border-black rounded-lg flex justify-around items-center  pl-3 pr-2 mb-8">
+      <div className="w-full h-[50px] border-2 border-black rounded-lg flex justify-around items-center pl-3 pr-2 mb-8">
         <div onClick={handleCheckButton}>
           <Check
             className={`h-4 w-4 mr-3 cursor-pointer ${checked ? "text-black" : "text-gray-300"}`}
