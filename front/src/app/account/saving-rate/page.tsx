@@ -14,6 +14,8 @@ export default function Accounts() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
 
+  console.log(errors);
+
   const [userInfo3, setUserInfo3] = useState({
     // 사용자의 정보에서 미리 연결은행과 계좌번호 받아오기 (그걸로 기본 세팅)
     bankList: "싸피은행",

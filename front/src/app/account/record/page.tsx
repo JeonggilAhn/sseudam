@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { Calculator, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 import PageSetting from "@/app/pageSetting";
-import { getAccountRecord } from "../api/getRecord";
+// import { getAccountRecord } from "../api/getRecord";
 
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
@@ -38,12 +38,12 @@ interface Transaction {
   };
 }
 
-type Data = {
-  startDate: string;
-  endDate: string;
-  transactionType: string;
-  orderByType: string;
-};
+// type Data = {
+//   startDate: string;
+//   endDate: string;
+//   transactionType: string;
+//   orderByType: string;
+// };
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-4">
@@ -68,6 +68,7 @@ export default function SavingsJournalPage() {
   // const handleSavingRate = () => {
   //   router.push("/account/saving-rate");
   // };
+  console.log(startDate, endDate, setLoading);
 
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
@@ -367,7 +368,8 @@ export default function SavingsJournalPage() {
             {transactions.length > 0 &&
             transactions[0].content.list.length > 0 ? (
               transactions[0].content.list.map((transaction, index) => {
-                const { description, amount, location } =
+                const { description, amount } =
+                  // const { description, amount, location } =
                   parseTransactionSummary(transaction.transaction_summary);
 
                 return (

@@ -11,7 +11,7 @@ export default function CreateAccountPage() {
   // 개설할 계좌 정보
   // const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
 
-  const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
+  // const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
   const [selectedPassword, setSelectedPassword] = useState<string>("");
 
   const handleNext = () => {
