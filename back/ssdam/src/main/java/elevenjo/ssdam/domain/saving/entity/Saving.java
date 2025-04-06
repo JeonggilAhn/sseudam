@@ -26,7 +26,7 @@ public class Saving extends BaseTimeEntity {
     @Column(nullable = false)
     private String finCoNm;
 
-    @Column(nullable = false)
+    @Column
     private String hompUrl;
 
     @Column(nullable = false)
@@ -53,9 +53,19 @@ public class Saving extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer maxLimit;
 
+    @Column(nullable = false)
+    private Integer maxIntRate;
+
+    @Column(nullable = false)
+    private Integer minIntRate;
+
+    @Column(nullable = false)
+    private Integer views;
+
     @Builder
     public Saving(String finCoNo, String finCoNm, String hompUrl, String finPrdtCd, String finPrdtNm,
-                  String mtrtInt, String spclCnd, Integer joinDeny, String joinMember, String etcNote, Integer maxLimit) {
+                  String mtrtInt, String spclCnd, Integer joinDeny, String joinMember, String etcNote, Integer maxLimit,
+                  Integer maxIntRate, Integer minIntRate, Integer views) {
         this.finCoNo = finCoNo;
         this.finCoNm = finCoNm;
         this.hompUrl = hompUrl;
@@ -67,6 +77,17 @@ public class Saving extends BaseTimeEntity {
         this.joinMember = joinMember;
         this.etcNote = etcNote;
         this.maxLimit = maxLimit;
+        this.maxIntRate = maxIntRate;
+        this.minIntRate = minIntRate;
+        this.views = views;
     }
+    public void increaseViews() {
+        this.views++;
+    }
+
+    public String getUniqueKey() {
+        return this.finCoNo + "_" + this.finPrdtCd;
+    }
+
 
 }
