@@ -40,7 +40,6 @@ const RedirectPage = () => {
       const response = await CheckAccount();
       if (response === undefined) {
         dispatch(toggleIsModalOpen());
-
         setTimeout(() => {
           dispatch(resetIsModalOpen());
           setTimeout(() => {
@@ -76,7 +75,9 @@ const RedirectPage = () => {
       }
     };
     handleAuth();
-    hasAccount();
+    setTimeout(() => {
+      hasAccount();
+    }, 500);
     return () => {
       if (isContinue) {
         clearInterval(dotsInterval);

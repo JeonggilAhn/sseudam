@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 
 const UnderBar = () => {
   const pathname = usePathname();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (
