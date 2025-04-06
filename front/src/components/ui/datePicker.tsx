@@ -92,7 +92,7 @@ export default function DateRangePicker({
             selected={dateRange.from}
             onSelect={handleFromDateSelect}
             initialFocus
-            disabled={{ after: dateRange.to || today }}
+            disabled={{ after: today }}
           />
         </PopoverContent>
       </Popover>

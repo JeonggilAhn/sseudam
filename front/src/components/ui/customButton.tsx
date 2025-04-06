@@ -39,7 +39,7 @@ export const LongButton: React.FC<buttonProps> = ({
       <div className="flex w-full justify-center items-center">
         <Button
           variant={variant}
-          className="absolute bottom-[5vh] mt-auto left-1/2 transform -translate-x-1/2 w-[80%] h-[48px] text-lg font-semibold justify-center items-center hover:bg-blue-300"
+          className="absolute bottom-[10vh] mt-auto left-1/2 transform -translate-x-1/2 w-[80%] h-[48px] text-lg font-semibold justify-center items-center hover:bg-blue-300"
           style={{ backgroundColor: disabled ? "#c7c7c7" : color }}
           onClick={onClick}
           disabled={disabled}
