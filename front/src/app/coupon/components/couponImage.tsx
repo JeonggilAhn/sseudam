@@ -81,7 +81,7 @@ const CouponImage = ({
             유효 기간
           </div>
           <div className="text-md text-nowrap font-medium mt-1 w-full text-ellipsis">
-            {couponDeadline.replace("T", " ")}
+            {couponDeadline.slice(0, 10)}
           </div>
         </div>
 

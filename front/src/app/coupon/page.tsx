@@ -2,51 +2,74 @@
 
 // import { AuthGuard } from "@/utils/authGuard";
 import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Ticket } from "lucide-react";
 import { Coupon } from "../card/page";
-import { GetCouponList } from "./api/getCoupon";
+import { GetCouponList, GetSavingProduct } from "./api/getCoupon";
+import SavingDetail from "../saving/components/savingDetail";
 
 // 컴포넌트
-import TimeBackground from "../card/components/timeBackground";
+import GrassBackground from "../card/components/grassBackground";
+
+interface SavingProduct {
+  etc_note: string;
+  fin_prdt_nm: string;
+  mtrt_int: string;
+}
 
 const CouponPage = () => {
   const router = useRouter();
   const [currentCoupon, setCurrentCoupon] = useState<Coupon>();
-  const params = useParams();
+  const [showModal, setShowModal] = useState(false);
+  const [currentCouponSavingId, setCurrentCouponSavingId] = useState<number>();
+  const [savingProduct, setSavingProduct] = useState<SavingProduct>();
+  const params = useSearchParams();
+
+  const handleClick = () => {
+    setShowModal(true);
+  };
 
   useEffect(() => {
+    setShowModal(false);
+    const fetchSavingProduct = async (savingId: number) => {
+      const response = await GetSavingProduct(savingId);
+      setSavingProduct(response?.data.content);
+      console.log(response);
+    };
+
     const fetchCoupon = async () => {
       try {
-        const tmpCoupon = await GetCouponList();
-        setCurrentCoupon(tmpCoupon?.data);
+        const tmpCouponList = await GetCouponList();
+        for (
+          let index = 0;
+          index < tmpCouponList?.data.content.length;
+          index++
+        ) {
+          if (
+            tmpCouponList?.data.content[index].coupon_id ==
+            params?.get("couponId")
+          ) {
+            setCurrentCoupon(tmpCouponList?.data.content[index]);
+            setCurrentCouponSavingId(
+              tmpCouponList?.data.content[index].saving_id
+            );
+            fetchSavingProduct(tmpCouponList?.data.content[index].saving_id);
+            break;
+          }
+        }
       } catch (error) {
         console.error("❌ 쿠폰 상세 정보 조회 실패:", error);
       }
     };
 
     fetchCoupon();
-  }, [params.couponId]);
+  }, [params.get("couponId")]);
 
   // 뒤로가기 함수
   const handleGoBack = () => {
     setCurrentCoupon(undefined);
     router.back();
   };
-
-  // 쿠폰 코드 생성 함수 (랜덤 코드)
-  //   const generateCouponCode = () => {
-  //     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //     let code = "";
-  //     for (let i = 0; i < 12; i++) {
-  //       if (i > 0 && i % 4 === 0) code += "-";
-  //       code += chars.charAt(Math.floor(Math.random() * chars.length));
-  //     }
-  //     return code;
-  //   };
-
-  // 쿠폰 코드
-  //   const [couponCode] = useState(generateCouponCode());
 
   return (
     <div className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden">
@@ -73,7 +96,14 @@ const CouponPage = () => {
       `}</style>
 
       {/* 배경 컴포넌트 */}
-      <TimeBackground />
+      <GrassBackground />
+
+      {showModal && (
+        <SavingDetail
+          savingId={currentCouponSavingId || 0}
+          onClose={() => setShowModal(false)}
+        />
+      )}
 
       {/* 헤더 */}
       <div className="fixed top-0 left-0 right-0 z-[200] bg-white/80 backdrop-blur-md p-4 shadow-md">
@@ -104,7 +134,7 @@ const CouponPage = () => {
                     {currentCoupon?.coupon_name}
                   </h2>
                   <p className="text-white mt-1">
-                    유효기간: {currentCoupon?.coupon_deadline}
+                    유효기간: {currentCoupon?.coupon_deadline.slice(0, 10)}
                   </p>
                 </div>
                 <div className="bg-white rounded-full p-3">
@@ -125,8 +155,13 @@ const CouponPage = () => {
 
               <div className="py-4">
                 <div className="flex justify-center w-full">
-                  <button className="cursor-pointer py-3 px-8 bg-[#FF9800] hover:bg-[#F57C00] text-white font-bold rounded-lg transition-colors w-full max-w-xs">
-                    쿠폰 받기
+                  <button
+                    onClick={() => {
+                      handleClick();
+                    }}
+                    className="cursor-pointer py-3 px-8 bg-[#FF9800] hover:bg-[#F57C00] text-white font-bold rounded-lg transition-colors w-full max-w-xs"
+                  >
+                    적금 상품으로 이동하기
                   </button>
                 </div>
               </div>
@@ -150,7 +185,7 @@ const CouponPage = () => {
               <div className="flex justify-between">
                 <span className="text-gray-500">유효기간</span>
                 <span className="font-medium">
-                  {currentCoupon?.coupon_deadline}
+                  {currentCoupon?.coupon_deadline.slice(0, 10)}
                 </span>
               </div>
             </div>
@@ -159,11 +194,13 @@ const CouponPage = () => {
           {/* 쿠폰 사용 방법 */}
           <div className="w-full max-w-md bg-white rounded-xl shadow-md p-6 space-y-4">
             <h3 className="text-lg font-semibold border-b pb-2 text-gray-500">
-              사용 방법
+              상품 정보
             </h3>
 
             <ol className="list-decimal pl-5 space-y-2 text-gray-500">
-              <li>&apos;적금상품으로 이동하기&apos; 버튼을 눌러주세요.</li>
+              <li>이름 : {savingProduct?.fin_prdt_nm}</li>
+              <li>설명 : {savingProduct?.etc_note}</li>
+              <li>이자율 : {savingProduct?.mtrt_int}</li>
             </ol>
           </div>
         </div>

@@ -22,7 +22,11 @@ type Props = {
   showJoinButton?: boolean;
 };
 
-const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = true }) => {
+const SavingDetail: React.FC<Props> = ({
+  savingId,
+  onClose,
+  showJoinButton = true,
+}) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -44,7 +48,10 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
       const updatedList = savings.map((item) =>
         item.saving_id === savingId ? { ...item, views: data.views } : item
       );
-      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
+      const sortedList = sortSavings(
+        updatedList,
+        sort as "views" | "likes" | "maxIntRate" | ""
+      );
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
@@ -69,18 +76,26 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
   const handleLike = async () => {
     try {
-      const res = await axiosInstance.post(`/savings-products/${savingId}/likes`, {
-        userId: 1,
-      });
+      const res = await axiosInstance.post(
+        `/savings-products/${savingId}/likes`,
+        {
+          userId: 1,
+        }
+      );
 
       const updatedLikes = res.data.content.like_count;
       setLiked(res.data.content.liked);
 
       const updatedList = savings.map((item) =>
-        item.saving_id === savingId ? { ...item, like_count: updatedLikes, liked: !liked } : item
+        item.saving_id === savingId
+          ? { ...item, like_count: updatedLikes, liked: !liked }
+          : item
       );
 
-      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
+      const sortedList = sortSavings(
+        updatedList,
+        sort as "views" | "likes" | "maxIntRate" | ""
+      );
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, likeCount: updatedLikes }));
     } catch (err) {
@@ -126,14 +141,14 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   const maxRate = (saving.max_int_rate / 100).toFixed(2);
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center px-2 sm:px-0">
+    <div className="fixed inset-0 bg-black/70 flex justify-center items-center px-2 sm:px-0 z-[300]">
       <div className="relative bg-white rounded-xl p-6 sm:p-8 w-[95%] max-w-md shadow-2xl overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
 
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center 
-             rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors z-10 
+             rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors z-[300] 
              cursor-pointer overflow-hidden"
         >
           <X size={20} />
@@ -141,13 +156,19 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
         <div className="flex items-center justify-center relative z-10 mb-6">
           <div className="bg-white rounded-lg shadow-md p-2 sm:p-3 mb-2">
-            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={120} height={50} />
+            <Icon
+              name={getBankIconName(saving.fin_prdt_cd)}
+              width={120}
+              height={50}
+            />
           </div>
         </div>
 
         <div className="text-center space-y-5">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-2">
+              {saving.fin_prdt_nm}
+            </h2>
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-sm sm:text-base leading-relaxed mb-3 max-h-28 overflow-y-auto">
               {saving.spcl_cnd || saving.etc_note || "상세 설명이 없습니다."}
             </div>
@@ -171,7 +192,11 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
               }`}
               aria-label="좋아요 버튼"
             >
-              <Heart size={18} className="transition-colors" fill={liked ? "red" : "none"} />
+              <Heart
+                size={18}
+                className="transition-colors"
+                fill={liked ? "red" : "none"}
+              />
             </button>
 
             {showJoinButton && (
