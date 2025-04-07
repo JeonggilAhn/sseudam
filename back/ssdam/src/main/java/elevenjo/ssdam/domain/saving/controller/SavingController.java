@@ -96,13 +96,12 @@ public class SavingController {
     @PostMapping("/{savingId}")
     public ResponseEntity<ResponseWrapper<OpenSavingResponseDto>> openSaving(
             @PathVariable Long savingId,
-            @AuthenticationPrincipal CustomOAuth2User oAuthUser,
+            @AuthenticationPrincipal User user,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        User user = oAuthUser.getUser();
-        String userKey = user.getUserKey();
-
-        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
+        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, user);
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
+
 }
