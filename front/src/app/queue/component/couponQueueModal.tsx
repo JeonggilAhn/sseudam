@@ -11,7 +11,7 @@ interface QueueModalProps {
 
 export default function CouponQueueModal({
   position,
-  totalUsers,
+  // totalUsers,
   onClose,
   isConnected,
 }: QueueModalProps) {
