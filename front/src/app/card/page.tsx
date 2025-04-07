@@ -67,6 +67,11 @@ const MainPage = () => {
     dispatch(setCurrentCard([]));
   };
 
+  const handleCloud = () => {
+    console.log("클릭");
+    router.push("/account/record");
+  };
+
   useEffect(() => {
     setIsLoading(true);
     dispatch(resetIsModalOpen());
@@ -94,19 +99,19 @@ const MainPage = () => {
       }
     };
 
-    const hasAccount = async () => {
-      const response = await CheckAccount();
-      if (response === undefined) {
-        setTimeout(() => {
-          router.push("/account/create");
-        }, 100);
-      } else {
-        fetchCardInfo();
-        fetchCouponInfo();
-      }
-    };
+    // const hasAccount = async () => {
+    //   const response = await CheckAccount();
+    //   if (response === undefined) {
+    //     setTimeout(() => {
+    //       router.push("/account/create");
+    //     }, 100);
+    //   } else {
+    fetchCardInfo();
+    fetchCouponInfo();
+    //   }
+    // };
 
-    hasAccount();
+    // hasAccount();
   }, [currentCard, dispatch]);
 
   return (
@@ -128,12 +133,14 @@ const MainPage = () => {
             color="dark"
             textColor="#fa0505"
           />
-          <CloudInfo
-            type="저축"
-            amount={3000}
-            color="white"
-            textColor="#6439FF"
-          />
+          <div onClick={handleCloud}>
+            <CloudInfo
+              type="저축"
+              amount={3000}
+              color="white"
+              textColor="#6439FF"
+            />
+          </div>
         </div>
         <TimeBackground />
         <GrassBackground />
