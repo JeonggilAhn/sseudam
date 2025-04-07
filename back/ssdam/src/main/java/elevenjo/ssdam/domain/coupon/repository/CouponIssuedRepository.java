@@ -2,6 +2,7 @@ package elevenjo.ssdam.domain.coupon.repository;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,8 @@ public interface CouponIssuedRepository extends JpaRepository<CouponIssued, Long
     Coupon coupon(Coupon coupon);
 
     List<CouponIssued> findByUser_UserId(Long userUserId);
+
+    @Modifying
+    @Query(value = "INSERT INTO coupon_issued (user_id, coupon_id) VALUES (:userId, :#{#coupon.id})", nativeQuery = true)
+    void insertCouponIssued(Long userId, Coupon coupon);
 }

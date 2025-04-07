@@ -14,7 +14,7 @@ public class WaitingQueueService {
 
     private static final String PASSKEY_PREFIX = "passkey:";      // passkey 저장 key 접두사
     private static final String QUEUE_KEY = "waiting:queue";        // 대기열용 Redis Sorted Set key
-    private static final long PASSKEY_TTL_SECONDS = 60;             // passkey TTL (예: 60초)
+    private static final long PASSKEY_TTL_SECONDS = 600;             // passkey TTL (예: 60초)
 
     private final RedisTemplate<String, String> redisTemplate;
 
