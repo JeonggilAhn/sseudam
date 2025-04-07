@@ -6,10 +6,7 @@ import { useRouter } from "next/navigation";
 import { CheckAccount } from "../card/api/getCard";
 import AnimatedModal from "@/components/animatedModal";
 import { useAppDispatch } from "@/stores/hooks";
-import {
-  toggleIsModalOpen,
-  resetIsModalOpen,
-} from "@/stores/slices/aniModalSlice";
+import { resetIsModalOpen } from "@/stores/slices/aniModalSlice";
 import Image from "next/image";
 
 const RedirectPage = () => {
