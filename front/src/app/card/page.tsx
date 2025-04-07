@@ -27,12 +27,6 @@ import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
 
-// export interface Card {
-//   cardNo: string;
-//   expiryDate: string;
-//   userName: string;
-// }
-
 class Card {
   cardNo: string;
   userName: string;
@@ -91,14 +85,17 @@ const MainPage = () => {
       console.log(response?.data.content);
       if (response !== undefined) {
         dispatch(setCouponList(response.data.content));
+      } else {
+        dispatch(setCouponList([]));
       }
     };
 
     const hasAccount = async () => {
       const response = await CheckAccount();
+      console.log(response);
       if (response === undefined) {
         setTimeout(() => {
-          router.push("/account/create");
+          router.push("/auth/signup");
         }, 100);
       } else {
         fetchCardInfo();
