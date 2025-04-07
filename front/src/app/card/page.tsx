@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
-import { GetCardInfo, CheckAccount } from "./api/getCard";
+import { GetCardInfo, CheckAccount, GetPiggyBalance } from "./api/getCard";
 import { GetCouponList } from "../coupon/api/getCoupon";
 import { DeleteUserCard } from "./api/deleteCard";
 import { AuthGuard } from "@/utils/authGuard";
@@ -26,12 +26,6 @@ import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
-
-// export interface Card {
-//   cardNo: string;
-//   expiryDate: string;
-//   userName: string;
-// }
 
 class Card {
   cardNo: string;
@@ -60,6 +54,8 @@ const MainPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [card, setCard] = useState<Card[]>([]);
+  const [isBounce, setIsBounce] = useState(true);
+  const [piggyBalance, setPiggyBalance] = useState(0);
 
   const handleDeleteCard = async () => {
     await DeleteUserCard();
@@ -91,22 +87,34 @@ const MainPage = () => {
       console.log(response?.data.content);
       if (response !== undefined) {
         dispatch(setCouponList(response.data.content));
+      } else {
+        dispatch(setCouponList([]));
       }
+    };
+
+    const fetchPiggyBalance = async () => {
+      const response = await GetPiggyBalance();
+      setPiggyBalance(response?.data.content.account_balance);
     };
 
     const hasAccount = async () => {
       const response = await CheckAccount();
+      console.log(response);
       if (response === undefined) {
         setTimeout(() => {
-          router.push("/account/create");
+          router.push("/auth/signup");
         }, 100);
       } else {
         fetchCardInfo();
         fetchCouponInfo();
+        fetchPiggyBalance();
       }
     };
 
     hasAccount();
+    setTimeout(() => {
+      setIsBounce(false);
+    }, 2600);
   }, [currentCard, dispatch]);
 
   return (
@@ -128,19 +136,31 @@ const MainPage = () => {
             color="dark"
             textColor="#fa0505"
           />
-          <CloudInfo
-            type="저축"
-            amount={3000}
-            color="white"
-            textColor="#6439FF"
-          />
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/account/record")}
+          >
+            {" "}
+            <CloudInfo
+              type="저축"
+              amount={piggyBalance}
+              color="white"
+              textColor="#6439FF"
+            />
+          </div>
         </div>
         <TimeBackground />
         <GrassBackground />
         <CardRegist />
 
         <Image
-          className="w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[58%] fixed top-1/4 left-1/2 drop-shadow-xl"
+          className={`cursor-pointer w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[58%] fixed top-1/4 left-1/2 drop-shadow-xl animate-${isBounce ? "bounce" : "none"}`}
+          onClick={() => {
+            setIsBounce(true);
+            setTimeout(() => {
+              setIsBounce(false);
+            }, 2500);
+          }}
           src="/icons/logo.svg"
           alt="logo"
           width={300}
@@ -195,21 +215,27 @@ const MainPage = () => {
 
             {/* 쿠폰 섹션 */}
             <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
-              {couponList.map((coupon, index) => (
-                <CouponImage
-                  key={index}
-                  couponName={coupon.coupon_name}
-                  couponDeadline={coupon.coupon_deadline}
-                  savingId={coupon.saving_id}
-                  couponId={coupon.coupon_id}
-                  couponType={coupon.coupon_type}
-                  onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    router.push(`/coupon?couponId=${coupon.coupon_id}`);
-                    dispatch(setCurrentCoupon(coupon));
-                  }}
-                />
-              ))}
+              {couponList && couponList.length > 0 ? (
+                couponList.map((coupon, index) => (
+                  <CouponImage
+                    key={index}
+                    couponName={coupon.coupon_name}
+                    couponDeadline={coupon.coupon_deadline}
+                    savingId={coupon.saving_id}
+                    couponId={coupon.coupon_id}
+                    couponType={coupon.coupon_type}
+                    onClick={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      router.push(`/coupon?couponId=${coupon.coupon_id}`);
+                      dispatch(setCurrentCoupon(coupon));
+                    }}
+                  />
+                ))
+              ) : (
+                <div className="text-gray-700 text-sm">
+                  현재 등록된 쿠폰이 없습니다.
+                </div>
+              )}
             </div>
           </div>
         </div>

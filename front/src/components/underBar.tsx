@@ -13,7 +13,6 @@ const UnderBar = () => {
   useEffect(() => {
     if (
       pathname === "/" ||
-      pathname.includes("/account") ||
       pathname.includes("/signup") ||
       pathname.includes("/auth-redirect")
     ) {

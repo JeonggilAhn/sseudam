@@ -13,8 +13,8 @@ export const CheckCouponIssued = async (couponId: number) => {
 
 export const IssueCoupon = async (couponId: number) => {
   try {
-    const response = await axiosInstance.post(`coupons/issue`, {
-      coupon_id: couponId,
+    const response = await axiosInstance.post(`/coupons/enter`, {
+      couponId,
     });
     console.log(response);
   } catch (error) {
