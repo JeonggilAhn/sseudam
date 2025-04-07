@@ -44,14 +44,19 @@ export default function Home() {
         <Image src="/icons/logo.svg" alt="로고" width={150} height={80} />
         <button
           onClick={handleGoogleLogin}
-          className="transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
+          className="flex w-[30vw] h-auto py-2 justify-evenly border-solid border-2 bg-white transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
         >
-          <Image
-            src="/icons/googleLogin.png"
-            alt="구글 로그인 버튼"
-            width={250}
-            height={40}
-          />
+          <div>
+            <Image
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="구글 로그인 버튼"
+              width={50}
+              height={50}
+            />
+          </div>
+          <div className="flex items-center">
+            <h2>Google로 로그인</h2>
+          </div>
         </button>
       </div>
     </main>

@@ -21,7 +21,7 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
       {color === "dark" ? (
         <div className="absolute flex w-[25vw] h-auto min-w-[130px] justify-center items-center">
           <Image
-            src="/darkcloud.png"
+            src="/darkcloud.svg"
             alt="구름 이미지"
             width={300}
             height={300}
@@ -30,7 +30,7 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
       ) : (
         <div className="absolute flex w-[25vw] h-auto min-w-[125px] justify-center items-center">
           <Image
-            src="/whitecloud.png"
+            src="/whitecloud.svg"
             alt="구름 이미지"
             width={300}
             height={300}

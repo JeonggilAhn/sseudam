@@ -40,12 +40,12 @@ const RedirectPage = () => {
       const response = await CheckAccount();
       if (response === undefined) {
         dispatch(toggleIsModalOpen());
+        // setTimeout(() => {
+        //   dispatch(resetIsModalOpen());
         setTimeout(() => {
-          dispatch(resetIsModalOpen());
-          setTimeout(() => {
-            router.push("/auth/signup");
-          }, 200);
-        }, 2500);
+          router.push("/auth/signup");
+        }, 300);
+        // }, 2500);
       } else {
         setIsContinue(false);
         setTimeout(() => {
