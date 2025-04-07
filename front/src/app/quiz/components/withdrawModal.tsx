@@ -22,7 +22,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   const handleMove = async () => {
     try {
       const requestBody = {
-        account_no: depositAccountNo,
+        accountNo: depositAccountNo,
         amount: parseInt(transactionBalance, 10),
       };
 

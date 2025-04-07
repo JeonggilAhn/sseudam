@@ -50,6 +50,7 @@ const SavingPage: React.FC = () => {
         ]);
 
         const data = res.data?.content?.content || [];
+        console.log("list : ", data);
         const likedIds: number[] = likedRes.data?.content || [];
 
         const mergedWithLiked = (data as SavingCardType[]).map((item) => ({

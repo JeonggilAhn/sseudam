@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, CreditCard, Wallet, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
@@ -13,29 +13,43 @@ import { getBankIconName } from "@/components/bankList";
 
 const CreateSavingPage: React.FC = () => {
   const router = useRouter();
-  const [accountNumber, setAccountNumber] = useState("");
+  const [pAccount, setPAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
   const saving = useAppSelector((state) => state.saving.selectedSavingDetail);
   const dispatch = useAppDispatch();
 
-  const isDisabled = !accountNumber || !amount || !saving;
+  const isDisabled = !pAccount || !saving || Number(amount) <= 0;
 
   const today = new Date();
   const formattedDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      try {
+        const res = await axiosInstance.get("/users/me");
+        setPAccount(res.data.content.piggy_account_no);
+        console.log("user : ", res.data.content, "saving : ", saving);
+      } catch (err) {
+        console.error("유저 정보 조회 실패:", err);
+      }
+    };
+
+    fetchAccount();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!saving) return;
 
     const requestBody = {
-      withdrawal_account_no: accountNumber,
-      deposit_balance: Number(amount),
-      account_type_unique_no: saving.fin_co_nm,
+      withdrawalAccountNo: pAccount,
+      depositBalance: Number(amount),
     };
+
     try {
-      const res = await axiosInstance.post(`/savings-products/${saving.saving_id}`, requestBody);
+      const res = await axiosInstance.post(`/savings-products/${saving.savingId}`, requestBody);
 
       if (res?.data?.status?.code === "default-200") {
         dispatch(setOpenedSaving(res.data.content));
@@ -59,20 +73,20 @@ const CreateSavingPage: React.FC = () => {
         >
           <ChevronLeft size={28} />
         </button>
-        <h1 className="text-2xl font-bold text-gray-800">{saving?.fin_prdt_nm || "적금 상품"}</h1>
+        <h1 className="text-2xl font-bold text-gray-800">{saving?.finPrdtNm || "적금 상품"}</h1>
       </div>
 
       {/* 요약 카드 */}
       {saving && (
         <div className="w-full max-w-md mx-auto mb-6 bg-white p-4 rounded-xl shadow flex items-center space-x-4">
           <div className="bg-gray-100 rounded-lg p-2">
-            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={60} height={30} />
+            <Icon name={getBankIconName(saving.finPrdtCd)} width={60} height={30} />
           </div>
           <div>
-            <p className="text-base font-semibold">{saving.fin_prdt_nm}</p>
+            <p className="text-base font-semibold">{saving.finPrdtNm}</p>
             <p className="text-sm text-blue-600">
-              금리: {(saving.min_int_rate / 100).toFixed(2)}% ~{" "}
-              {(saving.max_int_rate / 100).toFixed(2)}%
+              금리: {(saving.minIntRate / 100).toFixed(2)}% ~ {(saving.maxIntRate / 100).toFixed(2)}
+              %
             </p>
           </div>
         </div>
@@ -89,8 +103,8 @@ const CreateSavingPage: React.FC = () => {
             </label>
             <input
               type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
+              value={pAccount}
+              readOnly
               placeholder="입출금 계좌 번호 자동 입력"
               className="w-full text-base border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 text-right placeholder:text-left"
             />
@@ -146,7 +160,7 @@ const CreateSavingPage: React.FC = () => {
       {/* 가입 완료 모달 */}
       {showSuccess && saving && (
         <CreateSuccess
-          productName={saving.fin_prdt_nm}
+          productName={saving.finPrdtNm}
           amount={Number(amount)}
           startDate={formattedDate}
         />
