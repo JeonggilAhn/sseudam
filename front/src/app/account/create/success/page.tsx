@@ -9,7 +9,7 @@ const SuccessPage = () => {
   const router = useRouter();
 
   const handleButton = () => {
-    router.push("/");
+    router.push("/card");
   };
 
   return (

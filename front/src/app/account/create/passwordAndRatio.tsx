@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
 import { postAccount } from "../api/postAccount";
@@ -17,15 +18,17 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   selectedPassword,
   setSelectedPassword,
 }) => {
+  const router = useRouter();
   const [isValue, setIsValue] = useState(false);
   const handleLastBtn = async () => {
     try {
       const postedAccount = await postAccount();
-      console.log(postedAccount);
+      if (postedAccount?.status === 200) {
+        router.push("/account/create/success");
+      }
     } catch (error) {
       console.error("Error updating data:", error);
     }
-    console.log("ss", selectedPassword);
   };
 
   return (

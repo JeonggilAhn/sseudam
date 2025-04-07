@@ -96,24 +96,21 @@ const SignUpForm = () => {
 
     const data = {
       userName: userInfo1.name,
-      birthday: userInfo1.birthday,
+      birthday: userInfo1.birthday.replace(/-/g, ""),
       withdrawAccountNo: userInfo3.withdrawAccountNo,
       savingRate: selectedSavingRate,
-      // user_name: userInfo1.name,
-      // birthday: userInfo1.birthday,
-      // withdraw_account_no: userInfo3.withdrawAccountNo,
-      // saving_rate: selectedSavingRate,
     };
 
     try {
       const postedSignup = await postSignup(data);
-      console.log("response: ", postedSignup, "data: ", JSON.stringify(data));
+      // console.log("response: ", postedSignup, "data: ", JSON.stringify(data));
+      console.log("response: ", postedSignup);
 
-      // // 백엔드 응답 확인 후 수정예정
-      // if (postedSignup.data === 200) {
-      //   console.log("회원가입 성공", postedSignup, JSON.stringify(data));
-      //   router.push("success");
-      // }
+      // 백엔드 응답 확인 후 수정예정
+      if (postedSignup?.status === 200) {
+        console.log("회원가입 성공", postedSignup, JSON.stringify(data));
+        router.push("success");
+      }
     } catch (error) {
       console.log("회원가입 실패", error);
     }
