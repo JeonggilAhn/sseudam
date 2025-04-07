@@ -73,14 +73,16 @@ const CouponImage = ({
         </div>
 
         {/* Middle: 코드 정보 */}
-        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">
-          <span className="text-xs text-gray-500 mt-2">{couponName}</span>
-          <p className="text-xs mt-1 uppercase text-orange-600 font-semibold">
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center w-full ">
+          <div className="text-xs text-nowrap w-full text-gray-500 mt-2 text-ellipsis">
+            {couponName}
+          </div>
+          <div className="text-xs text-nowrap mt-1 uppercase text-orange-600 font-semibold w-full text-ellipsis">
             유효 기간
-          </p>
-          <p className="text-md font-medium mt-1">
+          </div>
+          <div className="text-md text-nowrap font-medium mt-1 w-full text-ellipsis">
             {couponDeadline.replace("T", " ")}
-          </p>
+          </div>
         </div>
 
         <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center">

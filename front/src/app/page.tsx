@@ -44,7 +44,7 @@ export default function Home() {
         <Image src="/icons/logo.svg" alt="로고" width={150} height={80} />
         <button
           onClick={handleGoogleLogin}
-          className="flex w-[30vw] h-auto py-2 justify-evenly border-solid border-2 bg-white transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
+          className="flex w-[30vw] max-w-[300px] min-w-[227px] h-auto py-2 justify-evenly border-solid border-2 bg-white transition-all duration-200 hover:brightness-105 hover:shadow-md rounded-xl"
         >
           <div>
             <Image

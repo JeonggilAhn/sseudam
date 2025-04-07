@@ -39,7 +39,7 @@ const RedirectPage = () => {
     const hasAccount = async () => {
       const response = await CheckAccount();
       if (response === undefined) {
-        dispatch(toggleIsModalOpen());
+        // dispatch(toggleIsModalOpen());
         // setTimeout(() => {
         //   dispatch(resetIsModalOpen());
         setTimeout(() => {
