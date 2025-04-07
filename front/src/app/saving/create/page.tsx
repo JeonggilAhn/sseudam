@@ -49,7 +49,7 @@ const CreateSavingPage: React.FC = () => {
     };
 
     try {
-      const res = await axiosInstance.post(`/savings-products/${saving.savingId}`, requestBody);
+      const res = await axiosInstance.post(`/savings-products/${saving.saving_id}`, requestBody);
 
       if (res?.data?.status?.code === "default-200") {
         dispatch(setOpenedSaving(res.data.content));
@@ -73,20 +73,20 @@ const CreateSavingPage: React.FC = () => {
         >
           <ChevronLeft size={28} />
         </button>
-        <h1 className="text-2xl font-bold text-gray-800">{saving?.finPrdtNm || "적금 상품"}</h1>
+        <h1 className="text-2xl font-bold text-gray-800">{saving?.fin_prdt_nm || "적금 상품"}</h1>
       </div>
 
       {/* 요약 카드 */}
       {saving && (
         <div className="w-full max-w-md mx-auto mb-6 bg-white p-4 rounded-xl shadow flex items-center space-x-4">
           <div className="bg-gray-100 rounded-lg p-2">
-            <Icon name={getBankIconName(saving.finPrdtCd)} width={60} height={30} />
+            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={60} height={30} />
           </div>
           <div>
-            <p className="text-base font-semibold">{saving.finPrdtNm}</p>
+            <p className="text-base font-semibold">{saving.fin_prdt_nm}</p>
             <p className="text-sm text-blue-600">
-              금리: {(saving.minIntRate / 100).toFixed(2)}% ~ {(saving.maxIntRate / 100).toFixed(2)}
-              %
+              금리: {(saving.min_int_rate / 100).toFixed(2)}% ~{" "}
+              {(saving.max_int_rate / 100).toFixed(2)}%
             </p>
           </div>
         </div>
@@ -160,7 +160,7 @@ const CreateSavingPage: React.FC = () => {
       {/* 가입 완료 모달 */}
       {showSuccess && saving && (
         <CreateSuccess
-          productName={saving.finPrdtNm}
+          productName={saving.fin_prdt_nm}
           amount={Number(amount)}
           startDate={formattedDate}
         />

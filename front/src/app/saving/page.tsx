@@ -44,6 +44,8 @@ const SavingPage: React.FC = () => {
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
+        console.log("✅ 요청 전 params:", params);
+
         const [res, likedRes] = await Promise.all([
           axiosInstance.get("/savings-products", { params }),
           axiosInstance.get("/savings-products/likes/me"),
