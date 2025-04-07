@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 // import { useEffect } from "react";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 // import { useSearchParams } from "next/navigation";
 import SignupForm1 from "./SignupForm1";
 import SignupForm2 from "./SignupForm2";
@@ -16,7 +16,7 @@ const SignUpForm = () => {
   // const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
+  const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
 
   const [userInfo1, setUserInfo1] = useState({
     name: "",
@@ -96,20 +96,21 @@ const SignUpForm = () => {
 
     const data = {
       userName: userInfo1.name,
-      birthDay: userInfo1.birthday,
+      birthday: userInfo1.birthday.replace(/-/g, ""),
       withdrawAccountNo: userInfo3.withdrawAccountNo,
       savingRate: selectedSavingRate,
     };
 
     try {
       const postedSignup = await postSignup(data);
-      console.log("response: ", postedSignup, "data: ", JSON.stringify(data))
+      // console.log("response: ", postedSignup, "data: ", JSON.stringify(data));
+      console.log("response: ", postedSignup);
 
       // 백엔드 응답 확인 후 수정예정
-      // if (postedSignup.data === 200){
-      //   console.log("회원가입 성공", postedSignup, JSON.stringify(data));
-      //   router.push("success");
-      // }
+      if (postedSignup?.status === 200) {
+        console.log("회원가입 성공", postedSignup, JSON.stringify(data));
+        router.push("success");
+      }
     } catch (error) {
       console.log("회원가입 실패", error);
     }
