@@ -12,8 +12,12 @@ export const CheckCouponIssued = async (couponId: number) => {
 };
 
 export const IssueCoupon = async (couponId: number) => {
-  const response = await axiosInstance.post(`coupons/issue`, {
-    couponId,
-  });
-  return response;
+  try {
+    const response = await axiosInstance.post(`coupons/issue`, {
+      coupon_id: couponId,
+    });
+    console.log(response);
+  } catch (error) {
+    console.error("❌ 쿠폰 발급 실패:", error);
+  }
 };

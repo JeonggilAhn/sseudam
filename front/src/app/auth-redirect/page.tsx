@@ -43,7 +43,7 @@ const RedirectPage = () => {
         setTimeout(() => {
           dispatch(resetIsModalOpen());
           setTimeout(() => {
-            router.push("/account/create");
+            router.push("/auth/signup");
           }, 200);
         }, 2500);
       } else {
