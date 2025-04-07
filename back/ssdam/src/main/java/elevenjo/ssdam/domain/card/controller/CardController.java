@@ -26,7 +26,7 @@ public class CardController {
     private final CardService cardService;
     private final ExternalApiUtil externalApiUtil;
 
-    @PostMapping("/regist")
+    @PostMapping("/")
     public ResponseEntity<ResponseWrapper<Void>> registerCard(@RequestBody CardDto card, @AuthenticationPrincipal User user) throws Exception {
             cardService.registerUserCard(card, user);
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK,null);
