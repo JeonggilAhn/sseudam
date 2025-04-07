@@ -91,16 +91,16 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   const handleJoin = () => {
     if (!saving) return;
 
-    if (saving.hompUrl) {
-      window.open(saving.hompUrl, "_blank");
+    if (saving.homp_url) {
+      window.open(saving.homp_url, "_blank");
     } else {
       dispatch(
         setSelectedSaving({
-          saving_id: saving.savingId,
-          fin_co_nm: saving.finPrdtCd,
-          fin_prdt_nm: saving.finPrdtNm,
-          min_int_rate: saving.minIntRate,
-          max_int_rate: saving.maxIntRate,
+          saving_id: saving.saving_id,
+          fin_co_nm: saving.fin_prdt_cd,
+          fin_prdt_nm: saving.fin_prdt_nm,
+          min_int_rate: saving.min_int_rate,
+          max_int_rate: saving.max_int_rate,
           views: saving.views,
           like_count: saving.like_count,
           likes: saving.likes,
@@ -122,8 +122,8 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   if (loading) return <span>로딩 중..</span>;
   if (!saving) return null;
 
-  const minRate = (saving.minIntRate / 100).toFixed(2);
-  const maxRate = (saving.maxIntRate / 100).toFixed(2);
+  const minRate = (saving.min_int_rate / 100).toFixed(2);
+  const maxRate = (saving.max_int_rate / 100).toFixed(2);
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center px-2 sm:px-0">
@@ -141,15 +141,15 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
 
         <div className="flex items-center justify-center relative z-10 mb-6">
           <div className="bg-white rounded-lg shadow-md p-2 sm:p-3 mb-2">
-            <Icon name={getBankIconName(saving.finPrdtCd)} width={120} height={50} />
+            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={120} height={50} />
           </div>
         </div>
 
         <div className="text-center space-y-5">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold mb-2">{saving.finPrdtNm}</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-sm sm:text-base leading-relaxed mb-3 max-h-28 overflow-y-auto">
-              {saving.spclCnd || saving.etcNote || "상세 설명이 없습니다."}
+              {saving.spcl_cnd || saving.etc_note || "상세 설명이 없습니다."}
             </div>
           </div>
 
