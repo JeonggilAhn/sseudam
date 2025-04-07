@@ -51,14 +51,10 @@ public class UserService {
 		LocalDate birthdayDate = LocalDate.parse(requestDto.birthday(), DateTimeFormatter.ofPattern("yyyyMMdd"));
 		LocalDateTime birthday = birthdayDate.atStartOfDay();
 
-		String userKey;
+		String userKey = user.getUserKey();
 		Map<String, Object> body = new HashMap<>();
 		body.put("userId", user.getUserEmail());
 
-		userKey = ExternalApiUtil.postWithBodyApiKey(
-				"https://finopenapi.ssafy.io/ssafy/api/v1/member/search",
-				body,
-				SSAFYUserResponseDto.class).userKey();
 
 		if(userKey == null) {
 			userKey = ExternalApiUtil.postWithBodyApiKey(
@@ -66,6 +62,11 @@ public class UserService {
 					body,
 					SSAFYUserResponseDto.class
 			).userKey();
+		} else {
+			userKey = ExternalApiUtil.postWithBodyApiKey(
+					"https://finopenapi.ssafy.io/ssafy/api/v1/member/search",
+					body,
+					SSAFYUserResponseDto.class).userKey();
 		}
 
 		user.registerUserInfo(
