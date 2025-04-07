@@ -43,6 +43,7 @@ const CouponImage = ({
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
     const response = await IssueCoupon(couponId);
+    console.log(response);
   };
 
   return (
