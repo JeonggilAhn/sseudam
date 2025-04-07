@@ -1,9 +1,7 @@
 package elevenjo.ssdam.domain.card.controller;
 
 import elevenjo.ssdam.domain.card.dto.CardRequestDto;
-import elevenjo.ssdam.domain.card.exception.CardDuplicateException;
 import elevenjo.ssdam.domain.card.exception.CardNotFoundException;
-import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import elevenjo.ssdam.global.response.DefaultResponseCode;
@@ -59,7 +57,6 @@ public class CardController {
         } catch (CardNotFoundException e) {
             return ResponseWrapperFactory.setResponse(DefaultResponseCode.BAD_REQUEST,null);
         }
-
     };
 
     @PostMapping("/myCard")
@@ -70,9 +67,5 @@ public class CardController {
         }catch (CardNotFoundException e){
             return ResponseEntity.badRequest().build();
         }
-
-
-
     };
-
 }
