@@ -172,4 +172,5 @@ const CouponPage = () => {
   );
 };
 
-export default AuthGuard(CouponPage);
+// export default AuthGuard(CouponPage);
+export default CouponPage;
