@@ -5,6 +5,7 @@ import elevenjo.ssdam.domain.saving.entity.Saving;
 import elevenjo.ssdam.domain.saving.exception.SavingNotFoundException;
 import elevenjo.ssdam.domain.saving.repository.SavingRepository;
 import elevenjo.ssdam.domain.saving.util.SimilaritySearchUtil;
+import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -57,20 +58,25 @@ public class SavingService {
     public Saving getSavingForOpen(Long savingId) {
         return getSavingById(savingId);
     }
-
     @Transactional
-    public OpenSavingResponseDto openSaving(Long savingId, OpenSavingRequestDto requestDto, String userKey) {
+    public OpenSavingResponseDto openSaving(Long savingId, OpenSavingRequestDto requestDto, User user) {
         Saving saving = getSavingById(savingId);
+
         Map<String, Object> body = Map.of(
                 "accountTypeUniqueNo", saving.getFinPrdtCd(),
                 "depositBalance", requestDto.getDepositBalance(),
-                "withdrawalAccountNo", requestDto.getWithdrawalAccountNo()
+                "withdrawalAccountNo", user.getPiggyAccountNo()
         );
+
         return externalApiUtil.postWithHeader(
                 "https://finopenapi.ssafy.io/ssafy/api/v1/edu/savings/createAccount",
-                "createAccount", userKey, body, OpenSavingApiResponse.class
+                "createAccount",
+                user.getUserKey(), // 헤더에 넣는 userKey
+                body,
+                OpenSavingApiResponse.class
         ).getRec();
     }
+
 
     public void syncSavingsFromOpenApi() {
         syncService.syncSavingsFromOpenApi();

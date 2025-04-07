@@ -99,10 +99,10 @@ public class SavingController {
             @AuthenticationPrincipal CustomOAuth2User oAuthUser,
             @RequestBody OpenSavingRequestDto requestDto
     ) {
-        User user = oAuthUser.getUser();
-        String userKey = user.getUserKey();
-
-        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, userKey);
+        User user = oAuthUser.getUser(); // 여기서 직접 가져온 User
+        OpenSavingResponseDto response = savingService.openSaving(savingId, requestDto, user);
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
     }
+
+
 }
