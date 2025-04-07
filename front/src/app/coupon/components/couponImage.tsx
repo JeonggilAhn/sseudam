@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { CheckCouponIssued } from "../api/postCoupon";
+import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
 
 interface CouponImageProps {
   couponName: string;
@@ -39,6 +39,11 @@ const CouponImage = ({
     };
     fetchUserCoupon(couponId);
   }, [couponId]);
+
+  const handleIssue = async (couponId: number) => {
+    console.log(couponId);
+    const response = await IssueCoupon(couponId);
+  };
 
   return (
     <div
@@ -91,6 +96,7 @@ const CouponImage = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                handleIssue(couponId);
               }}
               className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
             >

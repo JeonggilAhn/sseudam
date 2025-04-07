@@ -111,7 +111,7 @@ const MainPage = () => {
 
   return (
     <div
-      className="h-[95vh] min-h-[768px] relative w-full max-w-[1280px] mx-auto overflow-hidden"
+      className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden"
       style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
     >
       <style jsx global>{`
