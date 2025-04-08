@@ -38,13 +38,13 @@ class Card {
 }
 
 export interface Coupon {
-  coupon_id: number;
-  coupon_name: string;
-  coupon_type: string;
-  created_at: string;
-  updated_at: string;
-  coupon_deadline: string;
-  saving_id: number;
+  couponId: number;
+  couponName: string;
+  couponType: string;
+  createdAt: string;
+  updatedAt: string;
+  couponDeadline: string;
+  savingId: number;
 }
 
 const MainPage = () => {
@@ -79,7 +79,7 @@ const MainPage = () => {
         console.log(response.data);
         const tmpCardNo = response.data[0] + "**********" + response.data[1];
         const userName = (await axiosInstance.get("/users/me")).data.content
-          .user_name;
+          .userName;
         const tmpCard = new Card(tmpCardNo, userName);
         setCard([tmpCard]);
         setIsLoading(false);
@@ -225,14 +225,14 @@ const MainPage = () => {
                 couponList.map((coupon, index) => (
                   <CouponImage
                     key={index}
-                    couponName={coupon.coupon_name}
-                    couponDeadline={coupon.coupon_deadline}
-                    savingId={coupon.saving_id}
-                    couponId={coupon.coupon_id}
-                    couponType={coupon.coupon_type}
+                    couponName={coupon.couponName}
+                    couponDeadline={coupon.couponDeadline}
+                    savingId={coupon.savingId}
+                    couponId={coupon.couponId}
+                    couponType={coupon.couponType}
                     onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
-                      router.push(`/coupon?couponId=${coupon.coupon_id}`);
+                      router.push(`/coupon?couponId=${coupon.couponId}`);
                       dispatch(setCurrentCoupon(coupon));
                     }}
                   />

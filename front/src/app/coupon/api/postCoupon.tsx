@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance";
 export const CheckCouponIssued = async (couponId: number) => {
   try {
     const response = await axiosInstance.post(`/coupons/validate`, {
-      coupon_id: couponId,
+      couponId: couponId,
     });
     return response;
   } catch (error) {
@@ -14,7 +14,7 @@ export const CheckCouponIssued = async (couponId: number) => {
 export const IssueCoupon = async (couponId: number) => {
   try {
     const response = await axiosInstance.post(`/coupons/enter`, {
-      coupon_id: couponId,
+      couponId: couponId,
     });
     console.log(response);
   } catch (error) {

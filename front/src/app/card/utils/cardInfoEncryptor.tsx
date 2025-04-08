@@ -1,12 +1,12 @@
 export async function encryptCardInfo(cardNo: string, cvc: string) {
   class ResponseDto {
-    key_info: string;
-    card_no: string;
+    keyInfo: string;
+    cardNo: string;
     cvc: string;
 
-    constructor(key_info: string, card_no: string, cvc: string) {
-      this.key_info = key_info;
-      this.card_no = card_no;
+    constructor(keyInfo: string, cardNo: string, cvc: string) {
+      this.keyInfo = keyInfo;
+      this.cardNo = cardNo;
       this.cvc = cvc;
     }
   }

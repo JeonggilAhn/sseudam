@@ -1,5 +1,4 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-// import { useNavigate } from "next/navigation";
 
 const axiosInstance = axios.create({
   baseURL: "https://j12a106.p.ssafy.io/api", //백엔드 서버 주소
