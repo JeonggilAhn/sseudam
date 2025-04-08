@@ -7,13 +7,13 @@ import PageSetting from "../pageSetting";
 import { ChevronRight } from "lucide-react";
 
 interface UserInfo {
-  userEmail: "string";
-  userName: "string";
-  userBirthday: "string";
-  piggyAccountNo: "string";
-  savingRate: "string";
-  withdrawAccountNo: "string";
-  signupDate: "string";
+  user_email: "string";
+  user_name: "string";
+  user_birthday: "string";
+  piggy_account_no: "string";
+  saving_rate: "string";
+  withdraw_account_no: "string";
+  signup_date: "string";
 }
 
 const UserPage: React.FC = () => {
@@ -27,6 +27,7 @@ const UserPage: React.FC = () => {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
+          console.log(response);
           setUserInfo(response.data.content);
         } else {
           setError("응답 데이터가 없습니다.");
@@ -40,7 +41,11 @@ const UserPage: React.FC = () => {
     fetchUserInfo();
   }, []);
 
-  const formattedBirthday = (value: string) => {
+  const formattedBirthday = (value: string | undefined) => {
+    if (!value) {
+      return "";
+    }
+
     const birthD = value.substring(0, value.indexOf("T"));
     return birthD;
   };

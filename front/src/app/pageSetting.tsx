@@ -19,6 +19,7 @@ interface PageSettingProps {
   pageTitle?: string;
   headerLink?: string;
   className?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
@@ -66,10 +67,11 @@ const PageSetting: React.FC<PageSettingProps> = ({
   headerLink,
   children,
   className = "",
+  style = {},
 }) => {
   return (
     <>
-      <div className={`${className}`}>
+      <div className={`${className}`} style={style}>
         <PageHeader headerName={headerName} headerLink={headerLink} />
         <div className="ml-8 mr-8">
           <Title pageTitle={pageTitle} />
