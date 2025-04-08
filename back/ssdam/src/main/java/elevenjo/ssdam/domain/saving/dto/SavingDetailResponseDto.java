@@ -1,6 +1,6 @@
 package elevenjo.ssdam.domain.saving.dto;
 
-public record SavingDetailResponseDto(
+public record   SavingDetailResponseDto(
         Long savingId,
         String finPrdtCd,
         String finCoNm,
@@ -12,7 +12,5 @@ public record SavingDetailResponseDto(
         Integer minIntRate,
         Integer maxIntRate,
         String hompUrl,
-        Integer views,
-        Long likeCount,
-        Boolean liked
+        Integer views
 ) {}

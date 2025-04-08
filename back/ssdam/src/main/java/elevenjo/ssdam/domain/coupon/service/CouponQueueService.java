@@ -1,6 +1,7 @@
 package elevenjo.ssdam.domain.coupon.service;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponQueueStatusResponse;
+import elevenjo.ssdam.domain.coupon.exception.CouponNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class CouponQueueService {
     private final SseService sseService;
 
     public void enterQueue(Long couponId, Long userId) {
+        if (couponId == null) {
+            throw new CouponNotFoundException();
+        }
         String key = "coupon:queue:" + couponId;
         long now = System.currentTimeMillis();
         Boolean exists = redisTemplate.opsForZSet().score(key, userId.toString()) != null;

@@ -5,19 +5,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QueueScheduler {
+public class PasskeyQueueScheduler {
 
-    private final WaitingQueueService waitingQueueService;
+    private final PasskeyWaitingQueueUtil passkeyWaitingQueueUtil;
     private static final int ISSUE_LIMIT = 10;  // 한 번에 처리할 유저 수 (예: 10명)
 
     @Autowired
-    public QueueScheduler(WaitingQueueService waitingQueueService) {
-        this.waitingQueueService = waitingQueueService;
+    public PasskeyQueueScheduler(PasskeyWaitingQueueUtil passkeyWaitingQueueUtil) {
+        this.passkeyWaitingQueueUtil = passkeyWaitingQueueUtil;
     }
 
     // 5초마다 실행 (필요에 따라 fixedDelay나 cron 표현식을 조정)
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 2000)
     public void processWaitingQueue() {
-        waitingQueueService.processQueue(ISSUE_LIMIT);
+        passkeyWaitingQueueUtil.processQueue(ISSUE_LIMIT);
     }
 }

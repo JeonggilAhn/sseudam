@@ -22,7 +22,6 @@ public interface CouponIssuedRepository extends JpaRepository<CouponIssued, Long
 
     List<CouponIssued> findByUser_UserId(Long userUserId);
 
-    @Modifying
-    @Query(value = "INSERT INTO coupon_issued (user_id, coupon_id) VALUES (:userId, :#{#coupon.id})", nativeQuery = true)
-    void insertCouponIssued(Long userId, Coupon coupon);
+    @Query(value = "INSERT INTO coupon_issued (user_id, coupon_id, is_used) VALUES (:userId, :couponId, false)", nativeQuery = true)
+    void insertCouponIssued(Long userId, Long couponId);
 }

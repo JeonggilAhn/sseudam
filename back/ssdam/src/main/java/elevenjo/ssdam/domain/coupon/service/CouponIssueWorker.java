@@ -1,8 +1,6 @@
 package elevenjo.ssdam.domain.coupon.service;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResultResponse;
-import elevenjo.ssdam.domain.coupon.entity.Coupon;
-import elevenjo.ssdam.domain.coupon.entity.CouponType;
 import elevenjo.ssdam.domain.coupon.repository.CouponIssuedRepository;
 import elevenjo.ssdam.domain.coupon.repository.CouponRepository;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
@@ -13,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -27,25 +26,32 @@ public class CouponIssueWorker {
     private final SseService sseService;
 
     // TODO: 나중에 시간과 배치 사이즈 조정
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 30000)
     public void processQueue() {
-        List<Coupon> coupons = couponRepository.findAllByCouponType(CouponType.POPULAR_LIMITED);
+        Set<String> keys = redisTemplate.keys("coupon:queue:*");
 
-        for (Coupon coupon : coupons) {
-            List<String> userIds = queueService.pollNextUsers(coupon.getCouponId(), 10);
+        if (keys == null || keys.isEmpty()) {
+            return;
+        }
+
+        for (String key : keys) {
+
+            String couponIdStr = key.substring("coupon:queue:".length());
+            Long couponId = Long.valueOf(couponIdStr);
+
+            List<String> userIds = queueService.pollNextUsers(couponId, 10);
 
             if (userIds.isEmpty()) {
                 continue;
             }
 
             for (String nextUserId : userIds) {
-                processSingleUser(coupon, nextUserId);
+                processSingleUser(couponId, nextUserId);
             }
         }
     }
 
-    private void processSingleUser(Coupon coupon, String userIdStr) {
-        Long couponId = coupon.getCouponId();
+    private void processSingleUser(Long couponId, String userIdStr) {
         String redisKey = "coupon:list:" + couponId;
         Long userIdLong = Long.parseLong(userIdStr);
 
@@ -58,7 +64,7 @@ public class CouponIssueWorker {
                 return;
             }
 
-            couponIssuedRepository.insertCouponIssued(userIdLong, coupon);
+            couponIssuedRepository.insertCouponIssued(userIdLong, couponId);
 
             // 발급 성공 메시지 전송
             sseService.sendCouponResult(userIdLong,

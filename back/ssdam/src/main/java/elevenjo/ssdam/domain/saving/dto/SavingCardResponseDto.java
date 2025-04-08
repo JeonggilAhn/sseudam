@@ -6,7 +6,5 @@ public record SavingCardResponseDto(
         String finPrdtNm,
         Integer minIntRate,
         Integer maxIntRate,
-        Integer views,
-        Long likeCount,
-        Boolean liked
+        Integer views
 ) {}
