@@ -27,9 +27,6 @@ interface SavingProduct {
 const CouponPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isSavingDetailOpen = useAppSelector(
-    (state) => state.aniModal.isSavingDetailOpen
-  );
   const [currentCoupon, setCurrentCoupon] = useState<Coupon>();
   const [currentCouponSavingId, setCurrentCouponSavingId] = useState<number>();
   const [savingProduct, setSavingProduct] = useState<SavingProduct>();

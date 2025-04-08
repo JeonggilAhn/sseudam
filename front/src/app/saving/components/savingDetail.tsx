@@ -41,7 +41,7 @@ const SavingDetail: React.FC<Props> = ({
   const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
-  const detailLoadedRef = useRef(false);
+  // const detailLoadedRef = useRef(false);
 
   const fetchDetail = async () => {
     setLoading(true);

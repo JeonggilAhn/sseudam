@@ -20,16 +20,15 @@ import SavingDetail from "./components/savingDetail";
 import SkeletonCard from "@/components/skeletonCard";
 
 // 모달
-import AnimatedModal from "@/components/animatedModal";
-import {
-  toggleIsModalOpen,
-  resetIsModalOpen,
-} from "@/stores/slices/aniModalSlice";
+// import AnimatedModal from "@/components/animatedModal";
+// import {
+//   toggleIsModalOpen,
+//   resetIsModalOpen,
+// } from "@/stores/slices/aniModalSlice";
 
 const SavingPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { sort, keyword, savings } = useAppSelector((state) => state.saving);
-  const { isModalOpen } = useAppSelector((state) => state.aniModal);
 
   // UI 상태 관리
   const [selected, setSelected] = useState<

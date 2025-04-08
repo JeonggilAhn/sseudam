@@ -5,7 +5,6 @@ import { SavingCardType } from "@/types/saving";
 import { Eye, Heart } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
-import { useAppDispatch } from "@/stores/hooks";
 
 type Props = {
   saving: SavingCardType;
