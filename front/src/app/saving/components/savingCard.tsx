@@ -14,15 +14,10 @@ type Props = {
   joinButtonText?: string;
 };
 
-const SavingCard: React.FC<Props> = ({
-  saving,
-  onClickJoin,
-  joinButtonText = "가입하기",
-}) => {
-  const trimmedTitle = saving.fin_prdt_nm.replace(/\(.*?\)/g, "").trim();
-  const displayTitle =
-    trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
-  const companyName = saving.fin_co_nm.replace("주식회사", "").trim();
+const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
+  const trimmedTitle = saving.finPrdtNm.replace(/\(.*?\)/g, "").trim();
+  const displayTitle = trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
+  const companyName = saving.finCoNm.replace("주식회사", "").trim();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,7 +32,7 @@ const SavingCard: React.FC<Props> = ({
     >
       {/* 은행 아이콘 및 이름 */}
       <div className="flex flex-col items-center justify-center min-w-[70px]">
-        <Icon name={getBankIconName(saving.fin_co_nm)} width={70} height={36} />
+        <Icon name={getBankIconName(saving.finCoNm)} width={70} height={36} />
         <span className="text-[min(11px,_3vw)] text-gray-600 mt-1 text-center break-keep leading-tight max-w-[80px]">
           {companyName}
         </span>
@@ -50,11 +45,11 @@ const SavingCard: React.FC<Props> = ({
         </div>
         <div className="flex items-center space-x-1 text-[13px]">
           <span className="font-semibold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-md border border-red-100">
-            {(saving.min_int_rate / 100).toFixed(2)}%
+            {(saving.minIntRate / 100).toFixed(2)}%
           </span>
           <span className="text-gray-400">~</span>
           <span className="font-semibold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md border border-blue-100">
-            {(saving.max_int_rate / 100).toFixed(2)}%
+            {(saving.maxIntRate / 100).toFixed(2)}%
           </span>
         </div>
       </div>
@@ -63,7 +58,7 @@ const SavingCard: React.FC<Props> = ({
       <div className="flex flex-col items-end gap-1 min-w-[90px] text-[13px]">
         <button
           className="bg-green-500 hover:bg-green-600 text-white font-semibold px-3 py-1.5 rounded-md shadow-sm transition-all text-sm"
-          onClick={() => onClickJoin(saving.saving_id)}
+          onClick={() => onClickJoin(saving.savingId)}
         >
           {joinButtonText}
         </button>
@@ -79,7 +74,7 @@ const SavingCard: React.FC<Props> = ({
               fill={saving.liked ? "red" : "none"}
               stroke={saving.liked ? "red" : "gray"}
             />
-            <span>{saving.like_count}</span>
+            <span>{saving.likeCount}</span>
           </div>
         </div>
       </div>

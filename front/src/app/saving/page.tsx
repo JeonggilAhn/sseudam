@@ -67,28 +67,27 @@ const SavingPage: React.FC = () => {
         await Promise.all(
           data.map(async (item: SavingCardType) => {
             try {
-              const res = await axiosInstance.get(`/savings-products/${item.saving_id}/likes`);
-              likeCountMap[item.saving_id] = res.data?.content?.like_count ?? 0;
+              const res = await axiosInstance.get(`/savings-products/${item.savingId}/likes`);
+              likeCountMap[item.savingId] = res.data?.content?.likeCount ?? 0;
             } catch (err) {
-              console.error(`likeCount 요청 실패: ${item.saving_id}`, err);
-              likeCountMap[item.saving_id] = 0;
+              console.error(`likeCount 요청 실패: ${item.savingId}`, err);
+              likeCountMap[item.savingId] = 0;
             }
           })
         );
 
-        // liked + like_count 병합
+        // liked + likeCount 병합
         const mergedWithLike = (data as SavingCardType[]).map((item) => ({
           ...item,
-          liked: likedIds.includes(item.saving_id),
-          like_count: likeCountMap[item.saving_id] ?? 0,
+          liked: likedIds.includes(item.savingId),
+          likeCount: likeCountMap[item.savingId] ?? 0,
         }));
 
         const merged =
           isReset || pageToLoad === 0
             ? mergedWithLike
             : [...savings, ...mergedWithLike].filter(
-                (item, index, self) =>
-                  self.findIndex((s) => s.saving_id === item.saving_id) === index
+                (item, index, self) => self.findIndex((s) => s.savingId === item.savingId) === index
               );
 
         dispatch(setSavings(merged));
@@ -185,7 +184,7 @@ const SavingPage: React.FC = () => {
         {isLoading
           ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
           : savings.map((item) => (
-              <SavingCard key={item.saving_id} saving={item} onClickJoin={handleOpenModal} />
+              <SavingCard key={item.savingId} saving={item} onClickJoin={handleOpenModal} />
             ))}
         <div ref={observerRef} className="h-4" />
       </div>
