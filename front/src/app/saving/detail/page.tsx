@@ -86,7 +86,10 @@ const DetailPage: React.FC = () => {
           <div className="flex justify-between">
             <span className="font-semibold">적금 만기일</span>
             <span>
-              {openedSaving.accountExpiryDate?.replace(/(\d{4})(\d{2})(\d{2})/, "$1년 $2월 $3일")}
+              {openedSaving.accountExpiryDate?.replace(
+                /(\d{4})(\d{2})(\d{2})/,
+                "$1년 $2월 $3일"
+              )}
             </span>
           </div>
         </div>

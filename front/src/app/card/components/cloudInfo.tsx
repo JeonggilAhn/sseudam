@@ -37,7 +37,7 @@ const CloudInfo = ({
       ) : (
         <div className="absolute flex w-[25vw] h-auto min-w-[125px] justify-center items-center">
           <Image
-            src="/icons/whitecloud.svg"
+            src="/icons/whiteCloud.svg"
             alt="구름 이미지"
             width={300}
             height={300}

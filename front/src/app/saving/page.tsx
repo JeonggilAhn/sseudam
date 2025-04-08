@@ -7,6 +7,10 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setSavings, setSort, setKeyword } from "@/stores/slices/savingSlice";
 import { SavingCardType } from "@/types/saving";
+import {
+  toggleIsSavingDetailOpen,
+  resetIsSavingDetailOpen,
+} from "@/stores/slices/aniModalSlice";
 
 // 컴포넌트
 import SavingCard from "./components/savingCard";
@@ -17,7 +21,10 @@ import SkeletonCard from "@/components/skeletonCard";
 
 // 모달
 import AnimatedModal from "@/components/animatedModal";
-import { toggleIsModalOpen, resetIsModalOpen } from "@/stores/slices/aniModalSlice";
+import {
+  toggleIsModalOpen,
+  resetIsModalOpen,
+} from "@/stores/slices/aniModalSlice";
 
 const SavingPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,8 +32,10 @@ const SavingPage: React.FC = () => {
   const { isModalOpen } = useAppSelector((state) => state.aniModal);
 
   // UI 상태 관리
-  const [selected, setSelected] = useState<"interest" | "views" | "likes" | null>(null);
-  const [selectedSavingId, setSelectedSavingId] = useState<number | null>(null);
+  const [selected, setSelected] = useState<
+    "interest" | "views" | "likes" | null
+  >(null);
+  const [selectedSavingId, setSelectedSavingId] = useState<number>(0);
 
   // 페이징 관련 상태
   const [page, setPage] = useState(0);
@@ -44,7 +53,9 @@ const SavingPage: React.FC = () => {
       if (isReset) setIsLoading(true);
 
       try {
-        const params: { page: number; sort?: string; keyword?: string } = { page: pageToLoad };
+        const params: { page: number; sort?: string; keyword?: string } = {
+          page: pageToLoad,
+        };
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
@@ -67,7 +78,8 @@ const SavingPage: React.FC = () => {
             ? mergedWithLiked
             : [...savings, ...mergedWithLiked].filter(
                 (item, index, self) =>
-                  self.findIndex((s) => s.saving_id === item.saving_id) === index
+                  self.findIndex((s) => s.saving_id === item.saving_id) ===
+                  index
               );
 
         dispatch(setSavings(merged));
@@ -139,13 +151,17 @@ const SavingPage: React.FC = () => {
   }, [sort]);
 
   // 모달 핸들링
-  const handleOpenModal = useCallback(
-    (savingId: number) => {
-      setSelectedSavingId(savingId);
-      dispatch(toggleIsModalOpen()); // 모달 열기
-    },
-    [dispatch]
-  );
+  const handleOpenModal = useCallback((savingId: number) => {
+    setSelectedSavingId(savingId);
+    console.log(selectedSavingId);
+    dispatch(toggleIsSavingDetailOpen());
+  }, []);
+
+  const handleCloseModal = () => {
+    setSelectedSavingId(-1);
+    console.log(selectedSavingId);
+    dispatch(resetIsSavingDetailOpen());
+  };
 
   return (
     <main className="flex flex-col h-screen bg-[#C1E6FA]">
@@ -160,28 +176,18 @@ const SavingPage: React.FC = () => {
         {isLoading
           ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
           : savings.map((item) => (
-              <SavingCard key={item.saving_id} saving={item} onClickJoin={handleOpenModal} />
+              <SavingCard
+                key={item.saving_id}
+                saving={item}
+                onClickJoin={handleOpenModal}
+              />
             ))}
         <div ref={observerRef} className="h-4" />
       </div>
 
       {/* 모달 */}
-      {isModalOpen && selectedSavingId && (
-        <AnimatedModal
-          onClose={() => {
-            dispatch(resetIsModalOpen()); // 모달 닫기
-            setSelectedSavingId(null); // 선택 해제
-          }}
-        >
-          <SavingDetail
-            savingId={selectedSavingId}
-            onClose={() => {
-              dispatch(resetIsModalOpen());
-              setSelectedSavingId(null);
-            }}
-          />
-        </AnimatedModal>
-      )}
+
+      <SavingDetail savingId={selectedSavingId} onClose={handleCloseModal} />
     </main>
   );
 };
