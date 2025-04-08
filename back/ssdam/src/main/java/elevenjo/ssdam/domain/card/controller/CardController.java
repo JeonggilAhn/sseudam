@@ -59,7 +59,7 @@ public class CardController {
         }
     };
 
-    @PostMapping("/myCard")
+    @GetMapping("/")
     public ResponseEntity<String[]> getCardNumber(@AuthenticationPrincipal User user) throws Exception{
         try{
             String[] userCard = cardService.getUserCard(user.getUserId());
