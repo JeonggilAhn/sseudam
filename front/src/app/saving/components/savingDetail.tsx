@@ -22,15 +22,7 @@ type Props = {
   showJoinButton?: boolean;
 };
 
-<<<<<<< HEAD
-const SavingDetail: React.FC<Props> = ({
-  savingId,
-  onClose,
-  showJoinButton = true,
-}) => {
-=======
 const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
->>>>>>> 989c1a2 (🐛 fix : fix design 1st #S12P21A106-501)
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -51,10 +43,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
       const updatedList = savings.map((item) =>
         item.saving_id === savingId ? { ...item, views: data.views } : item
       );
-      const sortedList = sortSavings(
-        updatedList,
-        sort as "views" | "likes" | "maxIntRate" | ""
-      );
+      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
@@ -75,30 +64,16 @@ const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
 
   const handleLike = async () => {
     try {
-<<<<<<< HEAD
-      const res = await axiosInstance.post(
-        `/savings-products/${savingId}/likes`,
-        {
-          userId: 1,
-        }
-      );
-=======
       const res = await axiosInstance.post(`/savings-products/${savingId}/likes`);
->>>>>>> 989c1a2 (🐛 fix : fix design 1st #S12P21A106-501)
 
       const updatedLikes = res.data.content.like_count;
       setLiked(res.data.content.liked);
 
       const updatedList = savings.map((item) =>
-        item.saving_id === savingId
-          ? { ...item, like_count: updatedLikes, liked: !liked }
-          : item
+        item.saving_id === savingId ? { ...item, like_count: updatedLikes, liked: !liked } : item
       );
 
-      const sortedList = sortSavings(
-        updatedList,
-        sort as "views" | "likes" | "maxIntRate" | ""
-      );
+      const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
       dispatch(setSavings(sortedList));
       dispatch(updateSavingDetail({ savingId, likeCount: updatedLikes }));
     } catch (err) {
@@ -150,19 +125,13 @@ const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
 
         <div className="flex items-center justify-center relative z-10 mb-6">
           <div className="bg-white rounded-lg shadow-md p-2 sm:p-3 mb-2">
-            <Icon
-              name={getBankIconName(saving.fin_prdt_cd)}
-              width={120}
-              height={50}
-            />
+            <Icon name={getBankIconName(saving.fin_prdt_cd)} width={120} height={50} />
           </div>
         </div>
 
         <div className="text-center space-y-5">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold mb-2">
-              {saving.fin_prdt_nm}
-            </h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-2">{saving.fin_prdt_nm}</h2>
             <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-sm sm:text-base leading-relaxed mb-3 max-h-28 overflow-y-auto">
               {saving.spcl_cnd || saving.etc_note || "상세 설명이 없습니다."}
             </div>
@@ -186,11 +155,7 @@ const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
               }`}
               aria-label="좋아요 버튼"
             >
-              <Heart
-                size={18}
-                className="transition-colors"
-                fill={liked ? "red" : "none"}
-              />
+              <Heart size={18} className="transition-colors" fill={liked ? "red" : "none"} />
             </button>
 
             {showJoinButton && (
