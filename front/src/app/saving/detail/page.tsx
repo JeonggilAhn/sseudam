@@ -16,7 +16,6 @@ const DetailPage: React.FC = () => {
 
   const selectedSaving = useAppSelector((state) => state.saving.selectedSaving);
   const openedSaving = useAppSelector((state) => state.saving.openedSaving);
-  const isModalOpen = useAppSelector((state) => state.aniModal.isModalOpen);
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);

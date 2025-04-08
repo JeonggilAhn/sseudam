@@ -40,11 +40,9 @@ const SavingDetail: React.FC<Props> = ({
 
   const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
-  const [loading, setLoading] = useState(true);
   // const detailLoadedRef = useRef(false);
 
   const fetchDetail = async () => {
-    setLoading(true);
     try {
       const res = await axiosInstance.get(`/savings-products/${savingId}`);
       const data = res.data.content;
