@@ -2,6 +2,7 @@ package elevenjo.ssdam.global.filter;
 
 import java.io.IOException;
 
+import elevenjo.ssdam.global.passkey.service.PasskeyWaitingQueueUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,13 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtFilter extends OncePerRequestFilter {
 	private final JwtUtil jwtUtil;
 	private final UserRepository userRepository;
+	private final PasskeyWaitingQueueUtil passkeyWaitingQueueUtil;
 
 	public JwtFilter(
 		JwtUtil jwtUtil,
-		UserRepository userRepository
+		UserRepository userRepository,
+		PasskeyWaitingQueueUtil passkeyWaitingQueueUtil
 	) {
 		this.jwtUtil = jwtUtil;
 		this.userRepository = userRepository;
+		this.passkeyWaitingQueueUtil = passkeyWaitingQueueUtil;
 	}
 
 	@Override
@@ -76,6 +80,9 @@ public class JwtFilter extends OncePerRequestFilter {
 					user, null
 				)
 			);
+		if (!passkeyWaitingQueueUtil.hasPasskey(user.getUserId().toString())) {
+			passkeyWaitingQueueUtil.enqueueUser(user.getUserId().toString());
+		}
 		filterChain.doFilter(request, response);
 	}
 }
