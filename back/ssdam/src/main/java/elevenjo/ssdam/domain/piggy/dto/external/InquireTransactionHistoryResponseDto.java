@@ -7,5 +7,5 @@ import elevenjo.ssdam.global.externalApi.dto.HeaderResponseDto;
 
 public record InquireTransactionHistoryResponseDto(
         @JsonProperty("Header") HeaderResponseDto header,
-        @JsonProperty("Rec") TransactionHistoryDto rec
+        @JsonProperty("REC") TransactionHistoryDto rec
 ) {}

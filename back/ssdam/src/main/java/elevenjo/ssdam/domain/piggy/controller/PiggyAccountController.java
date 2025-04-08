@@ -55,10 +55,10 @@ public class PiggyAccountController {
     @GetMapping("/my/transactions")
     public ResponseEntity<ResponseWrapper<TransactionHistoryDto>> getAccountTransaction(
             @AuthenticationPrincipal User user,
-            @RequestParam(name = "start_date") String startDate,
-            @RequestParam(name = "end_date") String endDate,
-            @RequestParam(name = "transaction_type") String transactionType,
-            @RequestParam(name = "order_by_type") String orderByType
+            @RequestParam(name = "startDate") String startDate,
+            @RequestParam(name = "endDate") String endDate,
+            @RequestParam(name = "transactionType") String transactionType,
+            @RequestParam(name = "orderByType") String orderByType
     ) {
         AccountTransactionRequestDto requestDto =
                 new AccountTransactionRequestDto(startDate, endDate, transactionType, orderByType);
