@@ -26,6 +26,7 @@ import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
+import SSEComponent from "@/components/sse/SSEComponent";
 
 class Card {
   cardNo: string;
@@ -61,12 +62,6 @@ const MainPage = () => {
     await DeleteUserCard();
     setCard([]);
     dispatch(setCurrentCard([]));
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleCloud = () => {
-    console.log("클릭");
-    router.push("/account/record");
   };
 
   useEffect(() => {
@@ -128,6 +123,7 @@ const MainPage = () => {
       className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden"
       style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
     >
+      <SSEComponent />
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -165,7 +161,7 @@ const MainPage = () => {
             setIsBounce(true);
             setTimeout(() => {
               setIsBounce(false);
-            }, 2500);
+            }, 2570);
           }}
           src="/icons/logo.svg"
           alt="logo"

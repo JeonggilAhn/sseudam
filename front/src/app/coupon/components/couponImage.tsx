@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
+import { useAppDispatch } from "@/stores/hooks";
+import { toggleIsSSEOpen, resetIsSSEOpen } from "@/stores/slices/SSESLice";
 
 interface CouponImageProps {
   couponName: string;
@@ -19,13 +21,8 @@ const CouponImage = ({
   couponId,
   onClick,
 }: CouponImageProps) => {
-  // const currentCouponName = useSelector(
-  //   (state: RootState) => state.coupon.currentCouponName
-  // );
-  // const currentCouponDeadline = useSelector(
-  //   (state: RootState) => state.coupon.currentCouponDeadline
-  // );
   const [userHas, setUserHas] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchUserCoupon = async (couponId: number) => {
@@ -43,6 +40,7 @@ const CouponImage = ({
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
     const response = await IssueCoupon(couponId);
+    dispatch(toggleIsSSEOpen());
     console.log(response);
   };
 
