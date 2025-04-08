@@ -12,7 +12,7 @@ import SavingDetail from "../saving/components/savingDetail";
 import GrassBackground from "../card/components/grassBackground";
 
 //상태
-import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import { useAppDispatch } from "@/stores/hooks";
 import {
   toggleIsSavingDetailOpen,
   resetIsSavingDetailOpen,
