@@ -2,11 +2,13 @@
 
 import React from "react";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
-import { toggleIsModalOpen, resetIsModalOpen } from "@/stores/slices/aniModalSlice";
+import {
+  toggleIsSavingDetailOpen,
+  resetIsSavingDetailOpen,
+} from "@/stores/slices/aniModalSlice";
 
 import SavingCard from "../components/savingCard";
 import SavingDetail from "../components/savingDetail";
-import AnimatedModal from "@/components/animatedModal";
 import Icon from "@/components/Icon";
 
 const DetailPage: React.FC = () => {
@@ -14,7 +16,6 @@ const DetailPage: React.FC = () => {
 
   const selectedSaving = useAppSelector((state) => state.saving.selectedSaving);
   const openedSaving = useAppSelector((state) => state.saving.openedSaving);
-  const isModalOpen = useAppSelector((state) => state.aniModal.isModalOpen);
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -37,25 +38,18 @@ const DetailPage: React.FC = () => {
       {selectedSaving && (
         <SavingCard
           saving={selectedSaving}
-          onClickJoin={() => dispatch(toggleIsModalOpen())}
+          onClickJoin={() => dispatch(toggleIsSavingDetailOpen())}
           joinButtonText="상세보기"
         />
       )}
 
       {/* 모달 부분 */}
-      {isModalOpen && selectedSaving && (
-        <AnimatedModal
-          onClose={() => {
-            dispatch(resetIsModalOpen());
-          }}
-        >
-          <SavingDetail
-            savingId={selectedSaving.saving_id}
-            onClose={() => dispatch(resetIsModalOpen())}
-            showJoinButton={false}
-          />
-        </AnimatedModal>
-      )}
+
+      <SavingDetail
+        savingId={selectedSaving?.saving_id || 0}
+        onClose={() => dispatch(resetIsSavingDetailOpen())}
+        showJoinButton={false}
+      />
 
       <div className="relative mt-10 flex flex-col items-center">
         <div className="flex items-start justify-center gap-4">
