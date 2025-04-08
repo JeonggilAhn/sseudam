@@ -1,49 +1,218 @@
-// src/SSEComponent.tsx
+"use client";
+
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { AnimatePresence, motion } from "motion/react";
+import { useAppSelector, useAppDispatch } from "@/stores/hooks";
+import { GetCouponList } from "../../app/coupon/api/getCoupon";
+import { setCouponList } from "@/stores/slices/couponSlice";
+
+import {
+  resetIsSSEOpen,
+  setMyPosition,
+  setEstimatedTime,
+} from "@/stores/slices/SSESLice";
+import { fetchQueue } from "./SSEHandler";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 const SSEComponent = () => {
-  const [message, setMessage] = useState("");
+  const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
+    null
+  );
+
+  const isSSEOpen = useAppSelector((state) => state.SSE.isSSEOpen);
+  const myPosition = useAppSelector((state) => state.SSE.myPosition);
+  const estimatedTime = useAppSelector((state) => state.SSE.estimatedTime);
+  const dispatch = useAppDispatch();
+  // 내 순서가 전체 대기열에서 차지하는 비율 계산
+  // const progressPercentage = Math.max(
+  //   0,
+  //   Math.min(100, ((totalQueue - myPosition) / totalQueue) * 100)
+  // );
+
+  // 내 순서에 따른 상태 색상 결정
+  // const getStatusColor = () => {
+  //   if (myPosition <= 1) return "bg-green-500"; // 처리 중
+  //   if (myPosition <= 3) return "bg-blue-500"; // 곧 처리 예정
+  //   return "bg-yellow-500"; // 대기 중
+  // };
+
+  const handleClose = async () => {
+    dispatch(resetIsSSEOpen());
+    if (eventSource) {
+      eventSource.close();
+    }
+    const response = await GetCouponList();
+    console.log(response?.data.content);
+    if (response?.data.content.length > 0) {
+      dispatch(setCouponList(response?.data.content));
+    } else {
+      dispatch(setCouponList([]));
+    }
+  };
 
   useEffect(() => {
-    // 실제 사용하는 SSE 엔드포인트 URL로 수정하세요.
-    // 예: 환경변수 사용: process.env.REACT_APP_SSE_URL
-    const url =
-      process.env.REACT_APP_SSE_URL ||
-      "http://localhost:8080/api/sse/subscribe";
+    if (isSSEOpen) {
+      // EventSource 객체 생성
+      const newEventSource = new EventSourcePolyfill(
+        "https://j12a106.p.ssafy.io/api/sse/subscribe",
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("access_token")}`,
+          },
+        }
+      );
 
-    // 예시: localStorage에서 토큰을 읽어옴 (필요에 따라 수정)
-    const token = sessionStorage.getItem("access_token");
+      newEventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        dispatch(setMyPosition(data.position));
+        dispatch(setEstimatedTime(data.estimatedSeconds));
+        if (data.success === false) {
+          handleClose();
+          toast.error("쿠폰 발급에 실패했습니다.");
+        } else if (data.success === true) {
+          handleClose();
+          toast.success("쿠폰 발급에 성공했습니다.");
+        }
+      };
 
-    // EventSourcePolyfill을 사용하여 커스텀 헤더를 포함한 SSE 연결 생성
-    const es = new EventSourcePolyfill(url, {
-      headers: {
-        Authorization: `${token}`,
-      },
-      withCredentials: true,
-    });
+      setEventSource(newEventSource);
 
-    es.onmessage = (event: MessageEvent) => {
-      console.log("메시지 수신:", event.data);
-      setMessage(event.data);
-    };
+      // 컴포넌트 언마운트 또는 isSSEOpen이 false로 변경될 때 정리
+      return () => {
+        if (newEventSource) {
+          newEventSource.close();
+          console.log("SSE 연결 정리됨");
+        }
+      };
+    }
+  }, [isSSEOpen]);
 
-    es.onerror = (err: Event) => {
-      console.error("SSE 에러:", err);
-      es.close();
-    };
-
-    // 컴포넌트 언마운트 시 연결 종료
-    return () => {
-      es.close();
-    };
+  useEffect(() => {
+    const response = fetchQueue();
+    console.log(response);
   }, []);
 
   return (
-    <div>
-      <h1>SSE 메시지</h1>
-      <p>{message}</p>
-    </div>
+    <AnimatePresence>
+      {/* 모달 배경 */}
+      {isSSEOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          style={{ backdropFilter: "blur(10px)" }}
+          className="fixed inset-0  flex items-center justify-center z-[300]"
+        >
+          {/* 모달 컨테이너 */}
+          <div className="bg-white rounded-lg shadow-xl overflow-hidden w-11/12 max-w-md mx-auto animate-fadeIn">
+            {/* 모달 헤더 */}
+            {/* <button
+              className="text-black border-2 border-black hover:text-gray-200 focus:outline-none"
+              onClick={test}
+            >
+              Test
+            </button> */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">대기열 현황</h2>
+                <button
+                  onClick={handleClose}
+                  className="text-white hover:text-gray-200 focus:outline-none"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* 모달 본문 */}
+            <div className="p-6">
+              {/* 내 순서 표시 */}
+              <div className="text-center mb-6">
+                <div className="text-5xl font-bold text-blue-600 mb-2">
+                  {myPosition}
+                </div>
+                <p className="text-gray-600">현재 내 순서</p>
+              </div>
+
+              {/* 프로그레스바 */}
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-gray-600 mb-1">
+                  <span>대기중</span>
+                  <span>처리완료</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  {/* <div
+                    className={`h-3 rounded-full ${getStatusColor()}`}
+                    style={{
+                      width: `${progressPercentage}%`,
+                      transition: "width 0.5s ease-in-out",
+                    }}
+                  ></div> */}
+                </div>
+              </div>
+
+              {/* 통계 정보 */}
+              <div className="flex items-center justify-center">
+                {/* <div className="bg-blue-50 rounded-lg p-3 text-center">
+                  <span className="block text-sm text-blue-800 font-medium">
+                    총 대기인원
+                  </span>
+                  <span className="text-2xl font-bold text-blue-900">
+                    {estimatedTime}명
+                  </span>
+                </div> */}
+                <div className="bg-green-50 rounded-lg p-3 text-center ">
+                  <span className="block text-sm text-green-800 font-medium">
+                    예상 대기시간
+                  </span>
+                  <span className="text-2xl font-bold text-green-900">
+                    {estimatedTime}초
+                  </span>
+                </div>
+              </div>
+
+              {/* 상태 메시지 */}
+              <div className="mt-6 text-center">
+                {/* <p className="text-gray-700">
+                  {myPosition <= 1
+                    ? "현재 처리중입니다. 잠시만 기다려주세요."
+                    : myPosition <= 3
+                      ? `곧 처리가 시작됩니다. 약 ${myPosition * 5}분 남았습니다.`
+                      : `앞에 ${myPosition - 1}명이 대기중입니다. 잠시만 기다려주세요.`}
+                </p> */}
+                <p className="text-gray-700">
+                  대기열을 떠나면 대기시간이 증가합니다.
+                </p>
+              </div>
+            </div>
+
+            {/* 모달 풋터 */}
+            {/* <div className="bg-gray-50 px-6 py-3 flex justify-center border-t border-gray-200">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                onClick={onClose}
+              >
+                확인
+              </button>
+            </div> */}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

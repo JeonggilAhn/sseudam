@@ -4,6 +4,7 @@ import couponReducer from "./slices/couponSlice";
 import cardReducer from "./slices/cardSlice";
 import savingReducer from "./slices/savingSlice";
 import aniModalReducer from "./slices/aniModalSlice";
+import SSESlice from "./slices/SSESLice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     card: cardReducer,
     saving: savingReducer,
     aniModal: aniModalReducer,
+    SSE: SSESlice,
   },
 });
 
