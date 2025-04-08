@@ -100,7 +100,7 @@ const MainPage = () => {
 
     const fetchPiggyBalance = async () => {
       const response = await GetPiggyBalance();
-      setPiggyBalance(response?.data.content.account_balance);
+      setPiggyBalance(response?.data.content.accountBalance);
     };
 
     const hasAccount = async () => {
