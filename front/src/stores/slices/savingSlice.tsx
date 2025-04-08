@@ -52,19 +52,19 @@ const savingSlice = createSlice({
     // 좋아요 상태 변경
     updateSavingLike: (state, action) => {
       const { savingId, likeCount } = action.payload;
-      const index = state.savings.findIndex((s) => s.saving_id === savingId);
+      const index = state.savings.findIndex((s) => s.savingId === savingId);
       if (index !== -1) {
-        state.savings[index].like_count = likeCount;
+        state.savings[index].likeCount = likeCount;
       }
     },
 
     // 조회수, 좋아요 카운트 변경
     updateSavingDetail: (state, action) => {
       const { savingId, views, likeCount } = action.payload;
-      const target = state.savings.find((s) => s.saving_id === savingId);
+      const target = state.savings.find((s) => s.savingId === savingId);
       if (target) {
         if (views !== undefined) target.views = views;
-        if (likeCount !== undefined) target.like_count = likeCount;
+        if (likeCount !== undefined) target.likeCount = likeCount;
       }
     },
 
