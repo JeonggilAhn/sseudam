@@ -49,9 +49,7 @@ public class SavingController {
                     saving.getFinPrdtNm(),
                     saving.getMinIntRate(),
                     saving.getMaxIntRate(),
-                    saving.getViews(),
-                    likeCount,
-                    false // 로그인 시 liked 처리
+                    saving.getViews()
             );
         });
 
@@ -77,9 +75,7 @@ public class SavingController {
                 saving.getMinIntRate(),
                 saving.getMaxIntRate(),
                 saving.getHompUrl(),
-                saving.getViews(),
-                likeCount,
-                false
+                saving.getViews()
         );
 
         return ResponseWrapperFactory.setResponse(DefaultResponseCode.OK, null, response);
