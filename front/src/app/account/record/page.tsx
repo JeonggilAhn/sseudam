@@ -38,12 +38,12 @@ interface Transaction {
   };
 }
 
-type Data = {
-  startDate: string;
-  endDate: string;
-  transactionType: string;
-  orderByType: string;
-};
+// type Data = {
+//   startDate: string;
+//   endDate: string;
+//   transactionType: string;
+//   orderByType: string;
+// };
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-4">
