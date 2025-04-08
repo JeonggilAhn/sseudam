@@ -31,7 +31,7 @@ public class WaitingQueueService {
     // passkey가 없으면 유저를 대기열에 등록 (현재 시간을 score로 사용)
     public void enqueueUser(String userId) {
         double score = Instant.now().toEpochMilli();
-        redisTemplate.opsForZSet().add(QUEUE_KEY, userId, score);
+        redisTemplate.opsForZSet().addIfAbsent(QUEUE_KEY, userId, score);
     }
 
     // 해당 userId에 대해 랜덤 passkey를 발급하고 TTL을 설정
