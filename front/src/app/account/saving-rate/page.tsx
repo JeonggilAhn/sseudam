@@ -23,15 +23,16 @@ export default function Accounts() {
   // 사용자의 정보에서 미리 연결은행과 계좌번호 받아오기 (그걸로 기본 세팅)
   // const [selectedBankBook, setSelectedBankBook] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(
     userInfo?.saving_rate ? Number(userInfo.saving_rate) : 10
   );
-
-  console.log(error, errors);
 
   const [userInfo3, setUserInfo3] = useState({
     bankList: "싸피은행",

@@ -67,6 +67,7 @@ const MainPage = () => {
     dispatch(setCurrentCard([]));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCloud = () => {
     console.log("클릭");
     router.push("/account/record");

@@ -18,7 +18,9 @@ interface UserInfo {
 
 const UserPage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -54,8 +56,6 @@ const UserPage: React.FC = () => {
   const handleSavingSetting = () => {
     router.push("/account/saving-rate");
   };
-
-  console.log(loading, error);
 
   return (
     <>
