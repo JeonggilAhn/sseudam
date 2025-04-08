@@ -48,24 +48,39 @@ const SavingPage: React.FC = () => {
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
+        // 📌 리스트 + 좋아요 상태 + 좋아요 수 요청
         const [res, likedRes] = await Promise.all([
           axiosInstance.get("/savings-products", { params }),
           axiosInstance.get("/savings-products/likes/me"),
         ]);
 
-        const data = res.data?.content?.content || [];
-
+        const savingsData = res.data?.content?.content || [];
         const likedIds: number[] = likedRes.data?.content || [];
 
-        const mergedWithLiked = (data as SavingCardType[]).map((item) => ({
+        // 📌 savingId별 좋아요 수 동기화 요청 (추가된 부분)
+        const likeCountsMap: Record<number, number> = {};
+        await Promise.all(
+          savingsData.map(async (item: any) => {
+            try {
+              const res = await axiosInstance.get(`/savings-products/${item.saving_id}/likes`);
+              likeCountsMap[item.saving_id] = res.data.content.likeCount;
+            } catch (err) {
+              console.error("likeCount 개별 요청 실패", err);
+              likeCountsMap[item.saving_id] = 0;
+            }
+          })
+        );
+
+        const mergedWithLike = (savingsData as SavingCardType[]).map((item) => ({
           ...item,
           liked: likedIds.includes(item.saving_id),
+          like_count: likeCountsMap[item.saving_id] ?? 0,
         }));
 
         const merged =
           isReset || pageToLoad === 0
-            ? mergedWithLiked
-            : [...savings, ...mergedWithLiked].filter(
+            ? mergedWithLike
+            : [...savings, ...mergedWithLike].filter(
                 (item, index, self) =>
                   self.findIndex((s) => s.saving_id === item.saving_id) === index
               );
@@ -76,7 +91,7 @@ const SavingPage: React.FC = () => {
         console.error("적금 리스트 요청 실패", err);
       } finally {
         isLoadingRef.current = false;
-        setIsLoading(false); // 로딩 끝나면 false로
+        setIsLoading(false);
       }
     },
     [dispatch, keyword, sort, savings, hasMore]

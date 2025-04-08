@@ -7,7 +7,6 @@ export interface SavingCardType {
   max_int_rate: number;
   views: number;
   like_count: number;
-  likes: number;
   liked?: boolean;
 }
 
@@ -28,7 +27,7 @@ export interface SavingDetailType {
   homp_url: string;
   views: number;
   like_count: number;
-  likes: number;
+  liked?: boolean;
 }
 
 export interface OpenSavingResponseType {
