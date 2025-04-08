@@ -85,8 +85,8 @@ const MainPage = () => {
     const fetchCouponInfo = async () => {
       const response = await GetCouponList();
       console.log(response?.data.content);
-      if (response !== undefined) {
-        dispatch(setCouponList(response.data.content));
+      if (response?.data.content.length > 0) {
+        dispatch(setCouponList(response?.data.content));
       } else {
         dispatch(setCouponList([]));
       }
@@ -114,7 +114,7 @@ const MainPage = () => {
     hasAccount();
     setTimeout(() => {
       setIsBounce(false);
-    }, 2600);
+    }, 2580);
   }, [currentCard, dispatch]);
 
   return (
@@ -154,7 +154,7 @@ const MainPage = () => {
         <CardRegist />
 
         <Image
-          className={`cursor-pointer w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[58%] fixed top-1/4 left-1/2 drop-shadow-xl animate-${isBounce ? "bounce" : "none"}`}
+          className={`cursor-pointer w-[40vw] sm:w-[40vw] md:w-[35vw] lg:w-[30vw] xl:w-[25vw] 2xl:w-[15vw] h-auto z-[150] -translate-x-[50%] -translate-y-[58%] fixed top-1/4 left-1/2 drop-shadow-xl transition-all duration-300 animate-${isBounce ? "bounce" : "none"}`}
           onClick={() => {
             setIsBounce(true);
             setTimeout(() => {
@@ -215,7 +215,7 @@ const MainPage = () => {
 
             {/* 쿠폰 섹션 */}
             <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
-              {couponList && couponList.length > 0 ? (
+              {Array.isArray(couponList) && couponList.length > 0 ? (
                 couponList.map((coupon, index) => (
                   <CouponImage
                     key={index}
