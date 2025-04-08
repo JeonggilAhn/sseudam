@@ -7,7 +7,7 @@ import { ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 import PageSetting from "@/app/pageSetting";
-// import { getAccountRecord } from "../api/getRecord";
+import { getAccountRecord } from "../api/getRecord";
 
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
@@ -38,12 +38,12 @@ interface Transaction {
   };
 }
 
-// type Data = {
-//   startDate: string;
-//   endDate: string;
-//   transactionType: string;
-//   orderByType: string;
-// };
+type Data = {
+  startDate: string;
+  endDate: string;
+  transactionType: string;
+  orderByType: string;
+};
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-4">
@@ -121,30 +121,30 @@ export default function SavingsJournalPage() {
     }
   }, [dateRange]);
 
-  // useEffect(() => {
-  //   fetchTransactions();
-  // }, []);
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
-  // const fetchTransactions = async () => {
-  //   const data: Data = {
-  //     startDate: dateRange.from
-  //       ? format(dateRange.from, "yyyy-MM-dd")
-  //       : format(firstDayOfMonth, "yyyy-MM-dd"),
-  //     endDate: dateRange.to
-  //       ? format(dateRange.to, "yyyy-MM-dd")
-  //       : format(today, "yyyy-MM-dd"),
-  //     transactionType: "A", //M:입금, D:출금, A:전체
-  //     orderByType: "ASC", //ASC:오름차순, DESC:내림차순
-  //   };
+  const fetchTransactions = async () => {
+    const data: Data = {
+      startDate: dateRange.from
+        ? format(dateRange.from, "yyyy-MM-dd")
+        : format(firstDayOfMonth, "yyyy-MM-dd"),
+      endDate: dateRange.to
+        ? format(dateRange.to, "yyyy-MM-dd")
+        : format(today, "yyyy-MM-dd"),
+      transactionType: "A", //M:입금, D:출금, A:전체
+      orderByType: "ASC", //ASC:오름차순, DESC:내림차순
+    };
 
-  //   try {
-  //     const transactionResponse = await getAccountRecord(data);
-  //     console.log(transactionResponse);
-  //     // setTransactions(transactionResponse);
-  //   } catch (error) {
-  //     console.log("거래 데이터를 가져오는 중 오류 발생:", error);
-  //   }
-  // };
+    try {
+      const transactionResponse = await getAccountRecord(data);
+      console.log(transactionResponse);
+      // setTransactions(transactionResponse);
+    } catch (error) {
+      console.log("거래 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
 
   // const formatCurrency = (value: number) => {
   //   return new Intl.NumberFormat("ko-KR", {

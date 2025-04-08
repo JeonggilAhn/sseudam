@@ -1,15 +1,62 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getUserInfo } from "./api/getUserInfo";
 import { useRouter } from "next/navigation";
 import PageSetting from "../pageSetting";
 import { ChevronRight } from "lucide-react";
 
-const UserPage = () => {
+interface UserInfo {
+  user_email: "string";
+  user_name: "string";
+  user_birthday: "string";
+  piggy_account_no: "string";
+  saving_rate: "string";
+  withdraw_account_no: "string";
+  signup_date: "string";
+}
+
+const UserPage: React.FC = () => {
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await getUserInfo();
+        if (response?.status === 200) {
+          console.log(response);
+          setUserInfo(response.data.content);
+        } else {
+          setError("응답 데이터가 없습니다.");
+        }
+      } catch (error) {
+        console.log(error);
+        setError("사용자 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserInfo();
+  }, []);
+
+  const formattedBirthday = (value: string | undefined) => {
+    if (!value) {
+      return "";
+    }
+
+    const birthD = value.substring(0, value.indexOf("T"));
+    return birthD;
+  };
+
   const handleSavingSetting = () => {
     router.push("/account/saving-rate");
   };
+
   return (
     <>
       <PageSetting pageTitle="마이페이지" className="bg-[#C1E6FA] h-screen">
@@ -24,9 +71,20 @@ const UserPage = () => {
           />
           <div className="w-full h-50 bg-[#ffeeaa] px-6 py-7 rounded-2xl shadow-md mt-3">
             <div className="flex flex-col justify-between h-full">
-              <span className="text-medium font-semibold ">이름 </span>
-              <span className="text-medium font-semibold">생년월일</span>
-              <span className="text-medium font-semibold">이메일</span>
+              <div className="flex flex-row justify-between">
+                <span className="text-medium font-semibold ">이름</span>
+                <span>{userInfo ? userInfo.user_name : ""}</span>
+              </div>
+              <div className="flex flex-row justify-between">
+                <span className="text-medium font-semibold">생년월일</span>
+                <span>
+                  {formattedBirthday(userInfo ? userInfo.user_birthday : "")}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between">
+                <span className="text-medium font-semibold">이메일</span>
+                <span>{userInfo ? userInfo.user_email : ""}</span>
+              </div>
             </div>
           </div>
         </div>

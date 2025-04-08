@@ -95,10 +95,10 @@ const SignUpForm = () => {
     if (Object.keys(errors).length > 0) return;
 
     const data = {
-      userName: userInfo1.name,
+      user_name: userInfo1.name,
       birthday: userInfo1.birthday.replace(/-/g, ""),
-      withdrawAccountNo: userInfo3.withdrawAccountNo,
-      savingRate: selectedSavingRate,
+      withdraw_account_no: userInfo3.withdrawAccountNo,
+      saving_rate: selectedSavingRate,
     };
 
     try {

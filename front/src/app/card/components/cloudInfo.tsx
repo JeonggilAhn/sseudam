@@ -7,9 +7,16 @@ interface CloudInfoProps {
   amount: number;
   color: string;
   textColor: string;
+  onClick?: () => void;
 }
 
-const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
+const CloudInfo = ({
+  type,
+  amount,
+  color,
+  textColor,
+  onClick,
+}: CloudInfoProps) => {
   // 금액 포맷팅 (천 단위 콤마)
   const formattedAmount = amount
     .toString()
@@ -34,6 +41,7 @@ const CloudInfo = ({ type, amount, color, textColor }: CloudInfoProps) => {
             alt="구름 이미지"
             width={300}
             height={300}
+            onClick={onClick}
           />
         </div>
       )}
