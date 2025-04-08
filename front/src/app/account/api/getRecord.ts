@@ -6,6 +6,7 @@ export const getAccountRecord = async (queryParams: string) => {
     const response = await axiosInstance.get(
       `/accounts/my/transactions?${queryParams.toString()}`
     );
+    console.log("res", response);
     return response;
   } catch (error) {
     console.error("❌ 계좌 거래내역 조회 실패:", error);

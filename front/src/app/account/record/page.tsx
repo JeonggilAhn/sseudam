@@ -20,23 +20,20 @@ import DateRangePicker from "@/components/ui/datePicker";
 import { PopoverClose } from "@radix-ui/react-popover";
 
 interface Transaction {
-  status: {
-    code: string;
-    message: string;
-  };
-  content: {
-    totalCount: string;
-    list: {
-      transaction_date: string;
-      transaction_time: string;
-      transaction_type: string;
-      transaction_type_name: string;
-      transcation_balance: string;
-      transaction_after_balance: string;
-      transaction_summary: string;
-    }[];
-  };
+  transaction_date: string;
+  transaction_time: string;
+  transaction_type: string;
+  transaction_type_name: string;
+  transaction_balance: string;
+  transaction_after_balance: string;
+  transaction_summary: string;
 }
+[];
+
+type TransactionsResponse = {
+  totalCount: string;
+  list: Transaction[];
+};
 
 // type Data = {
 //   startDate: string;
@@ -56,7 +53,8 @@ export default function SavingsJournalPage() {
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  // const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<TransactionsResponse[]>([]);
+  const [apiResponse, setApiResponse] = useState({});
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
 
@@ -157,8 +155,12 @@ export default function SavingsJournalPage() {
         const transactionResponse = await getAccountRecord(
           queryParams.toString()
         );
-        console.log(transactionResponse);
-        // setTransactions(transactionResponse);
+
+        if (transactionResponse) {
+          console.log("res", transactionResponse?.data.content);
+          setApiResponse(transactionResponse?.data.content);
+          setTransactions(transactionResponse?.data.content);
+        }
       } catch (error) {
         console.log("거래 데이터를 가져오는 중 오류 발생:", error);
       }
@@ -173,138 +175,141 @@ export default function SavingsJournalPage() {
   //   }).format(value);
   // };
 
-  const transactions: Transaction[] = [
-    {
-      status: {
-        code: "200",
-        message: "성공적으로 데이터를 가져왔습니다.",
-      },
-      content: {
-        totalCount: "10",
-        list: [
-          {
-            transaction_date: "2025-04-01",
-            transaction_time: "08:30:00",
-            transaction_type: "DEPOSIT",
-            transaction_type_name: "입금",
-            transcation_balance: "500,000",
-            transaction_after_balance: "1,500,000",
-            transaction_summary: "급여 입금, 50,000, 서울 강남",
-          },
-          {
-            transaction_date: "2025-04-02",
-            transaction_time: "09:15:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "200,000",
-            transaction_after_balance: "1,300,000",
-            transaction_summary: "마트 쇼핑, 20,000, 서울 명동",
-          },
-          {
-            transaction_date: "2025-04-03",
-            transaction_time: "12:45:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "100,000",
-            transaction_after_balance: "1,200,000",
-            transaction_summary: "친구에게 송금, 10,000, 부산 해운대",
-          },
-          {
-            transaction_date: "2025-04-04",
-            transaction_time: "14:20:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "50,000",
-            transaction_after_balance: "1,150,000",
-            transaction_summary: "카페에서 커피, 5,000, 서울 홍대",
-          },
-          {
-            transaction_date: "2025-04-05",
-            transaction_time: "16:00:00",
-            transaction_type: "DEPOSIT",
-            transaction_type_name: "입금",
-            transcation_balance: "200,000",
-            transaction_after_balance: "1,350,000",
-            transaction_summary: "보너스 입금, 20,000, 서울 종로",
-          },
-          {
-            transaction_date: "2025-04-06",
-            transaction_time: "10:30:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "120,000",
-            transaction_after_balance: "1,230,000",
-            transaction_summary: "식사비, 12,000, 서울 강남",
-          },
-          {
-            transaction_date: "2025-04-06",
-            transaction_time: "11:00:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "150,000",
-            transaction_after_balance: "1,080,000",
-            transaction_summary: "세금, 15,000, 서울 여의도",
-          },
-          {
-            transaction_date: "2025-04-06",
-            transaction_time: "13:30:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "80,000",
-            transaction_after_balance: "1,000,000",
-            transaction_summary: "영화관, 8,000, 서울 신촌",
-          },
-          {
-            transaction_date: "2025-04-06",
-            transaction_time: "15:10:00",
-            transaction_type: "DEPOSIT",
-            transaction_type_name: "입금",
-            transcation_balance: "300,000",
-            transaction_after_balance: "1,300,000",
-            transaction_summary: "투자금 입금, 30,000, 서울 강남",
-          },
-          {
-            transaction_date: "2025-04-06",
-            transaction_time: "17:45:00",
-            transaction_type: "WITHDRAWAL",
-            transaction_type_name: "출금",
-            transcation_balance: "150,000",
-            transaction_after_balance: "1,150,000",
-            transaction_summary: "기타 지출, 15,000, 서울 마포",
-          },
-        ],
-      },
-    },
-  ];
+  // const transactions: Transaction[] = [
+  //   {
+  //     status: {
+  //       code: "200",
+  //       message: "성공적으로 데이터를 가져왔습니다.",
+  //     },
+  //     content: {
+  //       totalCount: "10",
+  //       list: [
+  //         {
+  //           transaction_date: "2025-04-01",
+  //           transaction_time: "08:30:00",
+  //           transaction_type: "DEPOSIT",
+  //           transaction_type_name: "입금",
+  //           transaction_balance: "500,000",
+  //           transaction_after_balance: "1,500,000",
+  //           transaction_summary: "급여 입금, 50,000, 서울 강남",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-02",
+  //           transaction_time: "09:15:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "200,000",
+  //           transaction_after_balance: "1,300,000",
+  //           transaction_summary: "마트 쇼핑, 20,000, 서울 명동",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-03",
+  //           transaction_time: "12:45:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "100,000",
+  //           transaction_after_balance: "1,200,000",
+  //           transaction_summary: "친구에게 송금, 10,000, 부산 해운대",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-04",
+  //           transaction_time: "14:20:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "50,000",
+  //           transaction_after_balance: "1,150,000",
+  //           transaction_summary: "카페에서 커피, 5,000, 서울 홍대",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-05",
+  //           transaction_time: "16:00:00",
+  //           transaction_type: "DEPOSIT",
+  //           transaction_type_name: "입금",
+  //           transaction_balance: "200,000",
+  //           transaction_after_balance: "1,350,000",
+  //           transaction_summary: "보너스 입금, 20,000, 서울 종로",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-06",
+  //           transaction_time: "10:30:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "120,000",
+  //           transaction_after_balance: "1,230,000",
+  //           transaction_summary: "식사비, 12,000, 서울 강남",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-06",
+  //           transaction_time: "11:00:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "150,000",
+  //           transaction_after_balance: "1,080,000",
+  //           transaction_summary: "세금, 15,000, 서울 여의도",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-06",
+  //           transaction_time: "13:30:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "80,000",
+  //           transaction_after_balance: "1,000,000",
+  //           transaction_summary: "영화관, 8,000, 서울 신촌",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-06",
+  //           transaction_time: "15:10:00",
+  //           transaction_type: "DEPOSIT",
+  //           transaction_type_name: "입금",
+  //           transaction_balance: "300,000",
+  //           transaction_after_balance: "1,300,000",
+  //           transaction_summary: "투자금 입금, 30,000, 서울 강남",
+  //         },
+  //         {
+  //           transaction_date: "2025-04-06",
+  //           transaction_time: "17:45:00",
+  //           transaction_type: "WITHDRAWAL",
+  //           transaction_type_name: "출금",
+  //           transaction_balance: "150,000",
+  //           transaction_after_balance: "1,150,000",
+  //           transaction_summary: "기타 지출, 15,000, 서울 마포",
+  //         },
+  //       ],
+  //     },
+  //   },
+  // ];
 
   useEffect(() => {
-    const spent = transactions[0].content.list.reduce((total, transaction) => {
-      const { amount } = parseTransactionSummary(
-        transaction.transaction_summary
-      );
-      if (transaction.transaction_type === "DEPOSIT") {
-        return total + amount;
-      } else if (transaction.transaction_type === "WITHDRAWAL") {
-        return total - amount;
-      }
-      return total;
-    }, 0);
+    if (transactions.length > 0) {
+      console.log("ts", transactions);
+      const spent = transactions[0].list.reduce((total, transaction) => {
+        const { amount } = parseTransactionSummary(
+          transaction.transaction_summary
+        );
+        if (transaction.transaction_type === "DEPOSIT") {
+          return total + amount;
+        } else if (transaction.transaction_type === "WITHDRAWAL") {
+          return total - amount;
+        }
+        return total;
+      }, 0);
 
-    const saved = transactions[0].content.list.reduce((total, transaction) => {
-      const balance = parseInt(
-        transaction.transcation_balance.replace(",", ""),
-        10
-      );
-      if (transaction.transaction_type === "DEPOSIT") {
-        return total + balance;
-      } else if (transaction.transaction_type === "WITHDRAWAL") {
-        return total - balance;
-      }
-      return total;
-    }, 0);
+      const saved = transactions[0].list.reduce((total, transaction) => {
+        const balance = parseInt(
+          transaction.transaction_balance.replace(",", ""),
+          10
+        );
+        if (transaction.transaction_type === "DEPOSIT") {
+          return total + balance;
+        } else if (transaction.transaction_type === "WITHDRAWAL") {
+          return total - balance;
+        }
+        return total;
+      }, 0);
 
-    setTotalSpent(spent);
-    setTotalSaved(saved);
+      setTotalSpent(spent);
+      setTotalSaved(saved);
+    }
   }, [transactions]);
 
   return (
@@ -389,9 +394,8 @@ export default function SavingsJournalPage() {
           <LoadingSpinner />
         ) : (
           <div className="flex-1 mb-[80px]">
-            {transactions.length > 0 &&
-            transactions[0].content.list.length > 0 ? (
-              transactions[0].content.list.map((transaction, index) => {
+            {transactions.length > 0 && transactions[0].list.length > 0 ? (
+              transactions[0].list.map((transaction, index) => {
                 const { description, amount } =
                   // const { description, amount, location } =
                   parseTransactionSummary(transaction.transaction_summary);
@@ -426,8 +430,8 @@ export default function SavingsJournalPage() {
                             className={`text-medium text-nowrap ${transaction.transaction_type === "DEPOSIT" ? "text-blue-600" : "text-green-600"}`}
                           >
                             {transaction.transaction_type === "DEPOSIT"
-                              ? "+ " + transaction.transcation_balance + "원"
-                              : "- " + transaction.transcation_balance + "원"}
+                              ? "+ " + transaction.transaction_balance + "원"
+                              : "- " + transaction.transaction_balance + "원"}
                           </span>
                         </span>
                       </div>
