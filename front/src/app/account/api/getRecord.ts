@@ -1,6 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const getAccountRecord = async (data: object) => {
+  console.log("printData", data);
   try {
     const response = await axiosInstance.get(`/accounts/my/transactions`, data);
     return response;

@@ -33,6 +33,7 @@ export default function Accounts() {
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(
     userInfo?.saving_rate ? Number(userInfo.saving_rate) : 10
   );
+  const [disable, setDisable] = useState(true);
 
   const [userInfo3, setUserInfo3] = useState({
     bankList: "싸피은행",
@@ -66,6 +67,19 @@ export default function Accounts() {
     };
     fetchUserInfo();
   }, []);
+
+  // 확인버튼 disable 상태 변경
+  useEffect(() => {
+    if (
+      userInfo &&
+      (userInfo3.withdrawAccountNo !== userInfo.withdraw_account_no ||
+        selectedSavingRate !== Number(userInfo.saving_rate))
+    ) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [userInfo3, selectedSavingRate, userInfo]);
 
   const handleInputChange3 = (
     e:
@@ -124,40 +138,27 @@ export default function Accounts() {
         headerName="마이페이지"
         pageTitle="저축 설정"
         headerLink="/user"
-        className="overflow-y-auto"
-        style={{
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
-        }}
       >
-        <style jsx global>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-
-        <div className="scroll-smooth scrollbar-hide">
-          <div className="flex flex-col mb-[48px] mt-[-15px]">
-            <label htmlFor="" className="text-[#7b7b7b]/80 font-bold mb-3">
-              쓰담 계좌 번호
-            </label>
-            <span className="font-semibold text-xl">
-              {formatAccountNumber(userInfo?.piggy_account_no || "")}
-            </span>
-          </div>
-
-          <SignupForm3
-            setErrors={setErrors}
-            userInfo3={userInfo3}
-            setUserInfo3={setUserInfo3}
-            handleInputChange={handleInputChange3}
-            selectedSavingRate={selectedSavingRate}
-            setSelectedSavingRate={setSelectedSavingRate}
-          />
+        <div className="flex flex-col mb-[48px] mt-[-15px]">
+          <label htmlFor="" className="text-[#7b7b7b]/80 font-bold mb-3">
+            쓰담 계좌 번호
+          </label>
+          <span className="font-semibold text-xl">
+            {formatAccountNumber(userInfo?.piggy_account_no || "")}
+          </span>
         </div>
+
+        <SignupForm3
+          setErrors={setErrors}
+          userInfo3={userInfo3}
+          setUserInfo3={setUserInfo3}
+          handleInputChange={handleInputChange3}
+          selectedSavingRate={selectedSavingRate}
+          setSelectedSavingRate={setSelectedSavingRate}
+        />
       </PageSetting>
 
-      <LongButton name="확인" onClick={handleConfirm} />
+      <LongButton name="확인" onClick={handleConfirm} disabled={disable} />
     </>
   );
 }

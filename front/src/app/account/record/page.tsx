@@ -39,10 +39,10 @@ interface Transaction {
 }
 
 type Data = {
-  startDate: string;
-  endDate: string;
-  transactionType: string;
-  orderByType: string;
+  start_date: string;
+  end_date: string;
+  transaction_yype: string;
+  order_by_type: string;
 };
 
 const LoadingSpinner = () => (
@@ -122,29 +122,28 @@ export default function SavingsJournalPage() {
   }, [dateRange]);
 
   useEffect(() => {
+    const fetchTransactions = async () => {
+      const data: Data = {
+        start_date: dateRange.from
+          ? format(dateRange.from, "yyyy-MM-dd")
+          : format(firstDayOfMonth, "yyyy-MM-dd"),
+        end_date: dateRange.to
+          ? format(dateRange.to, "yyyy-MM-dd")
+          : format(today, "yyyy-MM-dd"),
+        transaction_yype: "A", //M:입금, D:출금, A:전체
+        order_by_type: "ASC", //ASC:오름차순, DESC:내림차순
+      };
+
+      try {
+        const transactionResponse = await getAccountRecord(data);
+        console.log(transactionResponse);
+        // setTransactions(transactionResponse);
+      } catch (error) {
+        console.log("거래 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
     fetchTransactions();
   }, []);
-
-  const fetchTransactions = async () => {
-    const data: Data = {
-      startDate: dateRange.from
-        ? format(dateRange.from, "yyyy-MM-dd")
-        : format(firstDayOfMonth, "yyyy-MM-dd"),
-      endDate: dateRange.to
-        ? format(dateRange.to, "yyyy-MM-dd")
-        : format(today, "yyyy-MM-dd"),
-      transactionType: "A", //M:입금, D:출금, A:전체
-      orderByType: "ASC", //ASC:오름차순, DESC:내림차순
-    };
-
-    try {
-      const transactionResponse = await getAccountRecord(data);
-      console.log(transactionResponse);
-      // setTransactions(transactionResponse);
-    } catch (error) {
-      console.log("거래 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
 
   // const formatCurrency = (value: number) => {
   //   return new Intl.NumberFormat("ko-KR", {
@@ -289,7 +288,11 @@ export default function SavingsJournalPage() {
 
   return (
     <>
-      <PageSetting pageTitle="나의 쓰담 일지" className="">
+      <PageSetting
+        pageTitle="나의 쓰담 일지"
+        headerLink="back"
+        headerName="이전"
+      >
         <div className="mt-[-30px] mb-4">
           <Card className="shadow-sm">
             <CardContent className="p-2">

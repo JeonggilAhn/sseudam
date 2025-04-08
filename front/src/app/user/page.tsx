@@ -29,7 +29,7 @@ const UserPage: React.FC = () => {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
-          console.log(response);
+          console.log("res", response);
           setUserInfo(response.data.content);
         } else {
           setError("응답 데이터가 없습니다.");
@@ -57,9 +57,25 @@ const UserPage: React.FC = () => {
     router.push("/account/saving-rate");
   };
 
+  const handleSsdamRecord = () => {
+    router.push("/account/record");
+  };
+
   return (
     <>
-      <PageSetting pageTitle="마이페이지" className="bg-[#C1E6FA] h-screen">
+      <PageSetting
+        pageTitle="마이페이지"
+        className="bg-[#C1E6FA] h-screen overflow-y-auto"
+        style={{
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}
+      >
+        <style jsx global>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
         <div className="mt-[-10px] mb-4">
           <label htmlFor="" className="text-black font-bold ml-2">
             개인 정보
@@ -91,22 +107,31 @@ const UserPage: React.FC = () => {
 
         <div className="mt-10">
           <label htmlFor="" className="text-black font-bold  ml-2 ">
-            설정
+            쓰담
           </label>
-          <div className="w-full h-40 bg-[#ffeeaa] px-6 py-7 mb-4 rounded-2xl shadow-md mt-3">
+          <div className="w-full h-50 bg-[#ffeeaa] px-6 py-7 mb-4 rounded-2xl shadow-md mt-3">
             <div className="flex flex-col justify-evenly h-full">
+              <div className="flex justify-between">
+                <span className="text-medium font-semibold mb-6">
+                  나의 쓰담 일지
+                </span>
+                <ChevronRight
+                  className="text-[#7c7c7c] cursor-pointer"
+                  onClick={handleSsdamRecord}
+                />
+              </div>
               <div className="flex justify-between">
                 <span className="text-medium font-semibold mb-6">
                   저축 설정
                 </span>
                 <ChevronRight
-                  className="text-[#7c7c7c]"
+                  className="text-[#7c7c7c] cursor-pointer"
                   onClick={handleSavingSetting}
                 />
               </div>
               <div className="flex justify-between">
                 <span className="text-medium font-semibold">알림</span>
-                <ChevronRight className="text-[#7c7c7c]" />
+                <ChevronRight className="text-[#7c7c7c] cursor-pointer" />
               </div>
             </div>
           </div>
