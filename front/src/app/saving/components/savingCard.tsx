@@ -12,9 +12,14 @@ type Props = {
   joinButtonText?: string;
 };
 
-const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
+const SavingCard: React.FC<Props> = ({
+  saving,
+  onClickJoin,
+  joinButtonText = "가입하기",
+}) => {
   const trimmedTitle = saving.fin_prdt_nm.replace(/\(.*?\)/g, "").trim();
-  const displayTitle = trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
+  const displayTitle =
+    trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
 
   return (
     <div

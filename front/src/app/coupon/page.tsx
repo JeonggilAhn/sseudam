@@ -11,6 +11,13 @@ import SavingDetail from "../saving/components/savingDetail";
 // 컴포넌트
 import GrassBackground from "../card/components/grassBackground";
 
+//상태
+import { useAppDispatch } from "@/stores/hooks";
+import {
+  toggleIsSavingDetailOpen,
+  resetIsSavingDetailOpen,
+} from "@/stores/slices/aniModalSlice";
+
 interface SavingProduct {
   etc_note: string;
   fin_prdt_nm: string;
@@ -19,18 +26,18 @@ interface SavingProduct {
 
 const CouponPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [currentCoupon, setCurrentCoupon] = useState<Coupon>();
-  const [showModal, setShowModal] = useState(false);
   const [currentCouponSavingId, setCurrentCouponSavingId] = useState<number>();
   const [savingProduct, setSavingProduct] = useState<SavingProduct>();
   const params = useSearchParams();
 
-  const handleClick = () => {
-    setShowModal(true);
+  const handleClick = async () => {
+    dispatch(toggleIsSavingDetailOpen());
   };
 
   useEffect(() => {
-    setShowModal(false);
+    dispatch(resetIsSavingDetailOpen());
     const fetchSavingProduct = async (savingId: number) => {
       const response = await GetSavingProduct(savingId);
       setSavingProduct(response?.data.content);
@@ -63,7 +70,7 @@ const CouponPage = () => {
     };
 
     fetchCoupon();
-  }, [params.get("couponId")]);
+  }, [params.get("couponId"), dispatch]);
 
   // 뒤로가기 함수
   const handleGoBack = () => {
@@ -98,12 +105,10 @@ const CouponPage = () => {
       {/* 배경 컴포넌트 */}
       <GrassBackground />
 
-      {showModal && (
-        <SavingDetail
-          savingId={currentCouponSavingId || 0}
-          onClose={() => setShowModal(false)}
-        />
-      )}
+      <SavingDetail
+        savingId={currentCouponSavingId || 0}
+        onClose={() => dispatch(resetIsSavingDetailOpen())}
+      />
 
       {/* 헤더 */}
       <div className="fixed top-0 left-0 right-0 z-[200] bg-white/80 backdrop-blur-md p-4 shadow-md">
