@@ -29,7 +29,7 @@ const CreateSavingPage: React.FC = () => {
     const fetchAccount = async () => {
       try {
         const res = await axiosInstance.get("/users/me");
-        setPAccount(res.data.content.piggy_account_no);
+        setPAccount(res.data.content.piggyAccountNo);
         console.log("user : ", res.data.content, "saving : ", saving);
       } catch (err) {
         console.error("유저 정보 조회 실패:", err);
