@@ -58,8 +58,6 @@ const SavingDetail: React.FC<Props> = ({
       dispatch(updateSavingDetail({ savingId, views: data.views }));
     } catch (err) {
       console.error("적금 상세 조회 실패", err);
-    } finally {
-      setLoading(false);
     }
   };
 
