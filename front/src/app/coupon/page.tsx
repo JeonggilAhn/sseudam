@@ -40,6 +40,7 @@ const CouponPage = () => {
   };
 
   useEffect(() => {
+    dispatch(resetIsSavingDetailOpen());
     const fetchSavingProduct = async (savingId: number) => {
       const response = await GetSavingProduct(savingId);
       setSavingProduct(response?.data.content);
@@ -72,7 +73,7 @@ const CouponPage = () => {
     };
 
     fetchCoupon();
-  }, [params.get("couponId")]);
+  }, [params.get("couponId"), dispatch]);
 
   // 뒤로가기 함수
   const handleGoBack = () => {
