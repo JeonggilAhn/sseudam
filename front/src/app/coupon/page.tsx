@@ -19,9 +19,9 @@ import {
 } from "@/stores/slices/aniModalSlice";
 
 interface SavingProduct {
-  etc_note: string;
-  fin_prdt_nm: string;
-  mtrt_int: string;
+  etcNote: string;
+  finPrdtNm: string;
+  mtrtInt: string;
 }
 
 const CouponPage = () => {
@@ -53,14 +53,14 @@ const CouponPage = () => {
           index++
         ) {
           if (
-            tmpCouponList?.data.content[index].coupon_id ==
+            tmpCouponList?.data.content[index].couponId ==
             params?.get("couponId")
           ) {
             setCurrentCoupon(tmpCouponList?.data.content[index]);
             setCurrentCouponSavingId(
-              tmpCouponList?.data.content[index].saving_id
+              tmpCouponList?.data.content[index].savingId
             );
-            fetchSavingProduct(tmpCouponList?.data.content[index].saving_id);
+            fetchSavingProduct(tmpCouponList?.data.content[index].savingId);
             break;
           }
         }
@@ -136,10 +136,10 @@ const CouponPage = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-white text-2xl font-bold">
-                    {currentCoupon?.coupon_name}
+                    {currentCoupon?.couponName}
                   </h2>
                   <p className="text-white mt-1">
-                    유효기간: {currentCoupon?.coupon_deadline.slice(0, 10)}
+                    유효기간: {currentCoupon?.couponDeadline.slice(0, 10)}
                   </p>
                 </div>
                 <div className="bg-white rounded-full p-3">
@@ -182,15 +182,13 @@ const CouponPage = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-500">쿠폰명</span>
-                <span className="font-medium">
-                  {currentCoupon?.coupon_name}
-                </span>
+                <span className="font-medium">{currentCoupon?.couponName}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-gray-500">유효기간</span>
                 <span className="font-medium">
-                  {currentCoupon?.coupon_deadline.slice(0, 10)}
+                  {currentCoupon?.couponDeadline.slice(0, 10)}
                 </span>
               </div>
             </div>
@@ -203,9 +201,9 @@ const CouponPage = () => {
             </h3>
 
             <ol className="list-decimal pl-5 space-y-2 text-gray-500">
-              <li>이름 : {savingProduct?.fin_prdt_nm}</li>
-              <li>설명 : {savingProduct?.etc_note}</li>
-              <li>이자율 : {savingProduct?.mtrt_int}</li>
+              <li>이름 : {savingProduct?.finPrdtNm}</li>
+              <li>설명 : {savingProduct?.etcNote}</li>
+              <li>이자율 : {savingProduct?.mtrtInt}</li>
             </ol>
           </div>
         </div>
