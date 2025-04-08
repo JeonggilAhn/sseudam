@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Heart, X, Info, ExternalLink } from "lucide-react";
+import { Heart, Info, ExternalLink } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
 import axiosInstance from "@/utils/axiosInstance";
@@ -22,11 +22,15 @@ type Props = {
   showJoinButton?: boolean;
 };
 
+<<<<<<< HEAD
 const SavingDetail: React.FC<Props> = ({
   savingId,
   onClose,
   showJoinButton = true,
 }) => {
+=======
+const SavingDetail: React.FC<Props> = ({ savingId, showJoinButton = true }) => {
+>>>>>>> 989c1a2 (🐛 fix : fix design 1st #S12P21A106-501)
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -44,7 +48,6 @@ const SavingDetail: React.FC<Props> = ({
       const res = await axiosInstance.get(`/savings-products/${savingId}`);
       const data = res.data.content;
       setSaving(data);
-      console.log("data : ", data);
       const updatedList = savings.map((item) =>
         item.saving_id === savingId ? { ...item, views: data.views } : item
       );
@@ -63,11 +66,7 @@ const SavingDetail: React.FC<Props> = ({
 
   const fetchLikeInfo = async () => {
     try {
-      const res = await axiosInstance.request({
-        url: `/savings-products/${savingId}/likes`,
-        method: "get",
-        data: { userId: 1 },
-      });
+      const res = await axiosInstance.get(`/savings-products/${savingId}/likes`);
       setLiked(res.data.content.liked);
     } catch (err) {
       console.error("좋아요 정보 조회 실패", err);
@@ -76,12 +75,16 @@ const SavingDetail: React.FC<Props> = ({
 
   const handleLike = async () => {
     try {
+<<<<<<< HEAD
       const res = await axiosInstance.post(
         `/savings-products/${savingId}/likes`,
         {
           userId: 1,
         }
       );
+=======
+      const res = await axiosInstance.post(`/savings-products/${savingId}/likes`);
+>>>>>>> 989c1a2 (🐛 fix : fix design 1st #S12P21A106-501)
 
       const updatedLikes = res.data.content.like_count;
       setLiked(res.data.content.liked);
@@ -141,18 +144,9 @@ const SavingDetail: React.FC<Props> = ({
   const maxRate = (saving.max_int_rate / 100).toFixed(2);
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex justify-center items-center px-2 sm:px-0 z-[300]">
-      <div className="relative bg-white rounded-xl p-6 sm:p-8 w-[95%] max-w-md shadow-2xl overflow-hidden">
+    <div className="w-full">
+      <div className="p-6 sm:p-8 space-y-5">
         <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-r from-blue-500 to-green-500 opacity-10"></div>
-
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center 
-             rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors z-[300] 
-             cursor-pointer overflow-hidden"
-        >
-          <X size={20} />
-        </button>
 
         <div className="flex items-center justify-center relative z-10 mb-6">
           <div className="bg-white rounded-lg shadow-md p-2 sm:p-3 mb-2">

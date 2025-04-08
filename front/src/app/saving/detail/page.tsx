@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
-import { useAppSelector } from "@/stores/hooks";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
+import { toggleIsModalOpen, resetIsModalOpen } from "@/stores/slices/aniModalSlice";
 
 import SavingCard from "../components/savingCard";
 import SavingDetail from "../components/savingDetail";
+import AnimatedModal from "@/components/animatedModal";
 import Icon from "@/components/Icon";
 
 const DetailPage: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
+  const dispatch = useAppDispatch();
 
   const selectedSaving = useAppSelector((state) => state.saving.selectedSaving);
   const openedSaving = useAppSelector((state) => state.saving.openedSaving);
+  const isModalOpen = useAppSelector((state) => state.aniModal.isModalOpen);
 
-  // 계산 값 - 다음 납입 일 , 원금 예상, 이자 예상
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const formattedTomorrow = `${tomorrow.getFullYear()}년 ${tomorrow.getMonth() + 1}월 ${tomorrow.getDate()}일`;
@@ -35,17 +37,24 @@ const DetailPage: React.FC = () => {
       {selectedSaving && (
         <SavingCard
           saving={selectedSaving}
-          onClickJoin={() => setShowModal(true)}
+          onClickJoin={() => dispatch(toggleIsModalOpen())}
           joinButtonText="상세보기"
         />
       )}
 
-      {showModal && selectedSaving && (
-        <SavingDetail
-          savingId={selectedSaving.saving_id}
-          onClose={() => setShowModal(false)}
-          showJoinButton={false}
-        />
+      {/* 모달 부분 */}
+      {isModalOpen && selectedSaving && (
+        <AnimatedModal
+          onClose={() => {
+            dispatch(resetIsModalOpen());
+          }}
+        >
+          <SavingDetail
+            savingId={selectedSaving.saving_id}
+            onClose={() => dispatch(resetIsModalOpen())}
+            showJoinButton={false}
+          />
+        </AnimatedModal>
       )}
 
       <div className="relative mt-10 flex flex-col items-center">
