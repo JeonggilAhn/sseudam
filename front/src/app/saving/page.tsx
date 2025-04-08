@@ -7,10 +7,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { setSavings, setSort, setKeyword } from "@/stores/slices/savingSlice";
 import { SavingCardType } from "@/types/saving";
-import {
-  toggleIsSavingDetailOpen,
-  resetIsSavingDetailOpen,
-} from "@/stores/slices/aniModalSlice";
+import { toggleIsSavingDetailOpen, resetIsSavingDetailOpen } from "@/stores/slices/aniModalSlice";
 
 // 컴포넌트
 import SavingCard from "./components/savingCard";
@@ -31,9 +28,7 @@ const SavingPage: React.FC = () => {
   const { sort, keyword, savings } = useAppSelector((state) => state.saving);
 
   // UI 상태 관리
-  const [selected, setSelected] = useState<
-    "interest" | "views" | "likes" | null
-  >(null);
+  const [selected, setSelected] = useState<"interest" | "views" | "likes" | null>(null);
   const [selectedSavingId, setSelectedSavingId] = useState<number>(0);
 
   // 페이징 관련 상태
@@ -58,27 +53,42 @@ const SavingPage: React.FC = () => {
         if (sort) params.sort = sort;
         if (keyword) params.keyword = keyword;
 
+        // 적금 목록 + 좋아요된 ID 목록 요청
         const [res, likedRes] = await Promise.all([
           axiosInstance.get("/savings-products", { params }),
           axiosInstance.get("/savings-products/likes/me"),
         ]);
 
         const data = res.data?.content?.content || [];
-
         const likedIds: number[] = likedRes.data?.content || [];
 
-        const mergedWithLiked = (data as SavingCardType[]).map((item) => ({
+        // 각 적금의 likeCount 요청
+        const likeCountMap: Record<number, number> = {};
+        await Promise.all(
+          data.map(async (item: SavingCardType) => {
+            try {
+              const res = await axiosInstance.get(`/savings-products/${item.saving_id}/likes`);
+              likeCountMap[item.saving_id] = res.data?.content?.like_count ?? 0;
+            } catch (err) {
+              console.error(`likeCount 요청 실패: ${item.saving_id}`, err);
+              likeCountMap[item.saving_id] = 0;
+            }
+          })
+        );
+
+        // liked + like_count 병합
+        const mergedWithLike = (data as SavingCardType[]).map((item) => ({
           ...item,
           liked: likedIds.includes(item.saving_id),
+          like_count: likeCountMap[item.saving_id] ?? 0,
         }));
 
         const merged =
           isReset || pageToLoad === 0
-            ? mergedWithLiked
-            : [...savings, ...mergedWithLiked].filter(
+            ? mergedWithLike
+            : [...savings, ...mergedWithLike].filter(
                 (item, index, self) =>
-                  self.findIndex((s) => s.saving_id === item.saving_id) ===
-                  index
+                  self.findIndex((s) => s.saving_id === item.saving_id) === index
               );
 
         dispatch(setSavings(merged));
@@ -87,7 +97,7 @@ const SavingPage: React.FC = () => {
         console.error("적금 리스트 요청 실패", err);
       } finally {
         isLoadingRef.current = false;
-        setIsLoading(false); // 로딩 끝나면 false로
+        setIsLoading(false);
       }
     },
     [dispatch, keyword, sort, savings, hasMore]
@@ -175,11 +185,7 @@ const SavingPage: React.FC = () => {
         {isLoading
           ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
           : savings.map((item) => (
-              <SavingCard
-                key={item.saving_id}
-                saving={item}
-                onClickJoin={handleOpenModal}
-              />
+              <SavingCard key={item.saving_id} saving={item} onClickJoin={handleOpenModal} />
             ))}
         <div ref={observerRef} className="h-4" />
       </div>
