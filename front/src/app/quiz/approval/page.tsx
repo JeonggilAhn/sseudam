@@ -10,7 +10,7 @@ const CheckPage: React.FC = () => {
   const amount = searchParams.get("amount");
 
   const handleList = () => {
-    router.push("/list");
+    router.push("/account/record");
   };
 
   const handleHome = () => {
