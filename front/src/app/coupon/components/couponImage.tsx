@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
 import { useAppDispatch } from "@/stores/hooks";
-import { toggleIsSSEOpen, resetIsSSEOpen } from "@/stores/slices/SSESLice";
+import { toggleIsSSEOpen } from "@/stores/slices/SSESLice";
 
 interface CouponImageProps {
   couponName: string;

@@ -15,9 +15,7 @@ import {
 import { fetchQueue } from "./SSEHandler";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
-interface SSEComponentProps {}
-
-const SSEComponent: React.FC<SSEComponentProps> = () => {
+const SSEComponent = () => {
   const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
     null
   );
