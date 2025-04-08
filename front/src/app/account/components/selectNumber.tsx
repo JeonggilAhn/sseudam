@@ -64,7 +64,7 @@ export function InputPassword({
       </div>
 
       {showKeypad && (
-        <div className="fixed top-0 bottom-15 left-0 right-0 bg-black/60 bg-opacity-50 z-50 flex items-end justify-center">
+        <div className="fixed top-0 bottom-0 left-0 right-0 bg-black/60 bg-opacity-50 z-50 flex items-end justify-center">
           <div className="bg-white rounded-t-xl w-full p-4 animate-slide-up">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">인증번호 입력</h3>
