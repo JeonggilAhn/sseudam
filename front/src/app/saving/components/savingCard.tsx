@@ -13,6 +13,9 @@ type Props = {
 };
 
 const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
+  const trimmedTitle = saving.fin_prdt_nm.replace(/\(.*?\)/g, "").trim();
+  const displayTitle = trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
+
   return (
     <div
       className="bg-white rounded-2xl border border-gray-200 px-5 py-4 shadow-md hover:shadow-lg 
@@ -30,7 +33,7 @@ const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "�
       {/* 적금 정보 */}
       <div className="flex flex-col items-center flex-1 px-2 text-center">
         <div className="font-bold text-[13px] text-gray-800 mb-2 break-words leading-tight max-w-[140px]">
-          {saving.fin_prdt_nm}
+          {displayTitle}
         </div>
         <div className="flex items-center space-x-1 text-[13px]">
           <span className="font-semibold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-md border border-red-100">
