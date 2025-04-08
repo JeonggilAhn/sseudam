@@ -154,7 +154,9 @@ export default function SavingsJournalPage() {
           orderByType,
         });
 
-        const transactionResponse = await getAccountRecord(queryParams);
+        const transactionResponse = await getAccountRecord(
+          queryParams.toString()
+        );
         console.log(transactionResponse);
         // setTransactions(transactionResponse);
       } catch (error) {
