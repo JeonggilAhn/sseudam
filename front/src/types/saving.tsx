@@ -1,32 +1,32 @@
 // src/types/saving.ts
 export interface SavingCardType {
-  saving_id: number;
-  fin_co_nm: string;
-  fin_prdt_nm: string;
-  min_int_rate: number;
-  max_int_rate: number;
+  savingId: number;
+  finCoNm: string;
+  finPrdtNm: string;
+  minIntRate: number;
+  maxIntRate: number;
   views: number;
-  like_count: number;
+  likeCount: number;
   liked?: boolean;
 }
 
 //
 export interface SavingDetailType {
-  saving_id: number;
-  fin_prdt_cd: string;
-  fin_co_nm: string;
-  fin_prdt_nm: string;
+  savingId: number;
+  finPrdtCd: string;
+  finCoNm: string;
+  finPrdtNm: string;
   maxLimit: number;
   joinDeny: number;
   joinMember: string;
   joinWay: string;
-  etc_note: string;
-  spcl_cnd: string;
-  min_int_rate: number;
-  max_int_rate: number;
-  homp_url: string;
+  etcNote: string;
+  spclCnd: string;
+  minIntRate: number;
+  maxIntRate: number;
+  hompUrl: string;
   views: number;
-  like_count: number;
+  likeCount: number;
   liked?: boolean;
 }
 
