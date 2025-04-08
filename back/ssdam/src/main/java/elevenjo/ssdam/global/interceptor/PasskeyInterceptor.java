@@ -23,7 +23,9 @@ public class PasskeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        if("/api/auth/issue".equals(request.getRequestURI())) {
+            return true;
+        }
         // SecurityContextHolder에서 인증된 사용자 정보 추출
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof User)) {

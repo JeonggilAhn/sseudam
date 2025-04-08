@@ -16,7 +16,7 @@ public class PasskeyQueueScheduler {
     }
 
     // 5초마다 실행 (필요에 따라 fixedDelay나 cron 표현식을 조정)
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 2000)
     public void processWaitingQueue() {
         passkeyWaitingQueueUtil.processQueue(ISSUE_LIMIT);
     }
