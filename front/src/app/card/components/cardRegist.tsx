@@ -45,9 +45,9 @@ const CardRegist = () => {
     e.preventDefault();
     const secret = await encryptCardInfo(number.replaceAll(" ", ""), cvc);
     const response = await RegistCard({
-      cardNo: secret.card_no,
+      cardNo: secret.cardNo,
       cvc: secret.cvc,
-      keyInfo: secret.key_info,
+      keyInfo: secret.keyInfo,
       userName: name,
       expiryDate: expiry.replaceAll("/", ""),
     });
