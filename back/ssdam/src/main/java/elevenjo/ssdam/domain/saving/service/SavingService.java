@@ -77,18 +77,6 @@ public class SavingService {
         ).getRec();
     }
 
-
-    public void syncSavingsFromOpenApi() {
-        syncService.syncSavingsFromOpenApi();
-    }
-
-    public void registerSavingsFromApi(List<ProductDto> productDtos, Map<String, String> finCoUrlMap) {
-        List<Saving> savings = productDtos.stream()
-                .map(dto -> dto.toEntity(finCoUrlMap.getOrDefault(dto.getFinCoNo(), null)))
-                .toList();
-        savingRepository.saveAll(savings);
-    }
-
     private Saving getSavingById(Long savingId) {
         return savingRepository.findById(savingId).orElseThrow(SavingNotFoundException::new);
     }
