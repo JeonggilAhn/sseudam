@@ -7,11 +7,11 @@ export const sortSavings = (
 ) => {
   const sorted = [...list];
   if (sort === "likes") {
-    sorted.sort((a, b) => b.like_count - a.like_count);
+    sorted.sort((a, b) => b.likeCount - a.likeCount);
   } else if (sort === "views") {
     sorted.sort((a, b) => b.views - a.views);
   } else if (sort === "maxIntRate") {
-    sorted.sort((a, b) => b.max_int_rate - a.max_int_rate);
+    sorted.sort((a, b) => b.maxIntRate - a.maxIntRate);
   }
   return sorted;
 };
