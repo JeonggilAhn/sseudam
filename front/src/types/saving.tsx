@@ -7,11 +7,10 @@ export interface SavingCardType {
   max_int_rate: number;
   views: number;
   like_count: number;
-  likes: number;
   liked?: boolean;
 }
 
-// 가입 성공한 적금 응답
+//
 export interface SavingDetailType {
   saving_id: number;
   fin_prdt_cd: string;
@@ -28,9 +27,10 @@ export interface SavingDetailType {
   homp_url: string;
   views: number;
   like_count: number;
-  likes: number;
+  liked?: boolean;
 }
 
+// 가입 성공한 적금 응답
 export interface OpenSavingResponseType {
   bankCode: string;
   bankName: string;

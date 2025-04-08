@@ -12,14 +12,10 @@ type Props = {
   joinButtonText?: string;
 };
 
-const SavingCard: React.FC<Props> = ({
-  saving,
-  onClickJoin,
-  joinButtonText = "가입하기",
-}) => {
+const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "가입하기" }) => {
   const trimmedTitle = saving.fin_prdt_nm.replace(/\(.*?\)/g, "").trim();
-  const displayTitle =
-    trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
+  const displayTitle = trimmedTitle.length > 10 ? trimmedTitle.slice(0, 9) + "..." : trimmedTitle;
+  const companyName = saving.fin_co_nm.replace("주식회사", "").trim();
 
   return (
     <div
@@ -30,8 +26,8 @@ const SavingCard: React.FC<Props> = ({
       {/* 은행 아이콘 및 이름 */}
       <div className="flex flex-col items-center justify-center min-w-[70px]">
         <Icon name={getBankIconName(saving.fin_co_nm)} width={70} height={36} />
-        <span className="text-[11px] text-gray-600 mt-1 text-center break-words leading-tight max-w-[72px]">
-          {saving.fin_co_nm}
+        <span className="text-[min(11px,_3vw)] text-gray-600 mt-1 text-center break-keep leading-tight max-w-[80px]">
+          {companyName}
         </span>
       </div>
 
