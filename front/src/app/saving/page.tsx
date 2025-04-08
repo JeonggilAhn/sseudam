@@ -15,14 +15,18 @@ import SavingSearch from "./components/savingSearch";
 import SavingDetail from "./components/savingDetail";
 import SkeletonCard from "@/components/skeletonCard";
 
+// 모달
+import AnimatedModal from "@/components/animatedModal";
+import { toggleIsModalOpen, resetIsModalOpen } from "@/stores/slices/aniModalSlice";
+
 const SavingPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { sort, keyword, savings } = useAppSelector((state) => state.saving);
+  const { isModalOpen } = useAppSelector((state) => state.aniModal);
 
   // UI 상태 관리
   const [selected, setSelected] = useState<"interest" | "views" | "likes" | null>(null);
   const [selectedSavingId, setSelectedSavingId] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
 
   // 페이징 관련 상태
   const [page, setPage] = useState(0);
@@ -50,6 +54,7 @@ const SavingPage: React.FC = () => {
         ]);
 
         const data = res.data?.content?.content || [];
+
         const likedIds: number[] = likedRes.data?.content || [];
 
         const mergedWithLiked = (data as SavingCardType[]).map((item) => ({
@@ -134,15 +139,13 @@ const SavingPage: React.FC = () => {
   }, [sort]);
 
   // 모달 핸들링
-  const handleOpenModal = useCallback((savingId: number) => {
-    setSelectedSavingId(savingId);
-    setShowModal(true);
-  }, []);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedSavingId(null);
-  };
+  const handleOpenModal = useCallback(
+    (savingId: number) => {
+      setSelectedSavingId(savingId);
+      dispatch(toggleIsModalOpen()); // 모달 열기
+    },
+    [dispatch]
+  );
 
   return (
     <main className="flex flex-col h-screen bg-[#C1E6FA]">
@@ -163,8 +166,21 @@ const SavingPage: React.FC = () => {
       </div>
 
       {/* 모달 */}
-      {showModal && selectedSavingId && (
-        <SavingDetail savingId={selectedSavingId} onClose={handleCloseModal} />
+      {isModalOpen && selectedSavingId && (
+        <AnimatedModal
+          onClose={() => {
+            dispatch(resetIsModalOpen()); // 모달 닫기
+            setSelectedSavingId(null); // 선택 해제
+          }}
+        >
+          <SavingDetail
+            savingId={selectedSavingId}
+            onClose={() => {
+              dispatch(resetIsModalOpen());
+              setSelectedSavingId(null);
+            }}
+          />
+        </AnimatedModal>
       )}
     </main>
   );

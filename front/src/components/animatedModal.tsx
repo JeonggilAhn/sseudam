@@ -30,7 +30,7 @@ const AnimatedModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           style={{ backdropFilter: "blur(10px)" }}
-          className="relative h-[95vh] flex items-center justify-center z-[1000] -translate-y-[10vh]"
+          className="relative h-[100vh] flex items-center justify-center z-[1000] -translate-y-[15vh]"
         >
           <motion.div
             initial={{ scale: 0.9, y: 20 }}

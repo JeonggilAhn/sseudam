@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, CreditCard, Wallet, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
@@ -13,27 +13,41 @@ import { getBankIconName } from "@/components/bankList";
 
 const CreateSavingPage: React.FC = () => {
   const router = useRouter();
-  const [accountNumber, setAccountNumber] = useState("");
+  const [pAccount, setPAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
   const saving = useAppSelector((state) => state.saving.selectedSavingDetail);
   const dispatch = useAppDispatch();
 
-  const isDisabled = !accountNumber || !amount || !saving;
+  const isDisabled = !pAccount || !saving || Number(amount) <= 0;
 
   const today = new Date();
   const formattedDate = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      try {
+        const res = await axiosInstance.get("/users/me");
+        setPAccount(res.data.content.piggy_account_no);
+        console.log("user : ", res.data.content, "saving : ", saving);
+      } catch (err) {
+        console.error("유저 정보 조회 실패:", err);
+      }
+    };
+
+    fetchAccount();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!saving) return;
 
     const requestBody = {
-      withdrawal_account_no: accountNumber,
-      deposit_balance: Number(amount),
-      account_type_unique_no: saving.fin_co_nm,
+      withdrawalAccountNo: pAccount,
+      depositBalance: Number(amount),
     };
+
     try {
       const res = await axiosInstance.post(`/savings-products/${saving.saving_id}`, requestBody);
 
@@ -89,8 +103,8 @@ const CreateSavingPage: React.FC = () => {
             </label>
             <input
               type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
+              value={pAccount}
+              readOnly
               placeholder="입출금 계좌 번호 자동 입력"
               className="w-full text-base border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 text-right placeholder:text-left"
             />

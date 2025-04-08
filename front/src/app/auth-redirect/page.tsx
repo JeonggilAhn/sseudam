@@ -6,10 +6,7 @@ import { useRouter } from "next/navigation";
 import { CheckAccount } from "../card/api/getCard";
 import AnimatedModal from "@/components/animatedModal";
 import { useAppDispatch } from "@/stores/hooks";
-import {
-  toggleIsModalOpen,
-  resetIsModalOpen,
-} from "@/stores/slices/aniModalSlice";
+import { resetIsModalOpen } from "@/stores/slices/aniModalSlice";
 import Image from "next/image";
 
 const RedirectPage = () => {
@@ -39,7 +36,7 @@ const RedirectPage = () => {
     const hasAccount = async () => {
       const response = await CheckAccount();
       if (response === undefined) {
-        dispatch(toggleIsModalOpen());
+        // dispatch(toggleIsModalOpen());
         // setTimeout(() => {
         //   dispatch(resetIsModalOpen());
         setTimeout(() => {
