@@ -99,19 +99,19 @@ const MainPage = () => {
       }
     };
 
-    // const hasAccount = async () => {
-    //   const response = await CheckAccount();
-    //   if (response === undefined) {
-    //     setTimeout(() => {
-    //       router.push("/account/create");
-    //     }, 100);
-    //   } else {
-    fetchCardInfo();
-    fetchCouponInfo();
-    //   }
-    // };
+    const hasAccount = async () => {
+      const response = await CheckAccount();
+      if (response === undefined) {
+        setTimeout(() => {
+          router.push("/account/create");
+        }, 100);
+      } else {
+        fetchCardInfo();
+        fetchCouponInfo();
+      }
+    };
 
-    // hasAccount();
+    hasAccount();
   }, [currentCard, dispatch]);
 
   return (

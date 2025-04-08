@@ -31,6 +31,8 @@ export default function Accounts() {
     userInfo?.saving_rate ? Number(userInfo.saving_rate) : 10
   );
 
+  console.log(error, errors);
+
   const [userInfo3, setUserInfo3] = useState({
     bankList: "싸피은행",
     withdrawAccountNo: "0000000000000012",
@@ -55,6 +57,7 @@ export default function Accounts() {
           setError("응답 데이터가 없습니다.");
         }
       } catch (error) {
+        console.log(error);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);

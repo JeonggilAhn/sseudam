@@ -33,6 +33,7 @@ const UserPage: React.FC = () => {
           setError("응답 데이터가 없습니다.");
         }
       } catch (error) {
+        console.log(error);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);
@@ -53,6 +54,8 @@ const UserPage: React.FC = () => {
   const handleSavingSetting = () => {
     router.push("/account/saving-rate");
   };
+
+  console.log(loading, error);
 
   return (
     <>
