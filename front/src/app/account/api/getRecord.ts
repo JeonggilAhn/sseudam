@@ -1,9 +1,11 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export const getAccountRecord = async (data: object) => {
-  console.log("printData", data);
+export const getAccountRecord = async (queryParams: string) => {
+  console.log("req", queryParams);
   try {
-    const response = await axiosInstance.get(`/accounts/my/transactions`, data);
+    const response = await axiosInstance.get(
+      `/accounts/my/transactions?${queryParams.toString()}`
+    );
     return response;
   } catch (error) {
     console.error("❌ 계좌 거래내역 조회 실패:", error);

@@ -7,13 +7,13 @@ import PageSetting from "../pageSetting";
 import { ChevronRight } from "lucide-react";
 
 interface UserInfo {
-  user_email: "string";
-  user_name: "string";
-  user_birthday: "string";
-  piggy_account_no: "string";
-  saving_rate: "string";
-  withdraw_account_no: "string";
-  signup_date: "string";
+  userEmail: "string";
+  userName: "string";
+  userBirthday: "string";
+  piggyAccountNo: "string";
+  savingRate: "string";
+  withdrawAccountNo: "string";
+  signupDate: "string";
 }
 
 const UserPage: React.FC = () => {
@@ -89,17 +89,17 @@ const UserPage: React.FC = () => {
             <div className="flex flex-col justify-between h-full">
               <div className="flex flex-row justify-between">
                 <span className="text-medium font-semibold ">이름</span>
-                <span>{userInfo ? userInfo.user_name : ""}</span>
+                <span>{userInfo ? userInfo.userName : ""}</span>
               </div>
               <div className="flex flex-row justify-between">
                 <span className="text-medium font-semibold">생년월일</span>
                 <span>
-                  {formattedBirthday(userInfo ? userInfo.user_birthday : "")}
+                  {formattedBirthday(userInfo ? userInfo.userBirthday : "")}
                 </span>
               </div>
               <div className="flex flex-row justify-between">
                 <span className="text-medium font-semibold">이메일</span>
-                <span>{userInfo ? userInfo.user_email : ""}</span>
+                <span>{userInfo ? userInfo.userEmail : ""}</span>
               </div>
             </div>
           </div>

@@ -39,10 +39,10 @@ interface Transaction {
 }
 
 type Data = {
-  start_date: string;
-  end_date: string;
-  transaction_yype: string;
-  order_by_type: string;
+  startDate: string;
+  endDate: string;
+  transactionType: string;
+  orderByType: string;
 };
 
 const LoadingSpinner = () => (
@@ -59,16 +59,19 @@ export default function SavingsJournalPage() {
   // const [transactions, setTransactions] = useState([]);
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [startDate, setStartDate] = useState(
     firstDayOfMonth.toISOString().split("T")[0]
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
 
   // const handleSavingRate = () => {
   //   router.push("/account/saving-rate");
   // };
-  console.log(startDate, endDate, setLoading);
 
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
@@ -80,8 +83,8 @@ export default function SavingsJournalPage() {
 
   const handleDatePicker = async () => {
     if (dateRange.from && dateRange.to) {
-      const formattedFrom = format(dateRange.from, "yyyy-MM-dd");
-      const formattedTo = format(dateRange.to, "yyyy-MM-dd");
+      const formattedFrom = format(dateRange.from, "yyyyMMdd");
+      const formattedTo = format(dateRange.to, "yyyyMMdd");
 
       console.log("From Date:", formattedFrom);
       console.log("To Date:", formattedTo);
@@ -123,19 +126,35 @@ export default function SavingsJournalPage() {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const data: Data = {
-        start_date: dateRange.from
-          ? format(dateRange.from, "yyyy-MM-dd")
-          : format(firstDayOfMonth, "yyyy-MM-dd"),
-        end_date: dateRange.to
-          ? format(dateRange.to, "yyyy-MM-dd")
-          : format(today, "yyyy-MM-dd"),
-        transaction_yype: "A", //M:입금, D:출금, A:전체
-        order_by_type: "ASC", //ASC:오름차순, DESC:내림차순
-      };
+      // const data: Data = {
+      //   startDate: dateRange.from
+      //     ? format(dateRange.from, "yyyyMMdd")
+      //     : format(firstDayOfMonth, "yyyyMMdd"),
+      //   endDate: dateRange.to
+      //     ? format(dateRange.to, "yyyyMMdd")
+      //     : format(today, "yyyyMMdd"),
+      //   transactionType: "A", //M:입금, D:출금, A:전체
+      //   orderByType: "ASC", //ASC:오름차순, DESC:내림차순
+      // };
+
+      const startDate = dateRange.from
+        ? format(dateRange.from, "yyyyMMdd")
+        : format(firstDayOfMonth, "yyyyMMdd");
+      const endDate = dateRange.to
+        ? format(dateRange.to, "yyyyMMdd")
+        : format(today, "yyyyMMdd");
+      const transactionType = "A"; // M:입금, D:출금, A:전체
+      const orderByType = "ASC"; // ASC:오름차순, DESC:내림차순
 
       try {
-        const transactionResponse = await getAccountRecord(data);
+        const queryParams = new URLSearchParams({
+          startDate,
+          endDate,
+          transactionType,
+          orderByType,
+        });
+
+        const transactionResponse = await getAccountRecord(queryParams);
         console.log(transactionResponse);
         // setTransactions(transactionResponse);
       } catch (error) {

@@ -24,7 +24,7 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   const handleLastBtn = async () => {
     try {
       const postedAccount = await postAccount();
-      console.log(postedAccount);
+      console.log("res", postedAccount);
       if (postedAccount?.status === 200) {
         router.push("/account/create/success");
       }

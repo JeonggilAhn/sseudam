@@ -10,13 +10,13 @@ import { LongButton } from "@/components/ui/customButton";
 import SignupForm3 from "@/app/auth/signup/SignupForm3";
 
 interface UserInfo {
-  user_email: "string";
-  user_name: "string";
-  user_birthday: "string";
-  piggy_account_no: "string";
-  saving_rate: "string";
-  withdraw_account_no: "string";
-  signup_date: "string";
+  userEmail: "string";
+  userName: "string";
+  userBirthday: "string";
+  piggyAccountNo: "string";
+  savingRate: "string";
+  withdrawAccountNo: "string";
+  signupDate: "string";
 }
 
 export default function Accounts() {
@@ -31,7 +31,7 @@ export default function Accounts() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(
-    userInfo?.saving_rate ? Number(userInfo.saving_rate) : 10
+    userInfo?.savingRate ? Number(userInfo.savingRate) : 10
   );
   const [disable, setDisable] = useState(true);
 
@@ -45,15 +45,15 @@ export default function Accounts() {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
-          console.log(response);
+          console.log("res", response);
           setUserInfo(response.data.content);
-          setSelectedSavingRate(Number(response.data.content.saving_rate));
+          setSelectedSavingRate(Number(response.data.content.savingRate));
 
           setUserInfo3({
             // ...userInfo3,
             bankList: "싸피은행",
             withdrawAccountNo:
-              response.data.content.withdraw_account_no || "0000000000000012",
+              response.data.content.withdrawAccountNo || "0000000000000012",
           });
         } else {
           setError("응답 데이터가 없습니다.");
@@ -72,8 +72,8 @@ export default function Accounts() {
   useEffect(() => {
     if (
       userInfo &&
-      (userInfo3.withdrawAccountNo !== userInfo.withdraw_account_no ||
-        selectedSavingRate !== Number(userInfo.saving_rate))
+      (userInfo3.withdrawAccountNo !== userInfo.withdrawAccountNo ||
+        selectedSavingRate !== Number(userInfo.savingRate))
     ) {
       setDisable(false);
     } else {
@@ -112,10 +112,12 @@ export default function Accounts() {
   const handleConfirm = async () => {
     const data = {
       // selectedBankBook,
-      withdraw_account_no: userInfo3.withdrawAccountNo,
-      saving_rate: selectedSavingRate,
+      // withdrawAccountNo: userInfo3.withdrawAccountNo,
+      // savingRate: selectedSavingRate,
+      withdrawAccountNo: userInfo3.withdrawAccountNo,
+      savingRate: selectedSavingRate,
     };
-    console.log("type: ", typeof data.saving_rate);
+    console.log("type: ", typeof data.savingRate);
 
     try {
       const result = await patchSavingSettings(data);
@@ -144,7 +146,7 @@ export default function Accounts() {
             쓰담 계좌 번호
           </label>
           <span className="font-semibold text-xl">
-            {formatAccountNumber(userInfo?.piggy_account_no || "")}
+            {formatAccountNumber(userInfo?.piggyAccountNo || "")}
           </span>
         </div>
 
