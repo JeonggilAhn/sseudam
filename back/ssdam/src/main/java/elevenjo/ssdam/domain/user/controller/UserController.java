@@ -2,7 +2,6 @@ package elevenjo.ssdam.domain.user.controller;
 
 import elevenjo.ssdam.domain.user.dto.RegisterUserInfoRequestDto;
 import elevenjo.ssdam.domain.user.dto.UpdateUserRequestDto;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +38,7 @@ public class UserController {
 	@PostMapping("/me")
 	public ResponseEntity<ResponseWrapper<UserDto>> registerSelfInfo(
 			@AuthenticationPrincipal User user,
-			@Valid @RequestBody RegisterUserInfoRequestDto requestDto
+			@RequestBody RegisterUserInfoRequestDto requestDto
 	) {
 		return ResponseWrapperFactory.setResponse(
 				HttpStatus.OK,
@@ -51,7 +50,7 @@ public class UserController {
 	@PatchMapping("/me")
 	public ResponseEntity<ResponseWrapper<UserDto>> updateSelf(
 			@AuthenticationPrincipal User user,
-			@Valid @RequestBody UpdateUserRequestDto requestDto
+			@RequestBody UpdateUserRequestDto requestDto
 	) {
 		return ResponseWrapperFactory.setResponse(
 				HttpStatus.OK,
