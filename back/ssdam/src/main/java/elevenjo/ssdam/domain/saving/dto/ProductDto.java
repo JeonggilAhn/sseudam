@@ -1,4 +1,6 @@
 package elevenjo.ssdam.domain.saving.dto;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import elevenjo.ssdam.domain.saving.entity.Saving;
 
 import java.util.List;
@@ -46,6 +48,7 @@ public record ProductDto(
         return baseinfo.finCoNo();
     }
 
+    @JsonNaming(PropertyNamingStrategies.LowerCamelCaseStrategy.class)
     public record BaseInfo(
             String finCoNo,
             String korCoNm,
