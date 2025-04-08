@@ -58,7 +58,7 @@ export const RateBar: React.FC<RateBarProps> = ({
           onValueChange={(value) => setSelectedSavingRate(value[0])}
           max={100}
           step={5}
-          className="w-[90%] h-2 mb-4"
+          className="w-[90%] h-2 mb-4 cursor-pointer"
         ></Slider>
       </div>
       <div className="text-center font-bold text-xl">{selectedSavingRate}%</div>

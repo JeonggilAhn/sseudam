@@ -38,12 +38,12 @@ interface Transaction {
   };
 }
 
-type Data = {
-  startDate: string;
-  endDate: string;
-  transactionType: string;
-  orderByType: string;
-};
+// type Data = {
+//   startDate: string;
+//   endDate: string;
+//   transactionType: string;
+//   orderByType: string;
+// };
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-4">
@@ -59,16 +59,19 @@ export default function SavingsJournalPage() {
   // const [transactions, setTransactions] = useState([]);
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [startDate, setStartDate] = useState(
     firstDayOfMonth.toISOString().split("T")[0]
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
 
   // const handleSavingRate = () => {
   //   router.push("/account/saving-rate");
   // };
-  console.log(startDate, endDate, setLoading);
 
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
@@ -80,8 +83,8 @@ export default function SavingsJournalPage() {
 
   const handleDatePicker = async () => {
     if (dateRange.from && dateRange.to) {
-      const formattedFrom = format(dateRange.from, "yyyy-MM-dd");
-      const formattedTo = format(dateRange.to, "yyyy-MM-dd");
+      const formattedFrom = format(dateRange.from, "yyyyMMdd");
+      const formattedTo = format(dateRange.to, "yyyyMMdd");
 
       console.log("From Date:", formattedFrom);
       console.log("To Date:", formattedTo);
@@ -122,29 +125,46 @@ export default function SavingsJournalPage() {
   }, [dateRange]);
 
   useEffect(() => {
+    const fetchTransactions = async () => {
+      // const data: Data = {
+      //   startDate: dateRange.from
+      //     ? format(dateRange.from, "yyyyMMdd")
+      //     : format(firstDayOfMonth, "yyyyMMdd"),
+      //   endDate: dateRange.to
+      //     ? format(dateRange.to, "yyyyMMdd")
+      //     : format(today, "yyyyMMdd"),
+      //   transactionType: "A", //M:입금, D:출금, A:전체
+      //   orderByType: "ASC", //ASC:오름차순, DESC:내림차순
+      // };
+
+      const startDate = dateRange.from
+        ? format(dateRange.from, "yyyyMMdd")
+        : format(firstDayOfMonth, "yyyyMMdd");
+      const endDate = dateRange.to
+        ? format(dateRange.to, "yyyyMMdd")
+        : format(today, "yyyyMMdd");
+      const transactionType = "A"; // M:입금, D:출금, A:전체
+      const orderByType = "ASC"; // ASC:오름차순, DESC:내림차순
+
+      try {
+        const queryParams = new URLSearchParams({
+          startDate,
+          endDate,
+          transactionType,
+          orderByType,
+        });
+
+        const transactionResponse = await getAccountRecord(
+          queryParams.toString()
+        );
+        console.log(transactionResponse);
+        // setTransactions(transactionResponse);
+      } catch (error) {
+        console.log("거래 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
     fetchTransactions();
   }, []);
-
-  const fetchTransactions = async () => {
-    const data: Data = {
-      startDate: dateRange.from
-        ? format(dateRange.from, "yyyy-MM-dd")
-        : format(firstDayOfMonth, "yyyy-MM-dd"),
-      endDate: dateRange.to
-        ? format(dateRange.to, "yyyy-MM-dd")
-        : format(today, "yyyy-MM-dd"),
-      transactionType: "A", //M:입금, D:출금, A:전체
-      orderByType: "ASC", //ASC:오름차순, DESC:내림차순
-    };
-
-    try {
-      const transactionResponse = await getAccountRecord(data);
-      console.log(transactionResponse);
-      // setTransactions(transactionResponse);
-    } catch (error) {
-      console.log("거래 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
 
   // const formatCurrency = (value: number) => {
   //   return new Intl.NumberFormat("ko-KR", {
@@ -289,7 +309,11 @@ export default function SavingsJournalPage() {
 
   return (
     <>
-      <PageSetting pageTitle="나의 쓰담 일지" className="">
+      <PageSetting
+        pageTitle="나의 쓰담 일지"
+        headerLink="back"
+        headerName="이전"
+      >
         <div className="mt-[-30px] mb-4">
           <Card className="shadow-sm">
             <CardContent className="p-2">

@@ -28,7 +28,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({ headerName, headerLink }) => {
 
   const handlePage = headerLink
     ? () => {
-        router.push(headerLink);
+        if (headerLink === "back") {
+          router.back();
+        } else {
+          router.push(headerLink);
+        }
       }
     : undefined;
 
@@ -40,7 +44,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ headerName, headerLink }) => {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full mr-2 p-0"
+              className="rounded-full mr-2 p-0 cursor-pointer"
               onClick={handlePage}
             >
               <ChevronLeft className="h-6 w-6" />

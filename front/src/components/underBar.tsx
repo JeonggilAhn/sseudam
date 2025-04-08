@@ -13,8 +13,10 @@ const UnderBar = () => {
   useEffect(() => {
     if (
       pathname === "/" ||
-      pathname.includes("/signup") ||
-      pathname.includes("/auth-redirect")
+      pathname.includes("/auth") ||
+      pathname.includes("/auth-redirect") ||
+      pathname.includes("/account/create") ||
+      pathname.includes("/account/saving-rate")
     ) {
       setShow(false);
     } else {

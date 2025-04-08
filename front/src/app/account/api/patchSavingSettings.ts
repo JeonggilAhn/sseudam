@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const patchSavingSettings = async (data: object) => {
-  console.log(data);
+  console.log("req", data);
   try {
     const response = await axiosInstance.patch(`/users/me`, data);
     return response;
