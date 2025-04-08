@@ -1,7 +1,7 @@
 package elevenjo.ssdam.global.interceptor;
 
 
-import elevenjo.ssdam.global.passkey.service.WaitingQueueService;
+import elevenjo.ssdam.global.passkey.service.PasskeyWaitingQueueUtil;
 import elevenjo.ssdam.global.response.ResponseWrapperFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,10 +15,10 @@ import elevenjo.ssdam.domain.user.entity.User;
 @Component
 public class PasskeyInterceptor implements HandlerInterceptor {
 
-    private final WaitingQueueService waitingQueueService;
+    private final PasskeyWaitingQueueUtil passkeyWaitingQueueUtil;
 
-    public PasskeyInterceptor(WaitingQueueService waitingQueueService) {
-        this.waitingQueueService = waitingQueueService;
+    public PasskeyInterceptor(PasskeyWaitingQueueUtil passkeyWaitingQueueUtil) {
+        this.passkeyWaitingQueueUtil = passkeyWaitingQueueUtil;
     }
 
     @Override
@@ -33,18 +33,19 @@ public class PasskeyInterceptor implements HandlerInterceptor {
         String userId = String.valueOf(user.getUserId());
 
         // passkey가 이미 있으면 TTL을 갱신하고 요청 통과
-        if (waitingQueueService.hasPasskey(userId)) {
-            waitingQueueService.refreshPasskey(userId);
+        if (passkeyWaitingQueueUtil.hasPasskey(userId)) {
+            passkeyWaitingQueueUtil.refreshPasskey(userId);
             return true;
         } else {
             // passkey가 없으면 대기열에 등록 후 대기중 메시지 응답
-            waitingQueueService.enqueueUser(userId);
+            passkeyWaitingQueueUtil.enqueueUser(userId);
             ResponseWrapperFactory.setResponse(
                     response,
                     HttpStatus.ACCEPTED,
                     null,
                     "Waiting in queue, please try again later."
             );
+
             return false;
         }
     }

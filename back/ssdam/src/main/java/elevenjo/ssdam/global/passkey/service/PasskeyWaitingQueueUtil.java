@@ -2,7 +2,6 @@ package elevenjo.ssdam.global.passkey.service;
 
 import java.time.Instant;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +9,16 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WaitingQueueService {
+public class PasskeyWaitingQueueUtil {
 
-    private static final String PASSKEY_PREFIX = "passkey:";      // passkey 저장 key 접두사
+    private static final String PASSKEY_PREFIX = "passkey:";        // passkey 저장 key 접두사
     private static final String QUEUE_KEY = "waiting:queue";        // 대기열용 Redis Sorted Set key
-    private static final long PASSKEY_TTL_SECONDS = 600;             // passkey TTL (예: 60초)
+    private static final long PASSKEY_TTL_SECONDS = 24 * 60 * 60L;  // passkey TTL (1일)
 
     private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public WaitingQueueService(RedisTemplate<String, String> redisTemplate) {
+    public PasskeyWaitingQueueUtil(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
