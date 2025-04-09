@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { AnimatePresence, motion } from "motion/react";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
