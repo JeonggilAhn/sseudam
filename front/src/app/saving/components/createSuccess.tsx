@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
+import confetti from "canvas-confetti";
 
 type Props = {
   productName: string;
@@ -16,6 +17,17 @@ const CreateSuccess: React.FC<Props> = ({ productName, amount, startDate }) => {
   const handleConfirm = () => {
     router.push("/saving/detail");
   };
+
+  useEffect(() => {
+    // 화면에 등장할 때 한 번만 실행
+    confetti({
+      particleCount: 120,
+      spread: 90,
+      origin: { y: 0.6 },
+      angle: 90,
+      scalar: 1.2,
+    });
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center">

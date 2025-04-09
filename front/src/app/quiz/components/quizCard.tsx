@@ -41,11 +41,15 @@ const QuizCard: React.FC<QuizCardProps> = ({
 
   const handleAnswer = (userAns: "O" | "X") => {
     if (!quiz) return;
-    if (userAns === quiz.ans) onCorrectAnswer();
-    else {
-      setWrongEffect(true);
-      setTimeout(() => setWrongEffect(false), 600);
-      onWrongAnswer();
+
+    if (userAns === quiz.ans) {
+      onCorrectAnswer(); // 그대로 유지
+    } else {
+      setWrongEffect(true); // 흔들림 효과 추가
+      setTimeout(() => {
+        setWrongEffect(false);
+        onWrongAnswer(); // 흔들림이 끝난 후 뒤집기
+      }, 600); // 애니메이션과 딜레이 맞춰줌
     }
   };
 

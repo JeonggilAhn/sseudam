@@ -24,9 +24,21 @@ const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "�
     dispatch(resetIsSavingDetailOpen());
   }, []);
 
+  // 카드 전체 클릭 시 상세 모달 열기
+  const handleCardClick = () => {
+    onClickJoin(saving.savingId);
+  };
+
+  // 가입하기 버튼 클릭 시 중복 이벤트 막기
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 방지
+    onClickJoin(saving.savingId);
+  };
+
   return (
     <div
-      className="bg-white rounded-2xl border border-gray-200 px-5 py-4 shadow-md hover:shadow-lg 
+      onClick={handleCardClick} // 카드 전체 클릭 시 모달 열림
+      className="cursor-pointer bg-white rounded-2xl border border-gray-200 px-5 py-4 shadow-md hover:shadow-lg 
       transition-all duration-200 flex items-center justify-between mb-4 w-full mx-auto 
       hover:scale-[1.02] transform-gpu"
     >
@@ -57,8 +69,8 @@ const SavingCard: React.FC<Props> = ({ saving, onClickJoin, joinButtonText = "�
       {/* 가입 버튼 + 조회/좋아요 */}
       <div className="flex flex-col items-end gap-1 min-w-[90px] text-[13px]">
         <button
+          onClick={handleButtonClick} // 버튼 클릭 시 카드 클릭 이벤트 방지
           className="bg-green-500 hover:bg-green-600 text-white font-semibold px-3 py-1.5 rounded-md shadow-sm transition-all text-sm"
-          onClick={() => onClickJoin(saving.savingId)}
         >
           {joinButtonText}
         </button>

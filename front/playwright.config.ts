@@ -17,7 +17,7 @@ export default defineConfig({
   /* 공유 설정 */
   use: {
     /* 기본 URL 설정 - 서버가 3001 포트에서 실행 중 */
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:3000",
     /* 모든 테스트에 대해 트레이스 수집 */
     trace: "on-first-retry",
     /* 스크린샷 설정 */
@@ -46,7 +46,7 @@ export default defineConfig({
   /* 웹 서버 자동 실행 설정 */
   webServer: {
     command: "npm run dev",
-    url: "http://localhost:3001",
+    url: "http://localhost:3000",
     reuseExistingServer: true,
     timeout: 120 * 1000,
   },
