@@ -136,12 +136,8 @@ export default function Accounts() {
 
   return (
     <>
-      <PageSetting
-        headerName="마이페이지"
-        pageTitle="저축 설정"
-        headerLink="/user"
-      >
-        <div className="flex flex-col mb-[48px] mt-[-15px]">
+      <PageSetting headerName="이전" pageTitle="저축 설정" headerLink="back">
+        <div className="flex flex-col mb-[36px] mt-[-20px]">
           <label htmlFor="" className="text-[#7b7b7b]/80 font-bold mb-3">
             쓰담 계좌 번호
           </label>

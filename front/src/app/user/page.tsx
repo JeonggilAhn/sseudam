@@ -109,7 +109,7 @@ const UserPage: React.FC = () => {
           <label htmlFor="" className="text-black font-bold  ml-2 ">
             쓰담
           </label>
-          <div className="w-full h-50 bg-[#ffeeaa] px-6 py-7 mb-4 rounded-2xl shadow-md mt-3">
+          <div className="w-full h-40 bg-[#ffeeaa] px-6 py-7 mb-4 rounded-2xl shadow-md mt-3">
             <div className="flex flex-col justify-evenly h-full">
               <div className="flex justify-between">
                 <span className="text-medium font-semibold mb-6">
@@ -121,18 +121,16 @@ const UserPage: React.FC = () => {
                 />
               </div>
               <div className="flex justify-between">
-                <span className="text-medium font-semibold mb-6">
-                  저축 설정
-                </span>
+                <span className="text-medium font-semibold">저축 설정</span>
                 <ChevronRight
                   className="text-[#7c7c7c] cursor-pointer"
                   onClick={handleSavingSetting}
                 />
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span className="text-medium font-semibold">알림</span>
                 <ChevronRight className="text-[#7c7c7c] cursor-pointer" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
