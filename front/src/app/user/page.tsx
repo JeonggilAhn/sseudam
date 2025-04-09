@@ -5,6 +5,7 @@ import { getUserInfo } from "./api/getUserInfo";
 import { useRouter } from "next/navigation";
 import PageSetting from "../pageSetting";
 import { ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface UserInfo {
   userEmail: "string";
@@ -59,6 +60,11 @@ const UserPage: React.FC = () => {
 
   const handleSsdamRecord = () => {
     router.push("/account/record");
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("access_token");
+    router.push("/");
   };
 
   return (
@@ -132,6 +138,11 @@ const UserPage: React.FC = () => {
                 <ChevronRight className="text-[#7c7c7c] cursor-pointer" />
               </div> */}
             </div>
+          </div>
+          <div className="flex justify-end mt-8">
+            <Button variant={"link"} onClick={handleLogout}>
+              로그아웃
+            </Button>
           </div>
         </div>
       </PageSetting>

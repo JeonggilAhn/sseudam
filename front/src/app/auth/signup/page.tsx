@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 // import { useSearchParams } from "next/navigation";
@@ -10,6 +10,17 @@ import SignupForm3 from "./SignupForm3";
 
 import { LongButton, ShortButton } from "@/components/ui/customButton";
 import { postSignup } from "../api/postSignup";
+import { getUserInfo } from "@/app/user/api/getUserInfo";
+import { toast } from "react-toastify";
+interface UserInfo {
+  userEmail: "string";
+  userName: "string";
+  userBirthday: "string";
+  piggyAccountNo: "string";
+  savingRate: "string";
+  withdrawAccountNo: "string";
+  signupDate: "string";
+}
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -17,6 +28,9 @@ const SignUpForm = () => {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const [userInfo1, setUserInfo1] = useState({
     name: "",
@@ -38,6 +52,26 @@ const SignUpForm = () => {
   //     setStep(Number(step));
   //   }
   // }, [searchParams]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await getUserInfo();
+        if (response?.status === 200) {
+          console.log("res", response);
+          alert("이미 가입된 사용자 입니다.");
+          router.push("/card");
+        } else {
+          setError("응답 데이터가 없습니다.");
+        }
+      } catch (error) {
+        console.log(error);
+        setError("사용자 정보를 불러오는 데 실패했습니다.");
+      } finally {
+      }
+    };
+    fetchUserInfo();
+  }, []);
 
   const handleInputChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
