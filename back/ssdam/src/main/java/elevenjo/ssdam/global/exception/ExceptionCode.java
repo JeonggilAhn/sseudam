@@ -33,7 +33,9 @@ public enum ExceptionCode implements ResponseCode {
 	COUPON_ALREADY_ISSUED("coupon-401-4", "해당 쿠폰은 이미 발급받았습니다.", HttpStatus.BAD_REQUEST),
 
 	// Decrypt
-	FAIL_TO_DECRYPT("decrypt-401-1", "복호화에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+	FAIL_TO_DECRYPT("decrypt-401-1", "복호화에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+
+	FAIL_ON_EXTERNAL_API("external-400-1", "외부 api호출에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 
 	private String code;
 	private String message;
