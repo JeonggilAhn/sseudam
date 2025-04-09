@@ -53,8 +53,11 @@ const CloudInfo = ({
         >
           {type}
         </p>
-        <p className="text-xl font-extrabold" style={{ color: textColor }}>
-          ₩ {formattedAmount}
+        <p
+          className="font-extrabold text-ellipsis"
+          style={{ color: textColor }}
+        >
+          {formattedAmount}원
         </p>
       </div>
     </div>
