@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import PageSetting from "../pageSetting";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AuthGuard } from "@/utils/authGuard";
 
 interface UserInfo {
   userEmail: "string";
@@ -150,4 +151,4 @@ const UserPage: React.FC = () => {
   );
 };
 
-export default UserPage;
+export default AuthGuard(UserPage);

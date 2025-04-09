@@ -8,6 +8,7 @@ import PageSetting from "@/app/pageSetting";
 import { patchSavingSettings } from "../api/patchSavingSettings";
 import { LongButton } from "@/components/ui/customButton";
 import SignupForm3 from "@/app/auth/signup/SignupForm3";
+import { AuthGuard } from "@/utils/authGuard";
 
 interface UserInfo {
   userEmail: "string";
@@ -19,7 +20,7 @@ interface UserInfo {
   signupDate: "string";
 }
 
-export default function Accounts() {
+function Accounts() {
   // 사용자의 정보에서 미리 연결은행과 계좌번호 받아오기 (그걸로 기본 세팅)
   // const [selectedBankBook, setSelectedBankBook] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -162,3 +163,5 @@ export default function Accounts() {
     </>
   );
 }
+
+export default AuthGuard(Accounts);
