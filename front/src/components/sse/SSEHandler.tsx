@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchQueue = async () => {
+export const fetchQueue = async (controller?: AbortController) => {
   try {
     const response = await axios.get(
       "https://j12a106.p.ssafy.io/api/sse/subscribe",
@@ -8,10 +8,15 @@ export const fetchQueue = async () => {
         headers: {
           Authorization: `${sessionStorage.getItem("access_token")}`,
         },
+        signal: controller?.signal,
       }
     );
     return response;
-  } catch (error) {
-    console.error("❌ 큐 정보 조회 실패:", error);
+  } catch (error: any) {
+    if (error.code === "ERR_CANCELED") {
+      console.warn("요청이 사용자에 의해 취소되었습니다.");
+    } else {
+      console.error("❌ 큐 정보 조회 실패:", error);
+    }
   }
 };

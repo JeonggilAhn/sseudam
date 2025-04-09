@@ -101,6 +101,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-canvas-confetti:
+        specifier: ^2.0.7
+        version: 2.0.7(react@18.3.1)
       react-credit-cards-2:
         specifier: ^1.0.3
         version: 1.0.3(react@18.3.1)
@@ -3045,6 +3048,11 @@ packages:
 
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
+
+  react-canvas-confetti@2.0.7:
+    resolution: {integrity: sha512-DIj44O35TPAwJkUSIZqWdVsgAMHtVf8h7YNmnr3jF3bn5mG+d7Rh9gEcRmdJfYgRzh6K+MAGujwUoIqQyLnMJw==}
+    peerDependencies:
+      react: '*'
 
   react-credit-cards-2@1.0.3:
     resolution: {integrity: sha512-r4oi/92oUbDD7reCwOavjOZVJKpM941K3XYekUhVQysXEDxkzW8OGr0oD4Y5kYounJT2t75kbiEvERzRQS/shA==}
@@ -6787,6 +6795,12 @@ snapshots:
   randombytes@2.1.0:
     dependencies:
       safe-buffer: 5.2.1
+
+  react-canvas-confetti@2.0.7(react@18.3.1):
+    dependencies:
+      '@types/canvas-confetti': 1.9.0
+      canvas-confetti: 1.9.3
+      react: 18.3.1
 
   react-credit-cards-2@1.0.3(react@18.3.1):
     dependencies:
