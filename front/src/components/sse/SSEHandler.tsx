@@ -12,11 +12,15 @@ export const fetchQueue = async (controller?: AbortController) => {
       }
     );
     return response;
-  } catch (error: any) {
-    if (error.code === "ERR_CANCELED") {
-      console.warn("요청이 사용자에 의해 취소되었습니다.");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_CANCELED") {
+        console.warn("요청이 사용자에 의해 취소되었습니다.");
+      } else {
+        console.error("❌ 큐 정보 조회 실패:", error);
+      }
     } else {
-      console.error("❌ 큐 정보 조회 실패:", error);
+      console.error("❌ 알 수 없는 에러 발생:", error);
     }
   }
 };
