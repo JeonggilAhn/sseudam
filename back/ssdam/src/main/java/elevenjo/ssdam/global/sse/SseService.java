@@ -14,6 +14,10 @@ public class SseService {
     private final ConcurrentMap<Long, ManagedSseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(Long userId) {
+        if (emitters.containsKey(userId)) {
+            throw new IllegalStateException("이미 SSE 연결이 존재합니다.");
+        }
+
         SseEmitter emitter = new SseEmitter(0L);
         ManagedSseEmitter managedEmitter = new ManagedSseEmitter(emitter);
         emitters.put(userId, managedEmitter);
