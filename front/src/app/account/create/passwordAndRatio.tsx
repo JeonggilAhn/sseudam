@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
 import { postAccount } from "../api/postAccount";
+import { RateBar } from "../components/savingRate";
+import { patchSavingSettings } from "../api/patchSavingSettings";
 
 type PasswordAndRatioProps = {
   onPrev: () => void;
@@ -20,16 +22,27 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
 }) => {
   const router = useRouter();
   const [isValue, setIsValue] = useState(false);
+  const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
 
   const handleLastBtn = async () => {
+    const data = {
+      savingRate: selectedSavingRate,
+    };
     try {
-      const postedAccount = await postAccount();
-      console.log("res", postedAccount);
-      if (postedAccount?.status === 200) {
-        router.push("/account/create/success");
-      }
+      const result = await patchSavingSettings(data);
+      console.log("res", result, JSON.stringify(data));
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      try {
+        const postedAccount = await postAccount();
+        console.log("res", postedAccount);
+        if (postedAccount?.status === 200) {
+          router.push("/account/create/success");
+        }
+      } catch (error) {
+        console.error("Error updating data:", error);
+      }
     }
   };
 
@@ -48,6 +61,12 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
           setSelectedPassword={setSelectedPassword}
           isValue={isValue}
           setIsValue={setIsValue}
+        />
+      </div>
+      <div>
+        <RateBar
+          selectedSavingRate={selectedSavingRate}
+          setSelectedSavingRate={setSelectedSavingRate}
         />
       </div>
 
