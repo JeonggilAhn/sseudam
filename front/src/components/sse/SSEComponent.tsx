@@ -60,6 +60,7 @@ const SSEComponent = () => {
   useEffect(() => {
     console.log(currentCouponId);
     if (isSSEOpen) {
+      console.log("SSE 연결이 열렸습니다.");
       // EventSource 객체 생성
       const newEventSource = new EventSourcePolyfill(
         `https://j12a106.p.ssafy.io/api/sse/subscribe/${currentCouponId}`,

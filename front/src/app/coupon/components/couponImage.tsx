@@ -3,11 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
-import { useAppDispatch } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { toggleIsSSEOpen } from "@/stores/slices/SSESLice";
 import { Gift, ExternalLink } from "lucide-react";
 import { setCurrentCoupon } from "@/stores/slices/couponSlice";
-
 
 interface CouponImageProps {
   couponName: string;
@@ -28,6 +27,7 @@ const CouponImage = ({
   const [userHas, setUserHas] = useState(false);
   const dispatch = useAppDispatch();
   const hasUpdatedOrderRef = useRef(false);
+  const couponList = useAppSelector((state) => state.coupon.couponList);
 
   useEffect(() => {
     const fetchUserCoupon = async (couponId: number) => {
@@ -44,19 +44,21 @@ const CouponImage = ({
       }
     };
     fetchUserCoupon(couponId);
-  }, [couponId, dispatch]);
+  }, [couponId, dispatch, couponList]);
 
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
-    dispatch(setCurrentCoupon({
-      couponId,
-      couponName,
-      couponDeadline,
-      savingId,
-      couponType: '',  // 필요한 필드이지만 현재 컴포넌트에서 사용하지 않는 값
-      createdAt: new Date().toISOString(),  // 현재 시간으로 대체
-      updatedAt: new Date().toISOString()   // 현재 시간으로 대체
-    }))
+    dispatch(
+      setCurrentCoupon({
+        couponId,
+        couponName,
+        couponDeadline,
+        savingId,
+        couponType: "", // 필요한 필드이지만 현재 컴포넌트에서 사용하지 않는 값
+        createdAt: new Date().toISOString(), // 현재 시간으로 대체
+        updatedAt: new Date().toISOString(), // 현재 시간으로 대체
+      })
+    );
     const response = await IssueCoupon(couponId);
 
     dispatch(toggleIsSSEOpen());
