@@ -4,6 +4,7 @@ import elevenjo.ssdam.domain.coupon.dto.response.CouponResultResponse;
 import elevenjo.ssdam.domain.coupon.repository.CouponIssuedRepository;
 import elevenjo.ssdam.domain.coupon.repository.CouponRepository;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
+import elevenjo.ssdam.global.sse.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -73,7 +74,7 @@ public class CouponIssueWorker {
             // 그 외 예외 발생 시 실패 메시지 전송
             sseService.sendCouponResult(userIdLong,
                     new CouponResultResponse(false, "쿠폰 발급에 실패했습니다."));
-            log.info(e.getMessage());
+            log.error("[CouponIssueWorker] 쿠폰 발급 중 예외 발생 - couponId: {}, userId: {}, 메시지: {}", couponId, userIdLong, e.getMessage());
         }
     }
 

@@ -87,7 +87,7 @@ public class PaymentService {
                     .retrieve()
                     .bodyToMono(PaymentDto.class)
                     .block();
-            System.out.println(paymentDto.toString());
+
             currentStep = "SSDAM";
             CardTransactionDto cardTransactionDto = new CardTransactionDto(paymentUserDto.userKey(), paymentDto.rec().merchantName(), paymentBalance);
             transactionWebClient.post()

@@ -1,6 +1,6 @@
 package elevenjo.ssdam.domain.coupon.controller;
 
-import elevenjo.ssdam.domain.coupon.service.SseService;
+import elevenjo.ssdam.global.sse.SseService;
 import elevenjo.ssdam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
