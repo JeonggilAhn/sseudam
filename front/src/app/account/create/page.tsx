@@ -4,8 +4,9 @@ import { useState } from "react";
 import PageSetting from "@/app/pageSetting";
 import PasswordAndRatio from "./passwordAndRatio";
 import InsurancePolicy from "./insurePolicy";
+import { AuthGuard } from "@/utils/authGuard";
 
-export default function CreateAccountPage() {
+function CreateAccountPage() {
   const [step, setStep] = useState(1);
 
   // 개설할 계좌 정보
@@ -45,3 +46,5 @@ export default function CreateAccountPage() {
     </>
   );
 }
+
+export default AuthGuard(CreateAccountPage);

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 import PageSetting from "@/app/pageSetting";
 import { getAccountRecord } from "../api/getRecord";
+import { AuthGuard } from "@/utils/authGuard";
 
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, RefreshCw } from "lucide-react";
@@ -40,7 +41,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-export default function SavingsJournalPage() {
+function SavingsJournalPage() {
   const router = useRouter();
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -407,6 +408,8 @@ export default function SavingsJournalPage() {
     </>
   );
 }
+
+export default AuthGuard(SavingsJournalPage);
 
 // const formatCurrency = (value: number) => {
 //   return new Intl.NumberFormat("ko-KR", {

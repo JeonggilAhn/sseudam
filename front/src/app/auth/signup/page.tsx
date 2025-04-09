@@ -11,6 +11,7 @@ import SignupForm3 from "./SignupForm3";
 import { LongButton, ShortButton } from "@/components/ui/customButton";
 import { postSignup } from "../api/postSignup";
 import { getUserInfo } from "@/app/user/api/getUserInfo";
+import { AuthGuard } from "@/utils/authGuard";
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -244,4 +245,4 @@ const SignUpForm = () => {
     </>
   );
 };
-export default SignUpForm;
+export default AuthGuard(SignUpForm);
