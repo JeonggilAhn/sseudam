@@ -121,9 +121,11 @@ export default function Accounts() {
 
     try {
       const result = await patchSavingSettings(data);
-      console.log(result, JSON.stringify(data));
+      console.log("res", result, JSON.stringify(data));
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      setDisable(true);
     }
   };
 
