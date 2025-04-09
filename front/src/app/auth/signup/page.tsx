@@ -11,16 +11,6 @@ import SignupForm3 from "./SignupForm3";
 import { LongButton, ShortButton } from "@/components/ui/customButton";
 import { postSignup } from "../api/postSignup";
 import { getUserInfo } from "@/app/user/api/getUserInfo";
-import { toast } from "react-toastify";
-interface UserInfo {
-  userEmail: "string";
-  userName: "string";
-  userBirthday: "string";
-  piggyAccountNo: "string";
-  savingRate: "string";
-  withdrawAccountNo: "string";
-  signupDate: "string";
-}
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -29,7 +19,7 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
 
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
 
   const [userInfo1, setUserInfo1] = useState({
