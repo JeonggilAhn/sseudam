@@ -139,7 +139,7 @@ const UserPage: React.FC = () => {
               </div> */}
             </div>
           </div>
-          <div className="flex justify-end mt-8">
+          <div className="flex justify-center mt-8">
             <Button variant={"link"} onClick={handleLogout}>
               로그아웃
             </Button>
