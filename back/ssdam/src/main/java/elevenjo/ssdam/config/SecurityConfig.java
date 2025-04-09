@@ -1,6 +1,5 @@
 package elevenjo.ssdam.config;
 
-import elevenjo.ssdam.global.passkey.service.PasskeyWaitingQueueUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +37,6 @@ public class SecurityConfig {
 	private final UserRepository userRepository;
 	private final AuthenticationEntryPoint authenticationEntryPoint;
 	private final AccessDeniedHandler accessDeniedHandler;
-	private final PasskeyWaitingQueueUtil passkeyWaitingQueueUtil;
 
 	@Value("${front-url}")
 	String frontUrl;
@@ -50,8 +48,7 @@ public class SecurityConfig {
 		JwtUtil jwtUtil,
 		UserRepository userRepository,
 		AuthenticationEntryPoint authenticationEntryPoint,
-		AccessDeniedHandler accessDeniedHandler,
-		PasskeyWaitingQueueUtil passkeyWaitingQueueUtil
+		AccessDeniedHandler accessDeniedHandler
 	) {
 		this.customOAuth2UserService = customOAuth2UserService;
 		this.customOAuth2SuccessHandler = customOAuth2SuccessHandler;
@@ -59,7 +56,6 @@ public class SecurityConfig {
 		this.userRepository = userRepository;
 		this.authenticationEntryPoint = authenticationEntryPoint;
 		this.accessDeniedHandler = accessDeniedHandler;
-		this.passkeyWaitingQueueUtil = passkeyWaitingQueueUtil;
 	}
 
 	// secret encoder
@@ -125,8 +121,7 @@ public class SecurityConfig {
 		// jwt filter
 		JwtFilter jwtFilter = new JwtFilter(
 			jwtUtil,
-			userRepository,
-				passkeyWaitingQueueUtil
+			userRepository
 		);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
