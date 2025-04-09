@@ -15,7 +15,7 @@ public class CouponQueueStatusScheduler {
     private final CouponQueueService couponQueueService;
 
     // 5초마다 실행
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void updateQueueStatuses() {
         // Redis의 모든 쿠폰 큐 키 조회 (예: coupon:queue:{couponId})
         Set<String> keys = redisTemplate.keys("coupon:queue:*");
