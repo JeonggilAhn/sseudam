@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,9 @@ import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
-import SSEComponent from "@/components/sse/SSEComponent";
+import SSEComponent, {
+  couponListScrollEvent,
+} from "@/components/sse/SSEComponent";
 
 class Card {
   cardNo: string;
@@ -59,6 +61,7 @@ const MainPage = () => {
   const [isBounce, setIsBounce] = useState(true);
   const [piggyBalance, setPiggyBalance] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const couponListRef = useRef<HTMLDivElement>(null);
 
   const handleDeleteCard = async () => {
     await DeleteUserCard();
@@ -124,6 +127,29 @@ const MainPage = () => {
     setTimeout(() => {
       setHasScrolled(true);
     }, 3000);
+  }, []);
+
+  useEffect(() => {
+    if (couponListRef.current) {
+      couponListRef.current.scrollTop = 0;
+    }
+  }, [couponList]);
+
+  useEffect(() => {
+    const handleResetScroll = async () => {
+      if (couponListRef.current) {
+        couponListRef.current.scrollTop = 0;
+      }
+    };
+
+    couponListScrollEvent.addEventListener("resetScroll", handleResetScroll);
+
+    return () => {
+      couponListScrollEvent.removeEventListener(
+        "resetScroll",
+        handleResetScroll
+      );
+    };
   }, []);
 
   return (
@@ -225,7 +251,10 @@ const MainPage = () => {
             </div>
 
             {/* 쿠폰 섹션 */}
-            <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
+            <div
+              ref={couponListRef}
+              className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center"
+            >
               <div>
                 <AnimatePresence>
                   {!hasScrolled && (
@@ -240,6 +269,7 @@ const MainPage = () => {
                       }}
                       exit={{ opacity: 0, y: -10 }}
                       style={{ backdropFilter: "blur(10px)" }}
+                      onClick={() => setHasScrolled(true)}
                       className="rounded-lg fixed bottom-0 -translate-x-[50%] -translate-y-[25%] text-white hover:text-gray-200 focus:outline-none h-[30vh] w-full flex flex-col items-center justify-center z-[300] gap-2"
                     >
                       <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">

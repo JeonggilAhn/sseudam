@@ -6,6 +6,7 @@ import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
 import { useAppDispatch } from "@/stores/hooks";
 import { setCouponOrder } from "@/stores/slices/couponSlice";
 import { toggleIsSSEOpen } from "@/stores/slices/SSESLice";
+import { Gift, ExternalLink } from "lucide-react";
 
 interface CouponImageProps {
   couponName: string;
@@ -94,9 +95,11 @@ const CouponImage = ({
                 e.stopPropagation();
                 onClick(e);
               }}
-              className="cursor-pointer bg-[#3fbff6] hover:bg-[#ffb733] text-white font-bold py-2 px-4 rounded border-2 border-black transition"
+              className="relative overflow-hidden cursor-pointer bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px] w-full sm:w-auto"
             >
-              사용 하러 가기
+              <span className="relative z-10 hidden sm:inline">사용하러 가기</span>
+              <ExternalLink className="inline sm:hidden w-5 h-5" />
+              <span className="absolute inset-0 bg-white opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
             </button>
           ) : (
             <button
@@ -104,9 +107,11 @@ const CouponImage = ({
                 e.stopPropagation();
                 handleIssue(couponId);
               }}
-              className="cursor-pointer bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+              className="relative overflow-hidden cursor-pointer bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px] w-full sm:w-auto"
             >
-              쿠폰 받기
+              <span className="relative z-10 hidden sm:inline">쿠폰 받기</span>
+              <Gift className="inline sm:hidden w-5 h-5" />
+              <span className="absolute inset-0 bg-white opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
             </button>
           )}
         </div>
