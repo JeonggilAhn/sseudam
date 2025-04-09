@@ -151,26 +151,6 @@ const MainPage = () => {
     }, 3000);
   }, []);
 
-  useEffect(() => {
-    const handleResetScroll = async () => {
-      if (couponListRef.current) {
-        couponListRef.current.scrollTop = 0;
-      }
-
-      const fetchCouponInfo = async () => {
-        const response = await GetCouponList();
-        console.log("쿠폰 목록 갱신:", response?.data.content);
-        if (response?.data.content.length > 0) {
-          dispatch(setCouponList(response?.data.content));
-        } else {
-          dispatch(setCouponList([]));
-        }
-      };
-
-      await fetchCouponInfo();
-    };
-  }, []);
-
   return (
     <div
       className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden"
