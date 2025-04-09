@@ -36,9 +36,24 @@ const couponSlice = createSlice({
       state.currentCouponDeadline = "";
       state.currentCouponSavingId = 0;
     },
+    setCouponOrder: (state, action: PayloadAction<number>) => {
+      for (let index = 0; index < state.couponList.length; index++) {
+        if (state.couponList[index].couponId === action.payload) {
+          const lastItem = state.couponList.splice(index, 1)[0];
+          if (lastItem) {
+            state.couponList.unshift(lastItem);
+          }
+          break;
+        }
+      }
+    },
   },
 });
 
-export const { setCouponList, setCurrentCoupon, clearCurrentCoupon } =
-  couponSlice.actions;
+export const {
+  setCouponList,
+  setCurrentCoupon,
+  clearCurrentCoupon,
+  setCouponOrder,
+} = couponSlice.actions;
 export default couponSlice.reducer;
