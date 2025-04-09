@@ -93,6 +93,10 @@ export default function SavingsJournalPage() {
     router.push("/account/saving-rate");
   };
 
+  const handleWithdrawal = () => {
+    router.push("/quiz");
+  };
+
   const parseTransactionSummary = (summary: string) => {
     // const parts = summary.split(", ");
 
@@ -252,6 +256,18 @@ export default function SavingsJournalPage() {
             </CardContent>
           </Card>
         </div>
+        {/* <div
+          className="flex justify-end text-[0.7rem] mb-2 items-center rounded-lg cursor-pointer hover:text-[#5e5e5e]"
+          onClick={handleWithdrawal}
+        >
+          출금 바로가기
+        </div> */}
+        <div
+          className="w-full h-8 bg-amber-100 flex justify-center text-[1rem] font-semibold mb-4 items-center rounded-lg cursor-pointer  hover:text-[#000000] hover:bg-[#ffe270]/80 shadow-sm transition"
+          onClick={handleWithdrawal}
+        >
+          쓰러가기
+        </div>
 
         <div className="mb-2 flex justify-between items-center w-full">
           <div className="flex items-center w-full">
@@ -259,11 +275,11 @@ export default function SavingsJournalPage() {
               <div className="flex justify-between items-center mb-4">
                 <div className="text-sm font-medium">조회기간</div>
 
-                <div className="flex items-center text-sm">
+                <div className="flex items-center text-sm hover:underline transition cursor-pointer">
                   <span className="mr-1">저축 비율 설정</span>
                   <ChevronRight
                     onClick={handleSavingRate}
-                    className="h-4 w-4 cursor-pointer"
+                    className="h-4 w-4"
                   />
                 </div>
               </div>
@@ -271,7 +287,7 @@ export default function SavingsJournalPage() {
               <div className="flex flew-row gap-2 justify-between">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <div className="flex flex-row items-center gap-2 cursor-pointer">
+                    <div className="flex flex-row items-center gap-2 cursor-pointer hover:underline transition">
                       <CalendarIcon className="h-4 w-4" />
                       <div className="text-m">
                         {dateRange.from && dateRange.to
@@ -299,7 +315,7 @@ export default function SavingsJournalPage() {
                   </PopoverContent>
                 </Popover>
                 <RefreshCw
-                  className="w-5 cursor-pointer"
+                  className="w-4 cursor-pointer hover:w-5 transition"
                   onClick={handleRefresh}
                 />
               </div>

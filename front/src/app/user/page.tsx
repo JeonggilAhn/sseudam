@@ -116,14 +116,14 @@ const UserPage: React.FC = () => {
                   나의 쓰담 일지
                 </span>
                 <ChevronRight
-                  className="text-[#7c7c7c] cursor-pointer"
+                  className="text-[#7c7c7c] cursor-pointer h-6 w-6 hover:bg-[#9b9b9b]/10 rounded-full"
                   onClick={handleSsdamRecord}
                 />
               </div>
               <div className="flex justify-between">
                 <span className="text-medium font-semibold">저축 설정</span>
                 <ChevronRight
-                  className="text-[#7c7c7c] cursor-pointer"
+                  className="text-[#7c7c7c] cursor-pointer hover:bg-[#9b9b9b]/10 rounded-full"
                   onClick={handleSavingSetting}
                 />
               </div>
