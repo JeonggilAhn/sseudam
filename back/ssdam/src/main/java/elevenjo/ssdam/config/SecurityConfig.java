@@ -25,6 +25,10 @@ import elevenjo.ssdam.global.filter.JwtFilter;
 import elevenjo.ssdam.global.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -77,11 +81,18 @@ public class SecurityConfig {
 		corsConfiguration.setAllowCredentials(true);
 		corsConfiguration.addAllowedHeader("Authorization");
 		corsConfiguration.addAllowedHeader("Content-Type");
-		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedMethod("*");
-		corsConfiguration.addAllowedOrigin(frontUrl);
+		corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+		corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+		corsConfiguration.setAllowCredentials(true);
+//		corsConfiguration.addAllowedOrigin(frontUrl);
+		corsConfiguration.setAllowedOrigins(Arrays.asList(
+				"http://localhost:3000",
+				"https://localhost:3000",
+				"http://j12a106.p.ssafy.io",
+				"https://j12a106.p.ssafy.io"
+				));
 		// '*' 대신 allowedOriginPatterns 사용 (와일드카드 패턴 허용)
-		corsConfiguration.addAllowedOriginPattern("*");
+//		corsConfiguration.addAllowedOriginPattern("*");
 		// "null" Origin도 허용
 		corsConfiguration.addAllowedOrigin("null");
 		corsConfiguration.addExposedHeader("Authorization");
