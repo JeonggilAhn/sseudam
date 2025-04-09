@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Heart, Info, ExternalLink } from "lucide-react";
 import Icon from "@/components/Icon";
 import { getBankIconName } from "@/components/bankList";
@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { sortSavings } from "@/utils/sortSavings";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
+import { v4 as uuidv4 } from "uuid"; // 하트 고유 키용
 
 type Props = {
   savingId: number;
@@ -35,6 +36,10 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
   const [saving, setSaving] = useState<SavingDetailType | null>(null);
   const [liked, setLiked] = useState(false);
   // const detailLoadedRef = useRef(false);
+
+  // state 추가
+  const [showHearts, setShowHearts] = useState(false);
+  const heartContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchDetail = async () => {
     try {
@@ -84,6 +89,11 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
           ? { ...item, likeCount: updatedLikes, liked: updatedLiked }
           : item
       );
+
+      if (updatedLiked) {
+        setShowHearts(true);
+        setTimeout(() => setShowHearts(false), 1000); // 1초 후 하트 제거
+      }
 
       const sortedList = sortSavings(updatedList, sort as "views" | "likes" | "maxIntRate" | "");
       dispatch(setSavings(sortedList));
@@ -180,19 +190,54 @@ const SavingDetail: React.FC<Props> = ({ savingId, onClose, showJoinButton = tru
                 </p>
               </div>
 
-              <div className="flex items-center justify-center gap-4 mt-6">
-                <button
-                  onClick={handleLike}
-                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md ${
-                    liked
-                      ? "border-red-500 text-red-500 bg-red-50"
-                      : "border-gray-300 text-gray-500 hover:bg-gray-50"
-                  }`}
-                  aria-label="좋아요 버튼"
-                >
-                  <Heart size={18} className="transition-colors" fill={liked ? "red" : "none"} />
-                </button>
+              <div className="relative flex items-center justify-center gap-4 mt-6">
+                {/* 좋아요 버튼 + 하트 이펙트만 따로 감싸기 */}
+                <div className="relative">
+                  {/* ❤️ 하트 애니메이션 */}
+                  {showHearts && (
+                    <div
+                      ref={heartContainerRef}
+                      className="absolute z-50 pointer-events-none"
+                      style={{ top: "-20px", left: "50%", transform: "translateX(-50%)" }}
+                    >
+                      {[...Array(14)].map(() => {
+                        const randomX = (Math.random() - 0.5) * 160;
+                        const randomY = -80 - Math.random() * 70;
+                        const randomScale = 0.7 + Math.random() * 0.6;
+                        const heartOptions = ["❤️", "💖", "💕"];
+                        const randomHeart =
+                          heartOptions[Math.floor(Math.random() * heartOptions.length)];
 
+                        return (
+                          <motion.div
+                            key={uuidv4()}
+                            initial={{ opacity: 1, y: 0, scale: 1, x: 0 }}
+                            animate={{ opacity: 0, y: randomY, x: randomX, scale: randomScale }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                            className="absolute text-red-500 text-lg sm:text-xl select-none"
+                          >
+                            {randomHeart}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* 좋아요 버튼 */}
+                  <button
+                    onClick={handleLike}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-md border-2 transition-all flex items-center justify-center cursor-pointer shadow-sm hover:shadow-md ${
+                      liked
+                        ? "border-red-500 text-red-500 bg-red-50"
+                        : "border-gray-300 text-gray-500 hover:bg-gray-50"
+                    }`}
+                    aria-label="좋아요 버튼"
+                  >
+                    <Heart size={18} className="transition-colors" fill={liked ? "red" : "none"} />
+                  </button>
+                </div>
+
+                {/* 가입하기 버튼 */}
                 {showJoinButton && (
                   <button
                     onClick={handleJoin}

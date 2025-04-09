@@ -6,6 +6,9 @@ import QuizCard from "./components/quizCard";
 import { QuizData } from "@/types/quiz";
 import QuizSolution from "./components/quizSolution";
 
+// 폭죽효과
+import confetti from "canvas-confetti";
+
 const QuizPage: React.FC = () => {
   const [flipped, setFlipped] = useState(false);
   const [quizData, setQuizData] = useState<QuizData | null>(null);
@@ -14,11 +17,18 @@ const QuizPage: React.FC = () => {
 
   const handleWrong = () => setFlipped(true);
   const handleCorrect = () => {
-    document.body.classList.add("flash-bg");
+    // 폭죽 먼저 실행
+    confetti({
+      particleCount: 100,
+      spread: 80,
+      origin: { y: 0.6 },
+      scalar: 1.1,
+      angle: 90,
+    });
+
     setTimeout(() => {
-      document.body.classList.remove("flash-bg");
       router.push("/quiz/transfer");
-    }, 400);
+    }, 300);
   };
   const handleRetry = () => {
     refetchQuiz();
