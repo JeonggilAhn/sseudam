@@ -3,13 +3,15 @@
 import React, { useState } from "react";
 import { CreditCard, Wallet } from "lucide-react";
 import WithdrawModal from "../components/withdrawModal";
+import { SelectBank } from "@/components/ui/customSelect";
 
 const WithdrawPage: React.FC = () => {
   const [depositAccountNo, setDepositAccountNo] = useState("");
   const [transactionBalance, setTransactionBalance] = useState("");
+  const [selectedBank, setSelectedBank] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  const isDisabled = !depositAccountNo || !transactionBalance;
+  const isDisabled = !depositAccountNo || !transactionBalance || !selectedBank;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,17 +22,26 @@ const WithdrawPage: React.FC = () => {
 
   return (
     <main className="relative min-h-screen bg-[#C1E6FA] pt-6 pb-28 px-4 flex flex-col items-center">
-      {/* 상단 헤더 */}
       <div className="relative flex items-center justify-center mb-8">
         <h1 className="text-2xl font-bold text-gray-800">계좌 이체</h1>
       </div>
 
-      {/* 중앙 영역 */}
       <section className="flex-1 flex flex-col justify-center items-center w-full">
-        {/* 입력 카드 */}
         <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col items-center">
           <div className="w-full bg-white rounded-xl border border-blue-200 shadow-md p-6 space-y-8">
-            {/* 계좌 번호 */}
+            {/* 연결 은행 선택 */}
+            <div className="space-y-1 w-full">
+              <label className="flex items-center font-medium text-gray-700 mb-1">연결 은행</label>
+              <SelectBank
+                name="bankList"
+                id="bankList"
+                value={selectedBank}
+                onChange={(value) => setSelectedBank(value)}
+                onBlur={() => {}} // 빈 함수라도 넘기면 오류 사라짐
+              />
+            </div>
+
+            {/* 출금 계좌 */}
             <div className="space-y-1">
               <label className="flex items-center font-medium text-gray-700">
                 <CreditCard size={18} className="mr-2 text-blue-500" />
@@ -75,7 +86,6 @@ const WithdrawPage: React.FC = () => {
             </div>
           </div>
 
-          {/* 버튼 */}
           <div className="mt-8 w-full max-w-md">
             <button
               type="submit"
@@ -97,6 +107,7 @@ const WithdrawPage: React.FC = () => {
         <WithdrawModal
           depositAccountNo={depositAccountNo}
           transactionBalance={transactionBalance}
+          selectedBank={selectedBank}
           onClose={() => setShowModal(false)}
         />
       )}

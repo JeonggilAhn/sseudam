@@ -9,12 +9,14 @@ import { Wallet } from "lucide-react";
 interface WithdrawModalProps {
   depositAccountNo: string; // 출금할 계좌 번호
   transactionBalance: string; // 이체할 금액 (문자열로 전달됨)
+  selectedBank: string;
   onClose: () => void;
 }
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({
   depositAccountNo,
   transactionBalance,
+  selectedBank,
   onClose,
 }) => {
   const router = useRouter();
@@ -46,6 +48,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         <Wallet size={48} className="mx-auto text-green-500" />
         <h2 className="text-xl font-bold text-gray-800">이체 확인</h2>
         <div className="text-sm text-gray-700 space-y-1">
+          <p>
+            은행: <span className="font-medium text-blue-600">{selectedBank}</span>
+          </p>
+
           <p>
             계좌번호: <span className="font-medium text-blue-600">{depositAccountNo}</span>
           </p>
