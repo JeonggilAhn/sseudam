@@ -13,8 +13,14 @@ const bankIconMap: Record<string, string> = {
   수협은행: "logoIconSh",
   "주식회사 케이뱅크": "logoIconKbank",
   "주식회사 카카오뱅크": "logoIconKakao",
-  "토스뱅크 주식회사사": "logoIconToss",
+  "토스뱅크 주식회사": "logoIconToss",
   부산은행: "logoIconBusan",
+  한국스탠다드차타드은행: "logoIconSc",
+  SBI저축은행: "logoIconSBI",
+  아이엠뱅크: "logoIconIm",
+  디비저축은행: "logoIconDB",
+  애큐온저축은행: "logoIconAQon",
+  OSB저축은행: "logoIconOSB",
 };
 
 export const getBankIconName = (finCoNo: string): string => {
