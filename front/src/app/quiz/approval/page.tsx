@@ -37,13 +37,13 @@ const CheckPage: React.FC = () => {
         <div className="flex gap-4 w-full max-w-xs">
           <button
             onClick={handleList}
-            className="flex-1 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-bold rounded-lg hover:from-green-600 hover:to-green-500 transition"
+            className="flex-3 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-bold rounded-lg hover:from-green-600 hover:to-green-500 transition"
           >
             거래 내역
           </button>
           <button
             onClick={handleHome}
-            className="flex-1 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-bold rounded-lg hover:from-green-600 hover:to-green-500 transition"
+            className="flex-2 py-3 bg-gradient-to-r from-green-500 to-green-400 text-white font-bold rounded-lg hover:from-green-600 hover:to-green-500 transition"
           >
             확인
           </button>

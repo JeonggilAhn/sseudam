@@ -20,9 +20,7 @@ type SignupForm3Props = {
     }>
   >;
   handleInputChange: (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   ) => void;
 };
 
@@ -41,10 +39,7 @@ const SignupForm3: React.FC<SignupForm3Props> = ({
     if (userInfo3.bankList.trim() === "") {
       errors.bankList = "은행을 선택해주세요.";
     }
-    if (
-      userInfo3.withdrawAccountNo.trim() === "" ||
-      userInfo3.withdrawAccountNo.length < 10
-    ) {
+    if (userInfo3.withdrawAccountNo.trim() === "" || userInfo3.withdrawAccountNo.length < 10) {
       errors.withdrawAccountNo = "계좌번호를 입력해주세요.";
     } else if (!/^\d+$/.test(userInfo3.withdrawAccountNo.replace(/-/g, ""))) {
       errors.withdrawAccountNo = "계좌번호는 숫자로 입력해주세요";
@@ -114,10 +109,7 @@ const SignupForm3: React.FC<SignupForm3Props> = ({
       </div>
 
       <div className="flex flex-col mb-[48px]">
-        <label
-          htmlFor="withdrawAccountNo"
-          className="text-[#7b7b7b]/80 font-bold mb-2"
-        >
+        <label htmlFor="withdrawAccountNo" className="text-[#7b7b7b]/80 font-bold mb-2">
           연결 계좌번호
         </label>
         <input
@@ -132,9 +124,7 @@ const SignupForm3: React.FC<SignupForm3Props> = ({
         />
         <hr />
         {localErrors.withdrawAccountNo && (
-          <p className="text-red-500 text-xs mt-1">
-            {localErrors.withdrawAccountNo}
-          </p>
+          <p className="text-red-500 text-xs mt-1">{localErrors.withdrawAccountNo}</p>
         )}
       </div>
 
