@@ -12,7 +12,7 @@ import {
   setMyPosition,
   setEstimatedTime,
 } from "@/stores/slices/SSESLice";
-import { fetchQueue } from "./SSEHandler";
+
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 export const couponListScrollEvent = new EventTarget();
@@ -26,18 +26,6 @@ const SSEComponent = () => {
   const myPosition = useAppSelector((state) => state.SSE.myPosition);
   const estimatedTime = useAppSelector((state) => state.SSE.estimatedTime);
   const dispatch = useAppDispatch();
-  // 내 순서가 전체 대기열에서 차지하는 비율 계산
-  // const progressPercentage = Math.max(
-  //   0,
-  //   Math.min(100, ((totalQueue - myPosition) / totalQueue) * 100)
-  // );
-
-  // 내 순서에 따른 상태 색상 결정
-  // const getStatusColor = () => {
-  //   if (myPosition <= 1) return "bg-green-500"; // 처리 중
-  //   if (myPosition <= 3) return "bg-blue-500"; // 곧 처리 예정
-  //   return "bg-yellow-500"; // 대기 중
-  // };
 
   const handleClose = async () => {
     dispatch(resetIsSSEOpen());
@@ -102,11 +90,6 @@ const SSEComponent = () => {
       };
     }
   }, [isSSEOpen]);
-
-  useEffect(() => {
-    const response = fetchQueue();
-    console.log(response);
-  }, []);
 
   return (
     <AnimatePresence>
