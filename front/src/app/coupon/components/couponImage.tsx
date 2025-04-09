@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
 import { useAppDispatch } from "@/stores/hooks";
+import { setCouponOrder } from "@/stores/slices/couponSlice";
 import { toggleIsSSEOpen } from "@/stores/slices/SSESLice";
 
 interface CouponImageProps {
@@ -23,6 +24,7 @@ const CouponImage = ({
 }: CouponImageProps) => {
   const [userHas, setUserHas] = useState(false);
   const dispatch = useAppDispatch();
+  const hasUpdatedOrderRef = useRef(false);
 
   useEffect(() => {
     const fetchUserCoupon = async (couponId: number) => {
@@ -30,12 +32,17 @@ const CouponImage = ({
       console.log(response?.data.content);
       if (response?.data.content === true) {
         setUserHas(true);
+        if (!hasUpdatedOrderRef.current) {
+          dispatch(setCouponOrder(couponId));
+          hasUpdatedOrderRef.current = true;
+        }
       } else {
         setUserHas(false);
+        hasUpdatedOrderRef.current = false;
       }
     };
     fetchUserCoupon(couponId);
-  }, [couponId]);
+  }, [couponId, dispatch]);
 
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
@@ -45,10 +52,7 @@ const CouponImage = ({
   };
 
   return (
-    <div
-      onClick={onClick}
-      className="relative flex bg-white border-2 border-dashed border-orange-400 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full min-h-[6rem]"
-    >
+    <div className="relative flex bg-white border-2 border-dashed border-orange-400 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 w-full min-h-[6rem]">
       {/* 좌측 절취선 */}
       <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white border-2 border-orange-300 rounded-full z-10"></div>
       {/* 우측 절취선 */}
@@ -88,8 +92,9 @@ const CouponImage = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                onClick(e);
               }}
-              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+              className="cursor-pointer bg-[#3fbff6] hover:bg-[#ffb733] text-white font-bold py-2 px-4 rounded border-2 border-black transition"
             >
               사용 하러 가기
             </button>
@@ -99,7 +104,7 @@ const CouponImage = ({
                 e.stopPropagation();
                 handleIssue(couponId);
               }}
-              className="bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
+              className="cursor-pointer bg-[#FF9800] hover:bg-[#ffb733] text-black font-bold py-2 px-4 rounded border-2 border-black transition"
             >
               쿠폰 받기
             </button>
