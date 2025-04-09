@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { CheckCouponIssued, IssueCoupon } from "../api/postCoupon";
 import { useAppDispatch } from "@/stores/hooks";
-import { setCouponOrder } from "@/stores/slices/couponSlice";
 import { toggleIsSSEOpen } from "@/stores/slices/SSESLice";
 import { Gift, ExternalLink } from "lucide-react";
+import { setCurrentCoupon } from "@/stores/slices/couponSlice";
+
 
 interface CouponImageProps {
   couponName: string;
@@ -21,6 +22,7 @@ const CouponImage = ({
   couponName,
   couponDeadline,
   couponId,
+  savingId,
   onClick,
 }: CouponImageProps) => {
   const [userHas, setUserHas] = useState(false);
@@ -34,7 +36,6 @@ const CouponImage = ({
       if (response?.data.content === true) {
         setUserHas(true);
         if (!hasUpdatedOrderRef.current) {
-          dispatch(setCouponOrder(couponId));
           hasUpdatedOrderRef.current = true;
         }
       } else {
@@ -47,14 +48,17 @@ const CouponImage = ({
 
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
+    dispatch(setCurrentCoupon({
+      couponId,
+      couponName,
+      couponDeadline,
+      savingId,
+      couponType: '',  // 필요한 필드이지만 현재 컴포넌트에서 사용하지 않는 값
+      createdAt: new Date().toISOString(),  // 현재 시간으로 대체
+      updatedAt: new Date().toISOString()   // 현재 시간으로 대체
+    }))
     const response = await IssueCoupon(couponId);
-    if (response?.status === 200) {
-      setUserHas(true);
-      if (!hasUpdatedOrderRef.current) {
-        dispatch(setCouponOrder(couponId));
-        hasUpdatedOrderRef.current = true;
-      }
-    }
+
     dispatch(toggleIsSSEOpen());
     console.log(response);
   };

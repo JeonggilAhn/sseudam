@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import { GetCouponList } from "../../app/coupon/api/getCoupon";
 import { setCouponList } from "@/stores/slices/couponSlice";
+import { Loader } from "./loader";
 
 import {
   resetIsSSEOpen,
@@ -15,8 +16,6 @@ import {
 
 import { EventSourcePolyfill } from "event-source-polyfill";
 
-export const couponListScrollEvent = new EventTarget();
-
 const SSEComponent = () => {
   const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
     null
@@ -25,18 +24,23 @@ const SSEComponent = () => {
   const isSSEOpen = useAppSelector((state) => state.SSE.isSSEOpen);
   const myPosition = useAppSelector((state) => state.SSE.myPosition);
   const estimatedTime = useAppSelector((state) => state.SSE.estimatedTime);
+  const currentCouponId = useAppSelector(
+    (state) => state.coupon.currentCouponId
+  );
   const dispatch = useAppDispatch();
 
   const handleClose = async () => {
     dispatch(resetIsSSEOpen());
     if (eventSource) {
+      console.log("SSE 연결 종료 중...");
       eventSource.close();
+      // 연결 상태 초기화
+      setEventSource(null);
     }
     const response = await GetCouponList();
     console.log(response?.data.content);
     if (response?.data.content.length > 0) {
       dispatch(setCouponList(response?.data.content));
-      couponListScrollEvent.dispatchEvent(new CustomEvent("resetScroll"));
     }
   };
 
@@ -54,16 +58,31 @@ const SSEComponent = () => {
   }, []);
 
   useEffect(() => {
+    console.log(currentCouponId);
     if (isSSEOpen) {
       // EventSource 객체 생성
       const newEventSource = new EventSourcePolyfill(
-        "https://j12a106.p.ssafy.io/api/sse/subscribe",
+        `https://j12a106.p.ssafy.io/api/sse/subscribe/${currentCouponId}`,
         {
           headers: {
             Authorization: `${sessionStorage.getItem("access_token")}`,
           },
         }
       );
+
+      // 연결 열림 이벤트 핸들러
+      newEventSource.onopen = () => {
+        console.log("SSE 연결이 열렸습니다.");
+      };
+
+      // 에러 핸들러
+      newEventSource.onerror = (error) => {
+        console.error("SSE 연결 오류:", error);
+        // 오류 발생 시 연결 종료 처리
+        if (newEventSource.readyState === newEventSource.CLOSED) {
+          console.log("SSE 연결이 닫혔습니다.");
+        }
+      };
 
       newEventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -148,19 +167,7 @@ const SSEComponent = () => {
 
               {/* 프로그레스바 */}
               <div className="mb-6">
-                <div className="flex justify-between text-sm text-gray-600 mb-1">
-                  <span>대기중</span>
-                  <span>처리완료</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  {/* <div
-                    className={`h-3 rounded-full ${getStatusColor()}`}
-                    style={{
-                      width: `${progressPercentage}%`,
-                      transition: "width 0.5s ease-in-out",
-                    }}
-                  ></div> */}
-                </div>
+                <Loader />
               </div>
 
               {/* 통계 정보 */}
