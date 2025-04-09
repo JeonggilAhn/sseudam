@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { AnimatePresence, motion } from "motion/react";
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
@@ -18,8 +18,9 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 export const couponListScrollEvent = new EventTarget();
 
 const SSEComponent = () => {
-  const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
-  const responseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
+    null
+  );
 
   const isSSEOpen = useAppSelector((state) => state.SSE.isSSEOpen);
   const myPosition = useAppSelector((state) => state.SSE.myPosition);
@@ -28,9 +29,8 @@ const SSEComponent = () => {
 
   const handleClose = async () => {
     dispatch(resetIsSSEOpen());
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-      eventSourceRef.current = null;
+    if (eventSource) {
+      eventSource.close();
     }
     const response = await GetCouponList();
     console.log(response?.data.content);
@@ -42,9 +42,8 @@ const SSEComponent = () => {
 
   useEffect(() => {
     const handleUnload = () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-        eventSourceRef.current = null;
+      if (eventSource) {
+        eventSource.close();
       }
     };
     window.addEventListener("beforeunload", handleUnload);
@@ -55,7 +54,7 @@ const SSEComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (isSSEOpen && !eventSourceRef.current) {
+    if (isSSEOpen) {
       // EventSource 객체 생성
       const newEventSource = new EventSourcePolyfill(
         "https://j12a106.p.ssafy.io/api/sse/subscribe",
@@ -66,21 +65,7 @@ const SSEComponent = () => {
         }
       );
 
-      const startInactivityTimer = () => {
-        if (responseTimeoutRef.current) {
-          clearTimeout(responseTimeoutRef.current);
-        }
-        responseTimeoutRef.current = setTimeout(() => {
-          console.warn("3초 동안 응답 없음. 연결 종료.");
-          handleClose(); // 자동 종료 처리
-        }, 3000);
-      };
-
-      startInactivityTimer();
-
       newEventSource.onmessage = (event) => {
-        startInactivityTimer();
-
         const data = JSON.parse(event.data);
         dispatch(setMyPosition(data.position));
         dispatch(setEstimatedTime(data.estimatedSeconds));
@@ -94,23 +79,13 @@ const SSEComponent = () => {
         }
       };
 
-      newEventSource.onerror = (error) => {
-        console.error("SSE 연결 오류:", error);
-        handleClose();
-        eventSourceRef.current = null;
-      };
-
-      eventSourceRef.current = newEventSource;
+      setEventSource(newEventSource);
 
       // 컴포넌트 언마운트 또는 isSSEOpen이 false로 변경될 때 정리
       return () => {
         if (newEventSource) {
           newEventSource.close();
           console.log("SSE 연결 정리됨");
-        }
-        if (responseTimeoutRef.current) {
-          clearTimeout(responseTimeoutRef.current);
-          responseTimeoutRef.current = null;
         }
       };
     }
