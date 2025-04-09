@@ -27,7 +27,7 @@ public class CouponIssueWorker {
     private final SseService sseService;
 
     // TODO: 나중에 시간과 배치 사이즈 조정
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 1000)
     public void processQueue() {
         Set<String> keys = redisTemplate.keys("coupon:queue:*");
 
@@ -40,7 +40,7 @@ public class CouponIssueWorker {
             String couponIdStr = key.substring("coupon:queue:".length());
             Long couponId = Long.valueOf(couponIdStr);
 
-            List<String> userIds = queueService.pollNextUsers(couponId, 10);
+            List<String> userIds = queueService.pollNextUsers(couponId, 100);
 
             if (userIds.isEmpty()) {
                 continue;
