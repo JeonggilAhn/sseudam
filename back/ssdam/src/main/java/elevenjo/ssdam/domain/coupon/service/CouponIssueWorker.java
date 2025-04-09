@@ -2,14 +2,13 @@ package elevenjo.ssdam.domain.coupon.service;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResultResponse;
 import elevenjo.ssdam.domain.coupon.repository.CouponIssuedRepository;
-import elevenjo.ssdam.domain.coupon.repository.CouponRepository;
-import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.sse.SseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -19,15 +18,14 @@ import java.util.Set;
 @Slf4j
 public class CouponIssueWorker {
 
-    private final CouponRepository couponRepository;
     private final CouponIssuedRepository couponIssuedRepository;
     private final CouponQueueService queueService;
     private final RedisTemplate<String, String> redisTemplate;
-    private final UserRepository userRepository;
     private final SseService sseService;
 
     // TODO: 나중에 시간과 배치 사이즈 조정
     @Scheduled(fixedDelay = 1000)
+    @Transactional
     public void processQueue() {
         Set<String> keys = redisTemplate.keys("coupon:queue:*");
 

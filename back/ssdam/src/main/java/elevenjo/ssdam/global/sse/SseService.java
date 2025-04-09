@@ -2,6 +2,9 @@ package elevenjo.ssdam.global.sse;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponQueueStatusResponse;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResultResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -10,12 +13,34 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Service
+@RequiredArgsConstructor
 public class SseService {
     private final ConcurrentMap<Long, ManagedSseEmitter> emitters = new ConcurrentHashMap<>();
 
-    public SseEmitter subscribe(Long userId) {
+    private final RedisTemplate<String, String> redisTemplate;
+
+    @Scheduled(fixedRate = 1000)
+    public void updateQueueStatuses() {
+        for(Long userId : emitters.keySet()) {
+            ManagedSseEmitter emitter = emitters.get(userId);
+            String key = emitter.getCouponId().toString();
+            if (key == null || key.isEmpty()) {
+                continue;
+            }
+
+            Long rank = redisTemplate.opsForZSet().rank("coupon:queue:" + key, userId.toString());
+            if (rank == null) continue;
+            int position = rank.intValue() + 1;
+
+            long estimatedTime = ((position - 1) / 100 + 1) * 2L;
+
+            sendQueueStatus(userId, new CouponQueueStatusResponse(position, estimatedTime));
+        }
+    }
+
+    public SseEmitter subscribe(Long userId, Long couponId) {
         SseEmitter emitter = new SseEmitter(0L);
-        ManagedSseEmitter managedEmitter = new ManagedSseEmitter(emitter);
+        ManagedSseEmitter managedEmitter = new ManagedSseEmitter(couponId, emitter);
         emitters.put(userId, managedEmitter);
 
         emitter.onCompletion(() -> emitters.remove(userId));
