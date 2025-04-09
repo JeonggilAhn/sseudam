@@ -90,9 +90,9 @@ public class QuizServiceImpl implements QuizService {
 
 
             long quizCount = quizRepository.count();
-            if (quizCount >= 100){
-                quizRepository.deleteAll();
-            };
+//            if (quizCount >= 100){
+//                quizRepository.deleteAll();
+//            };
             quizRepository.saveAll(quizEntities);
         }catch(Exception e){
             e.printStackTrace();
