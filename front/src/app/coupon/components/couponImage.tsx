@@ -48,6 +48,13 @@ const CouponImage = ({
   const handleIssue = async (couponId: number) => {
     console.log(couponId);
     const response = await IssueCoupon(couponId);
+    if (response?.status === 200) {
+      setUserHas(true);
+      if (!hasUpdatedOrderRef.current) {
+        dispatch(setCouponOrder(couponId));
+        hasUpdatedOrderRef.current = true;
+      }
+    }
     dispatch(toggleIsSSEOpen());
     console.log(response);
   };
