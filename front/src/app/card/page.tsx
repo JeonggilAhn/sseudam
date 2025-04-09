@@ -261,7 +261,7 @@ const MainPage = () => {
                     savingId={coupon.savingId}
                     couponId={coupon.couponId}
                     couponType={coupon.couponType}
-                    onClick={(e: React.MouseEvent) => {
+                    onClick={() => {
                       router.push(`/coupon?couponId=${coupon.couponId}`);
                       dispatch(setCurrentCoupon(coupon));
                     }}
