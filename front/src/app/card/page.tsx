@@ -9,6 +9,7 @@ import { DeleteUserCard } from "./api/deleteCard";
 import { AuthGuard } from "@/utils/authGuard";
 import axiosInstance from "@/utils/axiosInstance";
 import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 
 //상태 관리
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
@@ -19,7 +20,7 @@ import {
 } from "@/stores/slices/aniModalSlice";
 import { setCurrentCard } from "@/stores/slices/cardSlice";
 //이미지
-import { CirclePlus, LoaderCircle, CircleX } from "lucide-react";
+import { CirclePlus, LoaderCircle, CircleX, MoveDown } from "lucide-react";
 
 //컴포넌트
 import TimeBackground from "./components/timeBackground";
@@ -57,6 +58,7 @@ const MainPage = () => {
   const [card, setCard] = useState<Card[]>([]);
   const [isBounce, setIsBounce] = useState(true);
   const [piggyBalance, setPiggyBalance] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   const handleDeleteCard = async () => {
     await DeleteUserCard();
@@ -118,6 +120,12 @@ const MainPage = () => {
     }, 2580);
   }, [currentCard, dispatch]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setHasScrolled(true);
+    }, 3000);
+  }, []);
+
   return (
     <div
       className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden"
@@ -131,12 +139,13 @@ const MainPage = () => {
       `}</style>
       <div className="flex-1 ">
         {/* 소비/저축 정보 구름 */}
-        <div className="flex justify-around items-center mt-[5vh] px-4 z-[150] relative">
-          <CloudInfo
-            type="소비"
-            amount={25000}
-            color="dark"
-            textColor="#fa0505"
+        <div className="flex justify-around items-center mt-[5vh] px-4 z-[150] relative gap-[5vw]">
+          <Image
+            src="/icons/sun.svg"
+            alt="sun"
+            width={200}
+            height={200}
+            className="relative flex flex-col justify-center items-center p-4 min-h-[50px] rounded-full transition-transform -translate-x-[20%] -translate-y-[30%] duration-300 hover:scale-105"
           />
           <div
             className="cursor-pointer"
@@ -217,6 +226,32 @@ const MainPage = () => {
 
             {/* 쿠폰 섹션 */}
             <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
+              <div>
+                <AnimatePresence>
+                  {!hasScrolled && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          duration: 0.5,
+                        },
+                      }}
+                      exit={{ opacity: 0, y: -10 }}
+                      style={{ backdropFilter: "blur(10px)" }}
+                      className="rounded-lg fixed bottom-0 -translate-x-[50%] -translate-y-[25%] text-white hover:text-gray-200 focus:outline-none h-[30vh] w-full flex flex-col items-center justify-center z-[300] gap-2"
+                    >
+                      <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
+                        <MoveDown className="w-6 h-6" />
+                        <span className="font-medium">
+                          아래로 스크롤하여 쿠폰을 확인하세요
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               {Array.isArray(couponList) && couponList.length > 0 ? (
                 couponList.map((coupon, index) => (
                   <CouponImage
@@ -226,8 +261,7 @@ const MainPage = () => {
                     savingId={coupon.savingId}
                     couponId={coupon.couponId}
                     couponType={coupon.couponType}
-                    onClick={(e: React.MouseEvent) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       router.push(`/coupon?couponId=${coupon.couponId}`);
                       dispatch(setCurrentCoupon(coupon));
                     }}
