@@ -266,7 +266,7 @@ export default function SavingsJournalPage() {
           className="w-full h-8 bg-amber-100 flex justify-center text-[1rem] font-semibold mb-4 items-center rounded-lg cursor-pointer  hover:text-[#000000] hover:bg-[#ffe270]/80 shadow-sm transition"
           onClick={handleWithdrawal}
         >
-          쓰러가기
+          출금하기
         </div>
 
         <div className="mb-2 flex justify-between items-center w-full">
