@@ -53,6 +53,19 @@ const SSEComponent = () => {
   };
 
   useEffect(() => {
+    const handleUnload = () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     if (isSSEOpen) {
       // EventSource 객체 생성
       const newEventSource = new EventSourcePolyfill(
