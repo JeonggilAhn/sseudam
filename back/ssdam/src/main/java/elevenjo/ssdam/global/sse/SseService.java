@@ -1,4 +1,4 @@
-package elevenjo.ssdam.domain.coupon.service;
+package elevenjo.ssdam.global.sse;
 
 import elevenjo.ssdam.domain.coupon.dto.response.CouponQueueStatusResponse;
 import elevenjo.ssdam.domain.coupon.dto.response.CouponResultResponse;
@@ -11,11 +11,12 @@ import java.util.concurrent.ConcurrentMap;
 
 @Service
 public class SseService {
-    private final ConcurrentMap<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Long, ManagedSseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(Long userId) {
         SseEmitter emitter = new SseEmitter(0L);
-        emitters.put(userId, emitter);
+        ManagedSseEmitter managedEmitter = new ManagedSseEmitter(emitter);
+        emitters.put(userId, managedEmitter);
 
         emitter.onCompletion(() -> emitters.remove(userId));
         emitter.onTimeout(() -> {
@@ -26,10 +27,14 @@ public class SseService {
     }
 
     public void sendCouponResult(Long userId, CouponResultResponse response) {
-        SseEmitter emitter = emitters.get(userId);
-        if (emitter != null) {
+        ManagedSseEmitter managedEmitter = emitters.get(userId);
+        if (managedEmitter != null) {
+            SseEmitter emitter = managedEmitter.getEmitter();
             try {
                 emitter.send(response);
+                // 최종 결과 전송 완료 상태 설정
+                managedEmitter.markFinalResultSent();
+                // 이후에 하트비트나 다른 상태 업데이트에서 삭제하지 않도록 함.
             } catch (IOException e) {
                 emitter.completeWithError(e);
                 emitters.remove(userId);
@@ -38,8 +43,13 @@ public class SseService {
     }
 
     public void sendQueueStatus(Long userId, CouponQueueStatusResponse response) {
-        SseEmitter emitter = emitters.get(userId);
-        if (emitter != null) {
+        ManagedSseEmitter managedEmitter = emitters.get(userId);
+        if (managedEmitter != null) {
+            // 이미 최종 결과가 전송되었다면 상태 업데이트를 보내지 않음
+            if(managedEmitter.isFinalResultSent()){
+                return;
+            }
+            SseEmitter emitter = managedEmitter.getEmitter();
             try {
                 emitter.send(response);
             } catch (IOException e) {
@@ -50,8 +60,13 @@ public class SseService {
     }
 
     public void sendHeartbeat(Long userId) {
-        SseEmitter emitter = emitters.get(userId);
-        if (emitter != null) {
+        ManagedSseEmitter managedEmitter = emitters.get(userId);
+        if (managedEmitter != null) {
+            // 최종 결과 전송 후에는 heartbeat를 보내지 않도록 할 수도 있음
+            if(managedEmitter.isFinalResultSent()){
+                return;
+            }
+            SseEmitter emitter = managedEmitter.getEmitter();
             try {
                 emitter.send(SseEmitter.event().name("heartbeat").data("ping"));
             } catch (IOException e) {
@@ -67,4 +82,3 @@ public class SseService {
         }
     }
 }
-
