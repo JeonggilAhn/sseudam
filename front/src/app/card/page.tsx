@@ -10,11 +10,15 @@ import { AuthGuard } from "@/utils/authGuard";
 import axiosInstance from "@/utils/axiosInstance";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
+import SSEComponent from "@/components/sse/SSEComponent";
 
 //상태 관리
 import { useAppSelector, useAppDispatch } from "@/stores/hooks";
 import { setCouponList, setCurrentCoupon } from "@/stores/slices/couponSlice";
-import { resetIsModalOpen, toggleIsModalOpen } from "@/stores/slices/aniModalSlice";
+import {
+  resetIsModalOpen,
+  toggleIsModalOpen,
+} from "@/stores/slices/aniModalSlice";
 import { setCurrentCard } from "@/stores/slices/cardSlice";
 //이미지
 import { CirclePlus, LoaderCircle, CircleX, MoveDown } from "lucide-react";
@@ -24,7 +28,6 @@ import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
-import SSEComponent, { couponListScrollEvent } from "@/components/sse/SSEComponent";
 
 class Card {
   cardNo: string;
@@ -97,7 +100,8 @@ const MainPage = () => {
       if (response !== undefined) {
         console.log(response.data);
         const tmpCardNo = response.data[0] + "**********" + response.data[1];
-        const userName = (await axiosInstance.get("/users/me")).data.content.userName;
+        const userName = (await axiosInstance.get("/users/me")).data.content
+          .userName;
         const tmpCard = new Card(tmpCardNo, userName);
         setCard([tmpCard]);
         setIsLoading(false);
@@ -145,38 +149,6 @@ const MainPage = () => {
     setTimeout(() => {
       setHasScrolled(true);
     }, 3000);
-  }, []);
-
-  useEffect(() => {
-    if (couponListRef.current) {
-      couponListRef.current.scrollTop = 0;
-    }
-  }, [couponList]);
-
-  useEffect(() => {
-    const handleResetScroll = async () => {
-      if (couponListRef.current) {
-        couponListRef.current.scrollTop = 0;
-      }
-
-      const fetchCouponInfo = async () => {
-        const response = await GetCouponList();
-        console.log("쿠폰 목록 갱신:", response?.data.content);
-        if (response?.data.content.length > 0) {
-          dispatch(setCouponList(response?.data.content));
-        } else {
-          dispatch(setCouponList([]));
-        }
-      };
-
-      await fetchCouponInfo();
-    };
-
-    couponListScrollEvent.addEventListener("resetScroll", handleResetScroll);
-
-    return () => {
-      couponListScrollEvent.removeEventListener("resetScroll", handleResetScroll);
-    };
   }, []);
 
   return (
@@ -273,8 +245,16 @@ const MainPage = () => {
             </AnimatePresence>
           ))}
 
-          <div className="cursor-pointer" onClick={() => router.push("/account/record")}>
-            <CloudInfo type="저축" amount={piggyBalance} color="white" textColor="#6439FF" />
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/account/record")}
+          >
+            <CloudInfo
+              type="저축"
+              amount={piggyBalance}
+              color="white"
+              textColor="#6439FF"
+            />
           </div>
         </div>
 
@@ -296,14 +276,21 @@ const MainPage = () => {
           height={300}
         />
         <div className="h-full flex flex-col absolute bottom-0 left-0 right-0">
-          <div className="relative flex flex-col justify-between h-full"></div> {/* 상단 여백 */}
+          <div className="relative flex flex-col justify-between h-full"></div>{" "}
+          {/* 상단 여백 */}
           <div className="flex-1 flex flex-col justify-end h-2/3">
             {/* 카드 섹션 */}
             <div className="mb-8 flex justify-center items-center overflow-x-auto gap-4 z-[200] px-4 scroll-smooth scrollbar-hide min-h-[183px]">
               {isLoading ? (
                 <div className="">
                   <LoaderCircle className="z-[200] text-gray-700 w-12 h-12 transition-all animate-spin absolute top-1/2 left-1/2 -translate-x-[50%] translate-y-[100%]" />
-                  <Cards number={""} expiry={""} cvc={""} name={"유저명"} focused={""} />
+                  <Cards
+                    number={""}
+                    expiry={""}
+                    cvc={""}
+                    name={"유저명"}
+                    focused={""}
+                  />
                 </div>
               ) : (
                 <div>
@@ -359,7 +346,9 @@ const MainPage = () => {
                     >
                       <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
                         <MoveDown className="w-6 h-6" />
-                        <span className="font-medium">아래로 스크롤하여 쿠폰을 확인하세요</span>
+                        <span className="font-medium">
+                          아래로 스크롤하여 쿠폰을 확인하세요
+                        </span>
                       </div>
                     </motion.div>
                   )}
@@ -381,7 +370,9 @@ const MainPage = () => {
                   />
                 ))
               ) : (
-                <div className="text-gray-700 text-sm">현재 등록된 쿠폰이 없습니다.</div>
+                <div className="text-gray-700 text-sm">
+                  현재 등록된 쿠폰이 없습니다.
+                </div>
               )}
             </div>
 
@@ -389,12 +380,17 @@ const MainPage = () => {
             {showDeleteModal && (
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[300] p-4">
                 <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full transform transition-all animate-fadeIn">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">카드 삭제 확인</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                    카드 삭제 확인
+                  </h3>
                   <p className="text-gray-600 mb-6">
-                    정말로 카드를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+                    정말로 카드를 삭제하시겠습니까? 이 작업은 되돌릴 수
+                    없습니다.
                   </p>
                   <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
-                    <span className="font-medium text-white">카드 삭제를 진행하시겠습니까?</span>
+                    <span className="font-medium text-white">
+                      카드 삭제를 진행하시겠습니까?
+                    </span>
                   </div>
                   <div className="flex justify-end gap-3 mt-6">
                     <button
