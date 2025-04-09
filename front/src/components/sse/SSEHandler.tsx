@@ -43,7 +43,7 @@ const getQueueInfo = async () => {
     }
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    if (error.name === "AbortError") {
+    if (error instanceof Error && error.name === "AbortError") {
       console.log("큐 조회 요청이 취소되었습니다.");
     } else {
       console.error("큐 정보 조회 중 오류 발생:", error);
