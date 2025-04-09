@@ -15,6 +15,8 @@ import {
 import { fetchQueue } from "./SSEHandler";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
+export const couponListScrollEvent = new EventTarget();
+
 const SSEComponent = () => {
   const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
     null
@@ -46,8 +48,7 @@ const SSEComponent = () => {
     console.log(response?.data.content);
     if (response?.data.content.length > 0) {
       dispatch(setCouponList(response?.data.content));
-    } else {
-      dispatch(setCouponList([]));
+      couponListScrollEvent.dispatchEvent(new CustomEvent("resetScroll"));
     }
   };
 
@@ -67,6 +68,7 @@ const SSEComponent = () => {
         const data = JSON.parse(event.data);
         dispatch(setMyPosition(data.position));
         dispatch(setEstimatedTime(data.estimatedSeconds));
+        console.log(data);
         if (data.success === false) {
           handleClose();
           toast.error("쿠폰 발급에 실패했습니다.");

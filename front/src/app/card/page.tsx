@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CloudInfo from "./components/cloudInfo";
 import CouponImage from "../coupon/components/couponImage";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,9 @@ import TimeBackground from "./components/timeBackground";
 import GrassBackground from "./components/grassBackground";
 import CardRegist from "./components/cardRegist";
 import Cards from "react-credit-cards-2";
-import SSEComponent from "@/components/sse/SSEComponent";
+import SSEComponent, {
+  couponListScrollEvent,
+} from "@/components/sse/SSEComponent";
 
 class Card {
   cardNo: string;
@@ -56,9 +58,12 @@ const MainPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [card, setCard] = useState<Card[]>([]);
+  const [deleteCard, setDeleteCard] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isBounce, setIsBounce] = useState(true);
   const [piggyBalance, setPiggyBalance] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const couponListRef = useRef<HTMLDivElement>(null);
 
   const handleDeleteCard = async () => {
     await DeleteUserCard();
@@ -126,11 +131,92 @@ const MainPage = () => {
     }, 3000);
   }, []);
 
+  useEffect(() => {
+    if (couponListRef.current) {
+      couponListRef.current.scrollTop = 0;
+    }
+  }, [couponList]);
+
+  useEffect(() => {
+    const handleResetScroll = async () => {
+      if (couponListRef.current) {
+        couponListRef.current.scrollTop = 0;
+      }
+
+      const fetchCouponInfo = async () => {
+        const response = await GetCouponList();
+        console.log("쿠폰 목록 갱신:", response?.data.content);
+        if (response?.data.content.length > 0) {
+          dispatch(setCouponList(response?.data.content));
+        } else {
+          dispatch(setCouponList([]));
+        }
+      };
+
+      await fetchCouponInfo();
+    };
+
+    couponListScrollEvent.addEventListener("resetScroll", handleResetScroll);
+
+    return () => {
+      couponListScrollEvent.removeEventListener(
+        "resetScroll",
+        handleResetScroll
+      );
+    };
+  }, []);
+
   return (
     <div
       className="h-[95vh] relative w-full max-w-[1280px] mx-auto overflow-hidden"
       style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
     >
+      <div>
+        <AnimatePresence>
+          {deleteCard && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: {
+                  duration: 0.5,
+                },
+              }}
+              exit={{ opacity: 0, y: -10 }}
+              // style={{ backdropFilter: "blur(10px)" }}
+              onClick={() => setHasScrolled(true)}
+              className="rounded-lg absolute top-0 translate-y-[70%] text-white hover:text-gray-200 focus:outline-none h-[30vh] w-full flex flex-col items-center justify-center z-[300] gap-2"
+            >
+              <div className="flex h-[7vh] items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
+                <span className="font-medium">카드를 삭제하시겠습니까?</span>
+                <div className="flex gap-2 ml-2 h-full">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteCard();
+                      setDeleteCard(false);
+                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium transition-colors min-w-[70px] w-[10vw] h-full"
+                  >
+                    확인
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteCard(false);
+                    }}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors min-w-[70px] w-[10vw] h-full"
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       <SSEComponent />
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
@@ -208,8 +294,8 @@ const MainPage = () => {
                     <div id="cardRegistSuccess" className="relative">
                       <CircleX
                         id="cardDelete"
-                        className="z-[200] text-gray-700 max-w-20 h-auto absolute right-1 top-1"
-                        onClick={() => handleDeleteCard()}
+                        className="z-[200] text-gray-700 max-w-20 h-auto absolute right-1 top-1 cursor-pointer hover:text-red-500 transition-colors"
+                        onClick={() => setDeleteCard(true)}
                       />
                       <Cards
                         number={card[0].cardNo}
@@ -225,7 +311,10 @@ const MainPage = () => {
             </div>
 
             {/* 쿠폰 섹션 */}
-            <div className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center">
+            <div
+              ref={couponListRef}
+              className="cursor-pointer mb-16 flex flex-col overflow-y-scroll gap-2 z-[200] px-4 scroll-smooth scrollbar-hide h-[25vh] justify-start items-center"
+            >
               <div>
                 <AnimatePresence>
                   {!hasScrolled && (
@@ -240,6 +329,7 @@ const MainPage = () => {
                       }}
                       exit={{ opacity: 0, y: -10 }}
                       style={{ backdropFilter: "blur(10px)" }}
+                      onClick={() => setHasScrolled(true)}
                       className="rounded-lg fixed bottom-0 -translate-x-[50%] -translate-y-[25%] text-white hover:text-gray-200 focus:outline-none h-[30vh] w-full flex flex-col items-center justify-center z-[300] gap-2"
                     >
                       <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
@@ -273,6 +363,43 @@ const MainPage = () => {
                 </div>
               )}
             </div>
+
+            {/* 카드 삭제 확인 모달 */}
+            {showDeleteModal && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[300] p-4">
+                <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full transform transition-all animate-fadeIn">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                    카드 삭제 확인
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    정말로 카드를 삭제하시겠습니까? 이 작업은 되돌릴 수
+                    없습니다.
+                  </p>
+                  <div className="flex items-center justify-center gap-2 bg-black/30 px-4 py-2 rounded-full">
+                    <span className="font-medium text-white">
+                      카드 삭제를 진행하시겠습니까?
+                    </span>
+                  </div>
+                  <div className="flex justify-end gap-3 mt-6">
+                    <button
+                      onClick={() => setShowDeleteModal(false)}
+                      className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-800 font-medium transition-colors"
+                    >
+                      취소
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDeleteCard();
+                        setShowDeleteModal(false);
+                      }}
+                      className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white font-medium transition-colors"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
