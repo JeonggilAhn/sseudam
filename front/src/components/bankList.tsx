@@ -21,6 +21,15 @@ const bankIconMap: Record<string, string> = {
   디비저축은행: "logoIconDB",
   애큐온저축은행: "logoIconAQon",
   OSB저축은행: "logoIconOSB",
+  웰컴저축은행: "logoIconWelcome",
+  한국투자저축은행: "logoIconKoreaTooja",
+  하나저축은행: "logoIconHNsave",
+  MS저축은행: "logoIconMS",
+  페퍼저축은행: "logoIconPepper",
+  KB저축은행: "logoIconKBsave",
+  신한저축은행: "logoIconSHsave",
+  세람저축은행: "logoIconSeram",
+  아산저축은행: "logoIconAsan",
 };
 
 export const getBankIconName = (finCoNo: string): string => {
