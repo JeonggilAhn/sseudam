@@ -1,18 +1,12 @@
 package elevenjo.ssdam.domain.piggy.service;
 
 import elevenjo.ssdam.domain.card.exception.UserNotFoundException;
-import elevenjo.ssdam.domain.piggy.dto.AccountResponseDto;
-import elevenjo.ssdam.domain.piggy.dto.AccountTransactionRequestDto;
-import elevenjo.ssdam.domain.piggy.dto.TransactionHistoryDto;
-import elevenjo.ssdam.domain.piggy.dto.WithdrawRequestDto;
-import elevenjo.ssdam.domain.piggy.dto.WithdrawResponseDto;
-import elevenjo.ssdam.domain.piggy.dto.external.InquireAccountResponseDto;
-import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryRequestDto;
-import elevenjo.ssdam.domain.piggy.dto.external.InquireTransactionHistoryResponseDto;
-import elevenjo.ssdam.domain.piggy.dto.external.UpdateDemandDepositAccountTransferRequestDto;
+import elevenjo.ssdam.domain.piggy.dto.*;
+import elevenjo.ssdam.domain.piggy.dto.external.*;
 import elevenjo.ssdam.domain.user.entity.User;
 import elevenjo.ssdam.domain.user.repository.UserRepository;
 import elevenjo.ssdam.global.externalApi.ExternalApiUtil;
+import elevenjo.ssdam.global.externalApi.exception.ExternalApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +37,7 @@ public class PiggyAccountService {
                 user.getUserKey(),
                 Map.of("accountTypeUniqueNo", "001-1-3d2440839e314f"),
                 InquireAccountResponseDto.class
-                );
+        );
         piggyAccountNo = externalAccount.rec().accountNo();
 
         user.registerPiggyAccountNo(piggyAccountNo);
@@ -115,22 +109,24 @@ public class PiggyAccountService {
         UpdateDemandDepositAccountTransferRequestDto request =
                 new UpdateDemandDepositAccountTransferRequestDto(
                         requestDto.accountNo(),
-                        "쓰담 입금",
+                        "쓰담 : 입금",
                         requestDto.amount().toString(),
                         piggyAccountNo,
-                        "쓰담 출금"
+                        "쓰담 : 출금"
                 );
 
 
-        InquireTransactionHistoryResponseDto response =
+        UpdateDemandDepositAccountTransferResponseDto response =
                 externalApiUtil.postWithHeader(
                         externalBaseUrl + apiName,
                         apiName,
                         user.getUserKey(),
                         request,
-                        InquireTransactionHistoryResponseDto.class
+                        UpdateDemandDepositAccountTransferResponseDto.class
                 );
-
+        if(!response.header().responseCode().equals("H0000")) {
+            throw new ExternalApiException("외부 api 호출에 실패했습니다.");
+        }
 
         return new WithdrawResponseDto(requestDto.amount());
     }
