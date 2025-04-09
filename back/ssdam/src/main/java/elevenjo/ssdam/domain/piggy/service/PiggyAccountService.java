@@ -115,10 +115,10 @@ public class PiggyAccountService {
         UpdateDemandDepositAccountTransferRequestDto request =
                 new UpdateDemandDepositAccountTransferRequestDto(
                         requestDto.accountNo(),
-                        "쓰담 입금",
+                        "쓰담 : 입금",
                         requestDto.amount().toString(),
                         piggyAccountNo,
-                        "쓰담 출금"
+                        "쓰담 : 출금"
                 );
 
 

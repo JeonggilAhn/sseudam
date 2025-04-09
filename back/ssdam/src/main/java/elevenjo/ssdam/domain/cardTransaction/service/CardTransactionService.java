@@ -47,7 +47,7 @@ public class CardTransactionService {
         String transactionBalance = Double.toString(Math.ceil(requestDto.paymentBalance() * (user.getSavingRate() / 100.0)));
         String summary = new StringBuilder()
                 .append("쓰담 : ")
-                .append(requestDto.merchantName()).append(" ")
+                .append(requestDto.merchantName()).append(", ")
                 .append(requestDto.paymentBalance()).append("원")
                 .toString();
 
