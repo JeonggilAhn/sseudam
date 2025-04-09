@@ -80,6 +80,8 @@ public class SecurityConfig {
 		corsConfiguration.addAllowedHeader("*");
 		corsConfiguration.addAllowedMethod("*");
 		corsConfiguration.addAllowedOrigin(frontUrl);
+		// '*' 대신 allowedOriginPatterns 사용 (와일드카드 패턴 허용)
+		corsConfiguration.addAllowedOriginPattern("*");
 		// "null" Origin도 허용
 		corsConfiguration.addAllowedOrigin("null");
 		corsConfiguration.addExposedHeader("Authorization");
