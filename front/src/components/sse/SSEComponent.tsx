@@ -18,6 +18,7 @@ import { EventSource } from "eventsource";
 
 const SSEComponent = () => {
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
+  const [connectionState, setConnectionState] = useState<number>(0);
 
   const isSSEOpen = useAppSelector((state) => state.SSE.isSSEOpen);
   const myPosition = useAppSelector((state) => state.SSE.myPosition);
@@ -42,7 +43,7 @@ const SSEComponent = () => {
 
     setTimeout(() => {
       dispatch(resetIsSSEOpen());
-    }, 1100);
+    }, 200);
   };
 
   useEffect(() => {
@@ -114,11 +115,30 @@ const SSEComponent = () => {
       return () => {
         if (newEventSource) {
           newEventSource.close();
+          setEventSource(null);
           console.log("SSE 연결 정리됨");
         }
       };
     }
   }, [isSSEOpen]);
+
+  useEffect(() => {
+    if (eventSource) {
+      console.log("초기 readyState:", eventSource.readyState);
+      setConnectionState(eventSource.readyState);
+
+      // 주기적으로 readyState 확인하는 인터벌 설정
+      const intervalId = setInterval(() => {
+        console.log("현재 readyState:", eventSource.readyState);
+        setConnectionState(eventSource.readyState);
+      }, 3000); // 3초마다 확인
+
+      // 컴포넌트 언마운트 시 인터벌 정리
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [eventSource]);
 
   return (
     <AnimatePresence>
@@ -134,15 +154,14 @@ const SSEComponent = () => {
           {/* 모달 컨테이너 */}
           <div className="bg-white rounded-lg shadow-xl overflow-hidden w-11/12 max-w-md mx-auto animate-fadeIn">
             {/* 모달 헤더 */}
-            {/* <button
-              className="text-black border-2 border-black hover:text-gray-200 focus:outline-none"
-              onClick={test}
-            >
-              Test
-            </button> */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">대기열 현황</h2>
+                <div>
+                  <h2 className="text-xl font-bold">대기열 현황</h2>
+                  {connectionState === 0 && (
+                    <p className="text-sm text-yellow-200">연결 중...</p>
+                  )}
+                </div>
                 <button
                   onClick={handleClose}
                   className="text-white hover:text-gray-200 focus:outline-none"
