@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-// import { useSearchParams } from "next/navigation";
 import SignupForm1 from "./SignupForm1";
 import SignupForm2 from "./SignupForm2";
 import SignupForm3 from "./SignupForm3";
@@ -15,7 +13,6 @@ import { AuthGuard } from "@/utils/authGuard";
 
 const SignUpForm = () => {
   const router = useRouter();
-  // const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
@@ -35,14 +32,6 @@ const SignUpForm = () => {
     bankList: "",
     withdrawAccountNo: "",
   });
-
-  // // 개발용 (새로고침 시, 첫페이지로 넘어가지 않게 막아줌)
-  // useEffect(() => {
-  //   const step = searchParams.get("step");
-  //   if (step) {
-  //     setStep(Number(step));
-  //   }
-  // }, [searchParams]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -98,9 +87,7 @@ const SignUpForm = () => {
     }));
   };
 
-  //pageNation
   const handlePrevSteps = () => {
-    // queryStep
     if (step > 1) {
       const prevStep = step - 1;
       setStep(prevStep);
@@ -109,7 +96,6 @@ const SignUpForm = () => {
   };
 
   const handleNextSteps = () => {
-    // queryStep
     if (Object.keys(errors).length > 0) return;
     const nextStep = step + 1;
     setStep(nextStep);
@@ -128,10 +114,8 @@ const SignUpForm = () => {
 
     try {
       const postedSignup = await postSignup(data);
-      // console.log("response: ", postedSignup, "data: ", JSON.stringify(data));
       console.log("response: ", postedSignup);
 
-      // 백엔드 응답 확인 후 수정예정
       if (postedSignup?.status === 200) {
         console.log("회원가입 성공", postedSignup, JSON.stringify(data));
         router.push("success");
@@ -139,9 +123,6 @@ const SignUpForm = () => {
     } catch (error) {
       console.log("회원가입 실패", error);
     }
-
-    // const finalUserInfo = { ...userInfo1, ...userInfo2 };
-    // console.log("완료되었습니다.", JSON.stringify(finalUserInfo));
   };
 
   return (

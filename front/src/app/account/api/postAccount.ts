@@ -1,9 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-// export const postAccount = async (data: object) => {
 export const postAccount = async () => {
   try {
-    // const response = await axiosInstance.post(`/accounts`, data, {}
     const response = await axiosInstance.post(`/accounts`);
     if (response) {
       return response;

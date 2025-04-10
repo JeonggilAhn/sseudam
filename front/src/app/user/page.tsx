@@ -134,10 +134,6 @@ const UserPage: React.FC = () => {
                   onClick={handleSavingSetting}
                 />
               </div>
-              {/* <div className="flex justify-between">
-                <span className="text-medium font-semibold">알림</span>
-                <ChevronRight className="text-[#7c7c7c] cursor-pointer" />
-              </div> */}
             </div>
           </div>
           <div className="flex justify-center mt-8">

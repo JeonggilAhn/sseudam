@@ -11,8 +11,6 @@ type selectBankBookProps = {
   setSelectedBankBook: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-// 추후 설정 예정
-// 사용자가 가지고 있는 통장내역 불러와서 선택 항목에 넣기
 const SelectBankBook: React.FC<selectBankBookProps> = ({
   selectedBankBook,
   setSelectedBankBook,

@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import SelectSavingRate from "../components/savingRate";
-// import { RateBar } from "../components/savingRate";
 import { getUserInfo } from "@/app/user/api/getUserInfo";
 import PageSetting from "@/app/pageSetting";
 import { patchSavingSettings } from "../api/patchSavingSettings";
@@ -21,8 +19,6 @@ interface UserInfo {
 }
 
 function Accounts() {
-  // 사용자의 정보에서 미리 연결은행과 계좌번호 받아오기 (그걸로 기본 세팅)
-  // const [selectedBankBook, setSelectedBankBook] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -51,7 +47,6 @@ function Accounts() {
           setSelectedSavingRate(Number(response.data.content.savingRate));
 
           setUserInfo3({
-            // ...userInfo3,
             bankList: "싸피은행",
             withdrawAccountNo:
               response.data.content.withdrawAccountNo || "0000000000000012",
@@ -69,7 +64,6 @@ function Accounts() {
     fetchUserInfo();
   }, []);
 
-  // 확인버튼 disable 상태 변경
   useEffect(() => {
     if (
       userInfo &&
@@ -112,9 +106,6 @@ function Accounts() {
 
   const handleConfirm = async () => {
     const data = {
-      // selectedBankBook,
-      // withdrawAccountNo: userInfo3.withdrawAccountNo,
-      // savingRate: selectedSavingRate,
       withdrawAccountNo: userInfo3.withdrawAccountNo,
       savingRate: selectedSavingRate,
     };
