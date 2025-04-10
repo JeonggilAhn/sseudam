@@ -38,7 +38,19 @@ public class CouponIssueWorker {
             String couponIdStr = key.substring("coupon:queue:".length());
             Long couponId = Long.valueOf(couponIdStr);
 
-            List<String> userIds = queueService.pollNextUsers(couponId, 100);
+//            String redisStockKey = "coupon:list" + couponId;
+//            Long stockSize = redisTemplate.opsForList().size(redisStockKey);
+//
+//            if(stockSize == null || stockSize <= 0) {
+//                continue;
+//            }
+
+            int randomBatch = (int) (Math.random() * 20) + 81;
+
+            int batchSize = randomBatch;
+//            int batchSize = Math.min(randomBatch, stockSize.intValue());
+
+            List<String> userIds = queueService.pollNextUsers(couponId, batchSize);
 
             if (userIds.isEmpty()) {
                 continue;
