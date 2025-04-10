@@ -4,7 +4,7 @@ export const UserAuth = async () => {
       method: "GET",
       credentials: "include",
     });
-    sessionStorage.setItem(
+    localStorage.setItem(
       "access_token",
       response.headers.get("Authorization") || ""
     );

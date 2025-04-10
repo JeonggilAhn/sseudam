@@ -64,7 +64,7 @@ const UserPage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("access_token");
+    localStorage.removeItem("access_token");
     router.push("/");
   };
 

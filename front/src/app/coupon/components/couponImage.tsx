@@ -79,7 +79,7 @@ const CouponImage = ({
           <div className="text-xs uppercase text-orange-600 font-semibold w-full h-full">
             <div className="flex justify-center items-center w-full h-full">
               <Image
-                src="/icons/logoIconCiti.svg"
+                src="/icons/logoIconWoori.svg"
                 width={150}
                 height={150}
                 alt="쿠폰 아이콘"

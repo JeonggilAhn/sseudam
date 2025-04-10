@@ -18,7 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     const checkToken = async () => {
-      const accessToken = sessionStorage.getItem("access_token");
+      const accessToken = localStorage.getItem("access_token");
       if (accessToken) {
         router.push("/card");
       }
