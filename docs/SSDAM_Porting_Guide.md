@@ -102,4 +102,4 @@ sw.js
 > `pnpm install`
 >
 >2. 개발 서버 실행
-> `pnpm run build`
+> `pnpm dev`
