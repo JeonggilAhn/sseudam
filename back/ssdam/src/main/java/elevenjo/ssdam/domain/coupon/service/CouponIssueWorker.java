@@ -25,7 +25,7 @@ public class CouponIssueWorker {
 
     // TODO: 나중에 시간과 배치 사이즈 조정
     @Scheduled(fixedDelay = 1000)
-    @Transactional
+//    @Transactional
     public void processQueue() {
         Set<String> keys = redisTemplate.keys("coupon:queue:*");
 
