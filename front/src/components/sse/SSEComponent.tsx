@@ -28,7 +28,6 @@ const SSEComponent = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = async () => {
-    dispatch(resetIsSSEOpen());
     if (eventSource) {
       console.log("SSE 연결 종료 중...");
       eventSource.close();
@@ -40,6 +39,10 @@ const SSEComponent = () => {
     if (response?.data.content.length > 0) {
       dispatch(setCouponList(response?.data.content));
     }
+
+    setTimeout(() => {
+      dispatch(resetIsSSEOpen());
+    }, 1100);
   };
 
   useEffect(() => {
