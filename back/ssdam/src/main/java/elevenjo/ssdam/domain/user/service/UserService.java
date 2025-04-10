@@ -56,29 +56,31 @@ public class UserService {
 		body.put("userId", user.getUserEmail());
 
 
-		if(userKey == null) {
+		try {
 			userKey = ExternalApiUtil.postWithBodyApiKey(
 					"https://finopenapi.ssafy.io/ssafy/api/v1/member",
 					body,
 					SSAFYUserResponseDto.class
 			).userKey();
-		} else {
+
+		} catch (Exception e) {
 			userKey = ExternalApiUtil.postWithBodyApiKey(
 					"https://finopenapi.ssafy.io/ssafy/api/v1/member/search",
 					body,
 					SSAFYUserResponseDto.class).userKey();
+		} finally {
+
+			user.registerUserInfo(
+					requestDto.userName(),
+					birthday,
+					requestDto.withdrawAccountNo(),
+					requestDto.savingRate(),
+					userKey
+			);
+
+
+			return UserDto.from(user);
 		}
-
-		user.registerUserInfo(
-				requestDto.userName(),
-				birthday,
-				requestDto.withdrawAccountNo(),
-				requestDto.savingRate(),
-				userKey
-		);
-
-
-		return UserDto.from(user);
 	}
 
 	@Transactional
