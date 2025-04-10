@@ -30,6 +30,8 @@ const bankIconMap: Record<string, string> = {
   신한저축은행: "logoIconSHsave",
   세람저축은행: "logoIconSeram",
   아산저축은행: "logoIconAsan",
+  솔브레인저축은행: "logoIconSoulbrain",
+  엔에이치저축은행: "logoIconNHsave",
 };
 
 export const getBankIconName = (finCoNo: string): string => {
