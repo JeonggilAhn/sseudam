@@ -89,7 +89,7 @@ const CouponImage = ({
         </div>
 
         {/* Middle: 코드 정보 */}
-        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center w-[35%] ">
+        <div className="flex-1 px-4 py-6 flex flex-col justify-center items-center min-w-[40%] ">
           <div className="text-xs whitespace-nowrap text-gray-500 mt-2 text-ellipsis">
             {couponName}
           </div>
