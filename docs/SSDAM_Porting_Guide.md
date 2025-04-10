@@ -1,4 +1,4 @@
-SSDAM 포팅 매뉴얼
+## SSDAM 포팅 매뉴얼
 
 ### I. 기술 스택 & 개발 환경
 ---
@@ -10,7 +10,7 @@ SSDAM 포팅 매뉴얼
 >* UCC: 
 >* CI/CD: 
 
-[개발 환경]
+> [개발 환경]
 > * **Front-end**
 > 	* Node.js: 20.19.0
 > 	* React: 18.3.1
@@ -23,9 +23,8 @@ SSDAM 포팅 매뉴얼
 > 	* 기타: twin.macro, react-hook-form, zod, axios 등
 
 
-[외부 서비스]
+> [외부 서비스]
 > * 금융감독원 API
-
 
 > [gitignore]
 ```
