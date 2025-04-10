@@ -99,19 +99,6 @@ function SavingsJournalPage() {
   };
 
   const parseTransactionSummary = (summary: string) => {
-    // const parts = summary.split(", ");
-
-    // if (parts.length === 3) {
-    //   const description = parts[0];
-    //   const amount = parts[1].replace(",", "");
-    //   const location = parts[2];
-
-    //   return { description, amount: parseInt(amount, 10), location };
-    // }
-
-    // return { description: "", amount: 0, location: "" };
-
-    // const regex = /:\s*(.*?),\s*(\d+)(원?)?/;
     const regex = /:\s*(.*?)(?:,\s*(\d+)(원)?)?$/;
     const match = summary.match(regex);
 
@@ -129,14 +116,8 @@ function SavingsJournalPage() {
       const startDateWithAddedDay = new Date(dateRange.from);
       startDateWithAddedDay.setDate(startDateWithAddedDay.getDate() + 1);
       setStartDate(startDateWithAddedDay.toISOString().split("T")[0]);
-
-      // setStartDate(dateRange.from.toISOString().split("T")[0]);
     }
     if (dateRange.to) {
-      // const endDateWithAddedDay = new Date(dateRange.to);
-      // endDateWithAddedDay.setDate(endDateWithAddedDay.getDate() + 1);
-      // setEndDate(endDateWithAddedDay.toISOString().split("T")[0]);
-
       setEndDate(dateRange.to.toISOString().split("T")[0]);
     }
   }, [dateRange]);
@@ -183,7 +164,6 @@ function SavingsJournalPage() {
 
   useEffect(() => {
     if (transactions && Number(transactions.totalCount) > 0) {
-      // transactionType (1: DEPOSIT, 2: WITHDRAWAL)
       const spent = transactions.list.reduce((total, transaction) => {
         const { amount } = parseTransactionSummary(
           transaction.transactionSummary
@@ -202,8 +182,6 @@ function SavingsJournalPage() {
         );
         if (transaction.transactionType === "1") {
           return total + balance;
-        } else if (transaction.transactionType === "2") {
-          return total - balance;
         }
         return total;
       }, 0);
@@ -220,12 +198,8 @@ function SavingsJournalPage() {
     const combined = `${date}T${time}`;
 
     const dateObj = new Date(combined);
-    // const formattedDate = `${dateObj.getFullYear()}. ${dateObj.getMonth() + 1}. ${dateObj.getDate()}. ${time}`;
     const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")} ${time}`;
     return formattedDate;
-    // return dateObj.toLocaleString("ko-KR", {
-    //   hour12: false,
-    // });
   };
 
   return (
@@ -257,12 +231,6 @@ function SavingsJournalPage() {
             </CardContent>
           </Card>
         </div>
-        {/* <div
-          className="flex justify-end text-[0.7rem] mb-2 items-center rounded-lg cursor-pointer hover:text-[#5e5e5e]"
-          onClick={handleWithdrawal}
-        >
-          출금 바로가기
-        </div> */}
         <div
           className="w-full h-8 bg-amber-100 flex justify-center text-[1rem] font-semibold mb-4 items-center rounded-lg cursor-pointer  hover:text-[#000000] hover:bg-[#ffe270]/80 shadow-sm transition"
           onClick={handleWithdrawal}
@@ -276,12 +244,12 @@ function SavingsJournalPage() {
               <div className="flex justify-between items-center mb-4">
                 <div className="text-sm font-medium">조회기간</div>
 
-                <div className="flex items-center text-sm hover:underline transition cursor-pointer">
+                <div
+                  className="flex items-center text-sm hover:underline transition cursor-pointer"
+                  onClick={handleSavingRate}
+                >
                   <span className="mr-1">저축 비율 설정</span>
-                  <ChevronRight
-                    onClick={handleSavingRate}
-                    className="h-4 w-4"
-                  />
+                  <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
 
@@ -410,132 +378,3 @@ function SavingsJournalPage() {
 }
 
 export default AuthGuard(SavingsJournalPage);
-
-// const formatCurrency = (value: number) => {
-//   return new Intl.NumberFormat("ko-KR", {
-//     // style: "currency",
-//     currency: "KRW",
-//   }).format(value);
-// };
-
-// const transactions: Transaction[] = [
-//   {
-//     status: {
-//       code: "200",
-//       message: "성공적으로 데이터를 가져왔습니다.",
-//     },
-//     content: {
-//       totalCount: "10",
-//       list: [
-//         {
-//           transactionDate: "2025-04-01",
-//           transactionTime: "08:30:00",
-//           transactionType: "1",
-//           transactionTypeName: "입금",
-//           transactionBalance: "500,000",
-//           transactionAfterBalance: "1,500,000",
-//           transactionSummary: "급여 입금, 50,000, 서울 강남",
-//         },
-//         {
-//           transactionDate: "2025-04-02",
-//           transactionTime: "09:15:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "200,000",
-//           transactionAfterBalance: "1,300,000",
-//           transactionSummary: "마트 쇼핑, 20,000, 서울 명동",
-//         },
-//         {
-//           transactionDate: "2025-04-03",
-//           transactionTime: "12:45:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "100,000",
-//           transactionAfterBalance: "1,200,000",
-//           transactionSummary: "친구에게 송금, 10,000, 부산 해운대",
-//         },
-//         {
-//           transactionDate: "2025-04-04",
-//           transactionTime: "14:20:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "50,000",
-//           transactionAfterBalance: "1,150,000",
-//           transactionSummary: "카페에서 커피, 5,000, 서울 홍대",
-//         },
-//         {
-//           transactionDate: "2025-04-05",
-//           transactionTime: "16:00:00",
-//           transactionType: "1",
-//           transactionTypeName: "입금",
-//           transactionBalance: "200,000",
-//           transactionAfterBalance: "1,350,000",
-//           transactionSummary: "보너스 입금, 20,000, 서울 종로",
-//         },
-//         {
-//           transactionDate: "2025-04-06",
-//           transactionTime: "10:30:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "120,000",
-//           transactionAfterBalance: "1,230,000",
-//           transactionSummary: "식사비, 12,000, 서울 강남",
-//         },
-//         {
-//           transactionDate: "2025-04-06",
-//           transactionTime: "11:00:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "150,000",
-//           transactionAfterBalance: "1,080,000",
-//           transactionSummary: "세금, 15,000, 서울 여의도",
-//         },
-//         {
-//           transactionDate: "2025-04-06",
-//           transactionTime: "13:30:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "80,000",
-//           transactionAfterBalance: "1,000,000",
-//           transactionSummary: "영화관, 8,000, 서울 신촌",
-//         },
-//         {
-//           transactionDate: "2025-04-06",
-//           transactionTime: "15:10:00",
-//           transactionType: "1",
-//           transactionTypeName: "입금",
-//           transactionBalance: "300,000",
-//           transactionAfterBalance: "1,300,000",
-//           transactionSummary: "투자금 입금, 30,000, 서울 강남",
-//         },
-//         {
-//           transactionDate: "2025-04-06",
-//           transactionTime: "17:45:00",
-//           transactionType: "2",
-//           transactionTypeName: "출금",
-//           transactionBalance: "150,000",
-//           transactionAfterBalance: "1,150,000",
-//           transactionSummary: "기타 지출, 15,000, 서울 마포",
-//         },
-//       ],
-//     },
-//   },
-// ];
-
-// const data: Data = {
-//   startDate: dateRange.from
-//     ? format(dateRange.from, "yyyyMMdd")
-//     : format(firstDayOfMonth, "yyyyMMdd"),
-//   endDate: dateRange.to
-//     ? format(dateRange.to, "yyyyMMdd")
-//     : format(today, "yyyyMMdd"),
-//   transactionType: "A", //M:입금, D:출금, A:전체
-//   orderByType: "ASC", //ASC:오름차순, DESC:내림차순
-// };
-
-// type Data = {
-//   startDate: string;
-//   endDate: string;
-//   transactionType: string;
-//   orderByType: string;
-// };

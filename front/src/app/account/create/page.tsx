@@ -9,10 +9,6 @@ import { AuthGuard } from "@/utils/authGuard";
 function CreateAccountPage() {
   const [step, setStep] = useState(1);
 
-  // 개설할 계좌 정보
-  // const [accountTypeUniqueNo, setAccountTypeUniqueNo] = useState("");
-
-  // const [selectedSavingRate, setSelectedSavingRate] = useState<number>(5);
   const [selectedPassword, setSelectedPassword] = useState<string>("");
 
   const handleNext = () => {
@@ -35,8 +31,6 @@ function CreateAccountPage() {
             <PasswordAndRatio
               onPrev={handlePrev}
               onNext={handleNext}
-              // selectedSavingRate={selectedSavingRate}
-              // setSelectedSavingRate={setSelectedSavingRate}
               selectedPassword={selectedPassword}
               setSelectedPassword={setSelectedPassword}
             />

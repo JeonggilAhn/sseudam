@@ -4,17 +4,12 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import PageSetting from "@/app/pageSetting";
 import { LongButton } from "@/components/ui/customButton";
-// import AnimatedModal from "@/components/animatedModal";
-// import { useAppDispatch } from "@/stores/hooks";
-// import { toggleIsModalOpen } from "@/stores/slices/aniModalSlice";
 
 const SuccessPage = () => {
   const router = useRouter();
-  // const dispatch = useAppDispatch();
 
   const handleButton = () => {
     router.push("/account/create");
-    // dispatch(toggleIsModalOpen());
   };
 
   return (
@@ -33,10 +28,6 @@ const SuccessPage = () => {
 
         <LongButton name="시작하기" onClick={handleButton}></LongButton>
       </PageSetting>
-
-      {/* <AnimatedModal>
-        <div>서비스 시작을 위해서는 통장 가입이 필요해요</div>
-      </AnimatedModal> */}
     </>
   );
 };
