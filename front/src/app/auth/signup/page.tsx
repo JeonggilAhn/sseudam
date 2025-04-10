@@ -38,14 +38,18 @@ const SignUpForm = () => {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
-          console.log("res", response);
-          alert("이미 가입된 사용자 입니다.");
-          router.push("/card");
+          // console.log("res", response);
+          if (response.data.content.piggyAccountNo !== null) {
+            alert("이미 가입된 사용자 입니다.");
+            router.push("/card");
+          } else {
+            console.log("서비스 가입 전 사용자 입니다.");
+          }
         } else {
           setError("응답 데이터가 없습니다.");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
       }
@@ -114,14 +118,14 @@ const SignUpForm = () => {
 
     try {
       const postedSignup = await postSignup(data);
-      console.log("response: ", postedSignup);
+      // console.log("response: ", postedSignup);
 
       if (postedSignup?.status === 200) {
-        console.log("회원가입 성공", postedSignup, JSON.stringify(data));
+        // console.log("회원가입 성공", postedSignup, JSON.stringify(data));
         router.push("success");
       }
     } catch (error) {
-      console.log("회원가입 실패", error);
+      console.error("회원가입 실패", error);
     }
   };
 

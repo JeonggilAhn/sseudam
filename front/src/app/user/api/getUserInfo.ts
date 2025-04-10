@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const getUserInfo = async () => {
-  console.log("req");
+  // console.log("req");
   try {
     const response = await axiosInstance.get("/users/me");
     if (response) {

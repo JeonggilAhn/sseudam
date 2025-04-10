@@ -31,13 +31,13 @@ const UserPage: React.FC = () => {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
-          console.log("res", response);
+          // console.log("res", response);
           setUserInfo(response.data.content);
         } else {
           setError("응답 데이터가 없습니다.");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);

@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const postSignup = async (data: object) => {
-  console.log("postd", data);
+  // console.log("postd", data);
   try {
     const response = await axiosInstance.post(`/users/me`, data);
     if (response) {
