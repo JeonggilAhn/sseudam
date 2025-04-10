@@ -61,7 +61,6 @@ const SSEComponent = () => {
     if (isSSEOpen) {
       console.log("SSE 연결이 열렸습니다.");
       // EventSource 객체 생성
-      // eslint-disable-next-line
       const newEventSource = new EventSource(
         `https://j12a106.p.ssafy.io/api/sse/subscribe/${currentCouponId}`,
         {
@@ -69,7 +68,7 @@ const SSEComponent = () => {
             fetch(input, {
               ...init,
               headers: {
-                ...init.headers,
+                ...init?.headers,
                 Authorization: `${sessionStorage.getItem("access_token")}`,
               },
             }),
