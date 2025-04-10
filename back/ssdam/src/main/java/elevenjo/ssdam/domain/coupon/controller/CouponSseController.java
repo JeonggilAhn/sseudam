@@ -5,6 +5,7 @@ import elevenjo.ssdam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -15,9 +16,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class CouponSseController {
 
     private final SseService sseService;
-    @GetMapping("/subscribe")
+    @GetMapping("/subscribe/{couponId}")
     public SseEmitter subscribe(
-            @AuthenticationPrincipal User user){
-        return sseService.subscribe(user.getUserId());
+            @AuthenticationPrincipal User user,
+            @PathVariable Long couponId) {
+        if(couponId == null) {
+            throw new RuntimeException("couponId is null");
+        }
+        return sseService.subscribe(user.getUserId(), couponId);
     }
 }

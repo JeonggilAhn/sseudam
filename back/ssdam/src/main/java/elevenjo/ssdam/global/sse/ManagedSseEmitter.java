@@ -5,10 +5,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Getter
 public class ManagedSseEmitter {
+    private final Long couponId;
     private final SseEmitter emitter;
     private volatile boolean finalResultSent = false;
 
-    public ManagedSseEmitter(SseEmitter emitter) {
+    public ManagedSseEmitter(Long couponId, SseEmitter emitter) {
+        this.couponId = couponId;
         this.emitter = emitter;
     }
 
