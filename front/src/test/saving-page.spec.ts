@@ -4,7 +4,7 @@ test("로그인 이후 적금 테스트", async ({ page }) => {
   // 0. 미리 accessToken을 세션에 넣어줌
   await page.goto("http://localhost:3000"); // 꼭 origin 맞춰줘야 함!
   await page.evaluate(() => {
-    sessionStorage.setItem(
+    localStorage.setItem(
       "accessToken",
       "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6Imdvb2dsZSAxMTM4OTg4NDI5NDU2NDcxMDU2ODAiLCJpYXQiOjE3NDQxNzAzMjMsImV4cCI6MTc0NDI1NjcyM30.dsy17E3bFhHidyVFU-zwGtigRojA8SMb-VGG6wECGKc"
     );
@@ -23,10 +23,14 @@ test("로그인 이후 적금 테스트", async ({ page }) => {
 
   // 3. 정렬 버튼 클릭 테스트
   await page.getByRole("button", { name: "금리순" }).click();
-  await expect(page.getByRole("button", { name: "금리순" })).toHaveClass(/bg-blue-100/);
+  await expect(page.getByRole("button", { name: "금리순" })).toHaveClass(
+    /bg-blue-100/
+  );
 
   await page.getByRole("button", { name: "좋아요순" }).click();
-  await expect(page.getByRole("button", { name: "좋아요순" })).toHaveClass(/bg-blue-100/);
+  await expect(page.getByRole("button", { name: "좋아요순" })).toHaveClass(
+    /bg-blue-100/
+  );
 
   // 4. 검색 → rnrals
   const input = page.getByPlaceholder("검색어를 입력하세요");
@@ -38,7 +42,9 @@ test("로그인 이후 적금 테스트", async ({ page }) => {
 
   // 5. 조회수순 다시 클릭
   await page.getByRole("button", { name: "조회수순" }).click();
-  await expect(page.getByRole("button", { name: "조회수순" })).toHaveClass(/bg-blue-100/);
+  await expect(page.getByRole("button", { name: "조회수순" })).toHaveClass(
+    /bg-blue-100/
+  );
 
   // 6. 무한 스크롤 아래로
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

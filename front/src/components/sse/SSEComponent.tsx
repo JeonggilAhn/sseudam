@@ -73,7 +73,7 @@ const SSEComponent = () => {
               ...init,
               headers: {
                 ...init?.headers,
-                Authorization: `${sessionStorage.getItem("access_token")}`,
+                Authorization: `${localStorage.getItem("access_token")}`,
               },
             }),
         }

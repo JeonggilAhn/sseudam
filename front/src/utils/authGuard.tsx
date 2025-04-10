@@ -9,7 +9,7 @@ export function AuthGuard<P extends object>(
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-      const token = sessionStorage.getItem("access_token");
+      const token = localStorage.getItem("access_token");
       if (!token) {
         alert("로그인이 필요합니다.");
         router.push("/");
