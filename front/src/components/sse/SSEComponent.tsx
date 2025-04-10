@@ -14,12 +14,10 @@ import {
   setEstimatedTime,
 } from "@/stores/slices/SSESLice";
 
-import { EventSourcePolyfill } from "event-source-polyfill";
+import { EventSource } from "eventsource";
 
 const SSEComponent = () => {
-  const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>(
-    null
-  );
+  const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
   const isSSEOpen = useAppSelector((state) => state.SSE.isSSEOpen);
   const myPosition = useAppSelector((state) => state.SSE.myPosition);
@@ -48,6 +46,7 @@ const SSEComponent = () => {
     const handleUnload = () => {
       if (eventSource) {
         eventSource.close();
+        setEventSource(null);
       }
     };
     window.addEventListener("beforeunload", handleUnload);
@@ -62,12 +61,17 @@ const SSEComponent = () => {
     if (isSSEOpen) {
       console.log("SSE 연결이 열렸습니다.");
       // EventSource 객체 생성
-      const newEventSource = new EventSourcePolyfill(
+      const newEventSource = new EventSource(
         `https://j12a106.p.ssafy.io/api/sse/subscribe/${currentCouponId}`,
         {
-          headers: {
-            Authorization: `${sessionStorage.getItem("access_token")}`,
-          },
+          fetch: (input, init) =>
+            fetch(input, {
+              ...init,
+              headers: {
+                ...init?.headers,
+                Authorization: `${sessionStorage.getItem("access_token")}`,
+              },
+            }),
         }
       );
 
@@ -75,6 +79,8 @@ const SSEComponent = () => {
       newEventSource.onopen = () => {
         console.log("SSE 연결이 열렸습니다.");
       };
+
+      console.log(newEventSource?.readyState);
 
       // 에러 핸들러
       newEventSource.onerror = (error) => {
