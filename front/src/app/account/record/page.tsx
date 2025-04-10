@@ -71,11 +71,11 @@ function SavingsJournalPage() {
 
   const handleDatePicker = async () => {
     if (dateRange.from && dateRange.to) {
-      const formattedFrom = format(dateRange.from, "yyyyMMdd");
-      const formattedTo = format(dateRange.to, "yyyyMMdd");
+      // const formattedFrom = format(dateRange.from, "yyyyMMdd");
+      // const formattedTo = format(dateRange.to, "yyyyMMdd");
 
-      console.log("From Date:", formattedFrom);
-      console.log("To Date:", formattedTo);
+      // console.log("From Date:", formattedFrom);
+      // console.log("To Date:", formattedTo);
 
       setDateRange({
         from: dateRange.from,
@@ -147,12 +147,12 @@ function SavingsJournalPage() {
       );
 
       if (transactionResponse) {
-        console.log("res", transactionResponse?.data.content);
+        // console.log("res", transactionResponse?.data.content);
         setTransactions(transactionResponse?.data.content);
-        console.log(transactionResponse?.data.content.list);
+        // console.log(transactionResponse?.data.content.list);
       }
     } catch (error) {
-      console.log("거래 데이터를 가져오는 중 오류 발생:", error);
+      console.error("거래 데이터를 가져오는 중 오류 발생:", error);
     } finally {
       setLoading(false);
     }

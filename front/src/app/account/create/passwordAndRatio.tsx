@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ShortButton } from "@/components/ui/customButton";
 import { InputPassword } from "../components/selectNumber";
 import { postAccount } from "../api/postAccount";
 import { RateBar } from "../components/savingRate";
 import { patchSavingSettings } from "../api/patchSavingSettings";
+import { getUserInfo } from "@/app/user/api/getUserInfo";
 
 type PasswordAndRatioProps = {
   onPrev: () => void;
@@ -23,6 +24,26 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
   const router = useRouter();
   const [isValue, setIsValue] = useState(false);
   const [selectedSavingRate, setSelectedSavingRate] = useState<number>(10);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await getUserInfo();
+        if (response?.status === 200) {
+          setSelectedSavingRate(response.data.content.savingRate);
+        } else {
+          setError("응답 데이터가 없습니다.");
+        }
+      } catch (error) {
+        console.error(error);
+        setError("사용자 정보를 불러오는 데 실패했습니다.");
+      } finally {
+      }
+    };
+    fetchUserInfo();
+  }, []);
 
   const handleLastBtn = async () => {
     const data = {
@@ -30,13 +51,13 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
     };
     try {
       const result = await patchSavingSettings(data);
-      console.log("res", result, JSON.stringify(data));
+      // console.log("res", result, JSON.stringify(data));
     } catch (error) {
       console.error("Error updating data:", error);
     } finally {
       try {
         const postedAccount = await postAccount();
-        console.log("res", postedAccount);
+        // console.log("res", postedAccount);
         if (postedAccount?.status === 200) {
           router.push("/account/create/success");
         }

@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export const getAccountRecord = async (queryParams: string) => {
-  console.log("req", queryParams);
+  // console.log("req", queryParams);
   try {
     const response = await axiosInstance.get(
       `/accounts/my/transactions?${queryParams.toString()}`

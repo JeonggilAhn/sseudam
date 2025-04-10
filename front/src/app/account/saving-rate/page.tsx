@@ -42,7 +42,7 @@ function Accounts() {
       try {
         const response = await getUserInfo();
         if (response?.status === 200) {
-          console.log("res", response);
+          // console.log("res", response);
           setUserInfo(response.data.content);
           setSelectedSavingRate(Number(response.data.content.savingRate));
 
@@ -55,7 +55,7 @@ function Accounts() {
           setError("응답 데이터가 없습니다.");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);
@@ -109,11 +109,11 @@ function Accounts() {
       withdrawAccountNo: userInfo3.withdrawAccountNo,
       savingRate: selectedSavingRate,
     };
-    console.log("type: ", typeof data.savingRate);
+    // console.log("type: ", typeof data.savingRate);
 
     try {
       const result = await patchSavingSettings(data);
-      console.log("res", result, JSON.stringify(data));
+      // console.log("res", result, JSON.stringify(data));
     } catch (error) {
       console.error("Error updating data:", error);
     } finally {
