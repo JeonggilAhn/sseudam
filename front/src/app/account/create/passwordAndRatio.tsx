@@ -50,6 +50,7 @@ const PasswordAndRatio: React.FC<PasswordAndRatioProps> = ({
       savingRate: selectedSavingRate,
     };
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const result = await patchSavingSettings(data);
       // console.log("res", result, JSON.stringify(data));
     } catch (error) {
