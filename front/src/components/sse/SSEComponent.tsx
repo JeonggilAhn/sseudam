@@ -79,6 +79,17 @@ const SSEComponent = () => {
         }
       );
 
+      // 타임아웃 설정 - 7초 후에도 응답이 없으면 연결 종료
+      const timeoutId = setTimeout(() => {
+        console.log("SSE 연결 타임아웃 발생");
+        if (newEventSource && newEventSource.readyState !== newEventSource.CLOSED) {
+          newEventSource.close();
+          setEventSource(null);
+          dispatch(resetIsSSEOpen());
+          toast.error("연결 시간이 초과되었습니다. 다시 시도해주세요.");
+        }
+      }, 7000); // 7초 타임아웃
+
       // 연결 열림 이벤트 핸들러
       newEventSource.onopen = () => {
         console.log("SSE 연결이 열렸습니다.");
@@ -96,6 +107,9 @@ const SSEComponent = () => {
       };
 
       newEventSource.onmessage = (event) => {
+        // 메시지를 받으면 타임아웃 타이머 초기화
+        clearTimeout(timeoutId);
+        
         const data = JSON.parse(event.data);
         dispatch(setMyPosition(data.position));
         dispatch(setEstimatedTime(data.estimatedSeconds));
@@ -113,6 +127,7 @@ const SSEComponent = () => {
 
       // 컴포넌트 언마운트 또는 isSSEOpen이 false로 변경될 때 정리
       return () => {
+        clearTimeout(timeoutId); // 타임아웃 타이머 정리
         if (newEventSource) {
           newEventSource.close();
           setEventSource(null);
@@ -120,7 +135,7 @@ const SSEComponent = () => {
         }
       };
     }
-  }, [isSSEOpen]);
+  }, [isSSEOpen, currentCouponId, dispatch]);
 
   useEffect(() => {
     if (eventSource) {
