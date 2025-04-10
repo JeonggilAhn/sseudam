@@ -202,9 +202,10 @@ function SavingsJournalPage() {
         );
         if (transaction.transactionType === "1") {
           return total + balance;
-        } else if (transaction.transactionType === "2") {
-          return total - balance;
         }
+        // else if (transaction.transactionType === "2") {
+        //   return total - balance;
+        // }
         return total;
       }, 0);
       setTotalSpent(spent);
@@ -276,12 +277,12 @@ function SavingsJournalPage() {
               <div className="flex justify-between items-center mb-4">
                 <div className="text-sm font-medium">조회기간</div>
 
-                <div className="flex items-center text-sm hover:underline transition cursor-pointer">
+                <div
+                  className="flex items-center text-sm hover:underline transition cursor-pointer"
+                  onClick={handleSavingRate}
+                >
                   <span className="mr-1">저축 비율 설정</span>
-                  <ChevronRight
-                    onClick={handleSavingRate}
-                    className="h-4 w-4"
-                  />
+                  <ChevronRight className="h-4 w-4" />
                 </div>
               </div>
 
