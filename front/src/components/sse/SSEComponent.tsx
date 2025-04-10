@@ -46,6 +46,7 @@ const SSEComponent = () => {
     const handleUnload = () => {
       if (eventSource) {
         eventSource.close();
+        setEventSource(null);
       }
     };
     window.addEventListener("beforeunload", handleUnload);
@@ -78,6 +79,8 @@ const SSEComponent = () => {
       newEventSource.onopen = () => {
         console.log("SSE 연결이 열렸습니다.");
       };
+
+      console.log(newEventSource?.readyState);
 
       // 에러 핸들러
       newEventSource.onerror = (error) => {
