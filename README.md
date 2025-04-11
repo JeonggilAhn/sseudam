@@ -102,12 +102,12 @@
 
 ### 풀스택 (Full-stack)
 
-|   Name   | 안정길                       | 이시호                                                                                                                                    |
-| :------: | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Profile  | 본인 깃헙 프로필 이미지 주소 | <p align="center"><img src="https://www.svgrepo.com/show/407222/polar-bear.svg" style="width:180px; height:220px; object-fit:cover;"></p> |
-| Position | 본인 포지션 작성             | Full-Stack 작성                                                                                                                           |
-|   Git    | 본인 깃헙 주소 작성          | [@harimau97](https://github.com/harimau97)                                                                                                |
-|  E-mail  | 본인 이메일 작성             | harimauho@gmail.com                                                                                                                       |
+|   Name   | 안정길                                                                                                                                       | 이시호                                                                                                                                    |
+| :------: | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Profile  | <p align="center"><img src="https://avatars.githubusercontent.com/u/121782748?v=4" style="width:180px; height:220px; object-fit:cover;"></p> | <p align="center"><img src="https://www.svgrepo.com/show/407222/polar-bear.svg" style="width:180px; height:220px; object-fit:cover;"></p> |
+| Position | Full-Stack Developer                                                                                                                         | Full-Stack Developer                                                                                                                      |
+|   Git    | [@JeongnggilAhn](https://github.com/JeonggilAhn/)                                                                                            | [@harimau97](https://github.com/harimau97)                                                                                                |
+|  E-mail  | junggilahn.dev@gmail.com                                                                                                                     | harimauho@gmail.com                                                                                                                       |
 
 <br>
 
