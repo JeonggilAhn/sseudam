@@ -119,9 +119,10 @@
 - 유사도 검색 커스터마이징
   - 레벤슈타인 거리 기반 한영매칭, 글자 분해로 커스텀 검색 로직 작성
 - FE 성능 최적화  
-  - 'React.memo', 'useCallback', 'useRef'으로 불필요한 렌더링을 줄여 최적화하여 렌더링 시간 88.6% 단축 (31.6ms -> 3.6ms)
-  - 'IntersectionObserver'를 활용한 무한 스크롤 및 Skeleton UI 적용
+  - `React.memo`, `useCallback`, `useRef`으로 불필요한 렌더링을 줄여 최적화하여 렌더링 시간 88.6% 단축 (31.6ms -> 3.6ms)
+  - `IntersectionObserver`를 활용한 무한 스크롤 및 Skeleton UI 적용
 - 서비스 메인 페이지 설계 및 디자인 구현
+  <br>
 `이시호`
 <br>
 - 개인정보 암호화 기능 구현
