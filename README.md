@@ -247,8 +247,7 @@
         <img src="https://github.com/user-attachments/assets/504fa740-ae11-447c-af0d-5bc191a14ccd" alt="좋아요" height="400">
       </td>
         <td>
-        <img src="https://github.com/user-attachments/assets/504fa740-ae11-447c-af0d-5bc191a14ccd" height="400">
-        <img src="https://github.com/user-attachments/assets/28775a1b-ffb5-4d3b-9d48-1a2142ef0b62" height="400">
+        <img src="https://github.com/user-attachments/assets/65fb92e4-f876-4d6e-bdcb-d579c0fd2635" alt="가입" height="400">
       </td>
     </tr>
   </tbody>
@@ -262,12 +261,16 @@
   <thead>
     <tr>
       <th>퀴즈 풀이 및 해설</th>
+      <th>정답 후 출금</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
         <img src="https://github.com/user-attachments/assets/a00e4fa0-178a-4ac8-9e40-cc3420fa7f8b" alt="퀴즈" height="400">
+      </td>
+       <td>
+        <img src="https://github.com/user-attachments/assets/dd3da390-2630-460e-a7b6-09c14dcdd금" height="400">
       </td>
     </tr>
   </tbody>
