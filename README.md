@@ -123,6 +123,8 @@
   - `IntersectionObserver`를 활용한 무한 스크롤 및 Skeleton UI 적용
 - 서비스 메인 페이지 설계 및 디자인 구현
   <br>
+
+  <div>
 `이시호`
 <br>
 - 개인정보 암호화 기능 구현
@@ -203,24 +205,20 @@
 
 <br>
 
-## 🚀 기술적 설명
+## 🚀 담당 영역 설명
 
 ### 메인 페이지
 
 <table border="1">
   <thead>
     <tr>
-      <th>카드 등록</th>
-      <th>결제 내역 확인 및 저축 비율 설정</th>
+      <th>태양 애니메이션</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <img src="./image/카드 색상 변화2.gif" alt="쿠폰" height="400">
-      </td>
-      <td>
-        <img src="./image/1-쓰담 내역 gif.gif" alt="쿠폰" height="400">
+        <img src="https://github.com/user-attachments/assets/89f96948-10f7-4f8d-8dbc-6c8a3418cb4f" alt="태양" height="400">
       </td>
     </tr>
   </tbody>
@@ -232,16 +230,25 @@
   <thead>
     <tr>
       <th>적금 상품 검색</th>
-      <th>검색 결과 페이지네이션</th>
+      <th>조건별 정렬 및 페이지네이션</th>
+      <th>좋아요 및 적금 상세 정보</th>
+      <th>적금 가입</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <img src="./image/2-국민 검색 gif.gif" alt="쿠폰" height="400">
+        <img src="https://github.com/user-attachments/assets/83b08c88-a8a8-4916-9c3a-a5d9a0b27fd8" alt="검색" height="400">
       </td>
       <td>
-        <img src="./image/2-검색 페이지네이션 gif.gif" alt="쿠폰" height="400">
+        <img src="https://github.com/user-attachments/assets/6cf442d3-a46b-4dcc-9987-6443cd8674b2" alt="정렬" height="400">
+      </td>
+        <td>
+        <img src="https://github.com/user-attachments/assets/504fa740-ae11-447c-af0d-5bc191a14ccd" alt="좋아요" height="400">
+      </td>
+        <td>
+        <img src="https://github.com/user-attachments/assets/504fa740-ae11-447c-af0d-5bc191a14ccd" height="400">
+        <img src="https://github.com/user-attachments/assets/28775a1b-ffb5-4d3b-9d48-1a2142ef0b62" height="400">
       </td>
     </tr>
   </tbody>
@@ -260,30 +267,7 @@
   <tbody>
     <tr>
       <td>
-        <img src="./image/1-퀴즈 gif.gif" alt="쿠폰" height="400">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### 쿠폰
-
-<hr>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>발급 및 대기열 표시</th>
-      <th>사용</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <img src="./image/3-1쿠폰발급gif.gif" alt="쿠폰" height="400">
-      </td>
-      <td>
-        <img src="./image/3-2쿠폰사용 gif.gif" alt="쿠폰" height="400">
+        <img src="https://github.com/user-attachments/assets/a00e4fa0-178a-4ac8-9e40-cc3420fa7f8b" alt="퀴즈" height="400">
       </td>
     </tr>
   </tbody>
