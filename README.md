@@ -185,7 +185,7 @@
 
 <div style="align: center;">
 
-<img src="./image/erd.png" alt="ERD" width="800">
+<img src="https://github.com/user-attachments/assets/18f1b1cc-9d75-4c80-91e0-80426819ee42" alt="ERD" width="800">
 
 </div>
 
@@ -194,7 +194,13 @@
 ## 📜 프로젝트 구조
 
 <div>
-<img src="./image/architecture.png" alt="Project Structure" width="800">
+<img src="https://github.com/user-attachments/assets/851702fb-1cd6-4171-b234-5bd1fe5470ae" alt="Project Structure" width="800">
+</div>
+
+## 🪜 서비스 플로우
+
+<div>
+<img src="https://github.com/user-attachments/assets/662d0618-2c79-4360-8de4-88beab8262ea" alt="Service Flow" width="800">
 </div>
 
 ## 🔧 구현 목표 및 실제 구현도
@@ -270,7 +276,7 @@
         <img src="https://github.com/user-attachments/assets/a00e4fa0-178a-4ac8-9e40-cc3420fa7f8b" alt="퀴즈" height="400">
       </td>
        <td>
-        <img src="https://github.com/user-attachments/assets/dd3da390-2630-460e-a7b6-09c14dcdd금" height="400">
+        <img src="https://github.com/user-attachments/assets/61e856c0-28ba-4a90-b057-e600a7cb1324" alt="출금" height="400">
       </td>
     </tr>
   </tbody>
